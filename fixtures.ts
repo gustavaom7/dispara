@@ -1,6 +1,7 @@
-import { test as base, expect, request as playwrightRequest, type APIRequestContext, type Page } from '@playwright/test';
+import { test as base, expect, request as playwrightRequest, type APIRequestContext } from '@playwright/test';
 import { join } from 'node:path';
 import { ambienteAtual, avatarAtual, type Ambiente, type Avatar } from './ambiente';
+import { Carrinho, Catalogo, Checkout, Menu, PaginaLogin, PaginaProduto } from './paginas';
 
 export type Conta = { avatar: Avatar; email: string; senha: string };
 
@@ -11,11 +12,18 @@ type Fixtures = {
   ambiente: Ambiente;
   /** Cliente HTTP apontado para a API do ambiente. */
   api: APIRequestContext;
+  // Page objects (pasta paginas/)
+  menu: Menu;
+  login: PaginaLogin;
+  catalogo: Catalogo;
+  produto: PaginaProduto;
+  carrinho: Carrinho;
+  checkout: Checkout;
 };
 
 /**
  * Nenhum teste deve ter e-mail, senha ou caminho pessoal escrito no código:
- * `conta` traz as credenciais e `arquivo()` os arquivos de apoio.
+ * `conta` traz as credenciais, `pessoaNova()` gera dados únicos e `arquivo()` aponta arquivos de apoio.
  */
 export const test = base.extend<Fixtures>({
   ambiente: async ({}, use) => { await use(ambienteAtual()); },
@@ -38,30 +46,14 @@ export const test = base.extend<Fixtures>({
     await use(contexto);
     await contexto.dispose();
   },
+
+  menu: async ({ page }, use) => { await use(new Menu(page)); },
+  login: async ({ page }, use) => { await use(new PaginaLogin(page)); },
+  catalogo: async ({ page }, use) => { await use(new Catalogo(page)); },
+  produto: async ({ page }, use) => { await use(new PaginaProduto(page)); },
+  carrinho: async ({ page }, use) => { await use(new Carrinho(page)); },
+  checkout: async ({ page }, use) => { await use(new Checkout(page)); },
 });
-
-export async function entrar(page: Page, conta: Pick<Conta, 'email' | 'senha'>) {
-  await page.goto('/auth/login');
-  await page.getByTestId('email').fill(conta.email);
-  await page.getByTestId('password').fill(conta.senha);
-  await page.getByTestId('login-submit').click();
-  await expect(page.getByTestId('nav-menu')).toBeVisible();
-}
-
-/** Busca pelo nome no catálogo e abre o primeiro produto encontrado. */
-export async function abrirProduto(page: Page, nome: string) {
-  await page.goto('/');
-  await page.getByTestId('search-query').fill(nome);
-  await page.getByTestId('search-submit').click();
-  await expect(page.getByTestId('search_completed')).toBeVisible();
-  await cartaoDoProduto(page, nome).click();
-  await expect(page.getByTestId('product-name')).toHaveText(nome);
-}
-
-/** Cartão do produto na listagem, pelo nome exato (há "Pliers" e "Combination Pliers"). */
-export function cartaoDoProduto(page: Page, nome: string) {
-  return page.getByTestId(/^product-/).filter({ has: page.getByTestId('product-name').getByText(nome, { exact: true }) }).first();
-}
 
 /** Dados únicos por execução: o Toolshop é público e compartilhado. */
 export function pessoaNova() {
@@ -76,8 +68,25 @@ export function pessoaNova() {
   };
 }
 
-/** Converte "$14.15" em 14.15. */
-export const preco = (texto: string | null) => Number((texto ?? '').replace(/[^\d.]/g, ''));
+/** Cria um cliente novo pela API e devolve as credenciais. Mais rápido que cadastrar pela tela. */
+export async function cadastrarPorApi(api: APIRequestContext) {
+  const pessoa = pessoaNova();
+  const resposta = await api.post('/users/register', {
+    data: {
+      first_name: pessoa.nome,
+      last_name: pessoa.sobrenome,
+      dob: '1990-05-17',
+      phone: pessoa.telefone,
+      email: pessoa.email,
+      password: pessoa.senha,
+      address: { street: 'Rua das Ferramentas', house_number: '100', city: 'Três Pontas', state: 'MG', country: 'BR', postal_code: '37190-000' },
+    },
+  });
+  expect(resposta.ok(), `cadastro pela API: ${resposta.status()} ${await resposta.text()}`).toBeTruthy();
+  return { ...pessoa, email: pessoa.email, senha: pessoa.senha };
+}
+
+export { preco } from './paginas';
 
 /** Arquivos de apoio versionados no repo. */
 export const arquivo = (nome: string) => join(__dirname, 'arquivos', nome);

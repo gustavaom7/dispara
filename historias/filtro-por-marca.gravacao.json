@@ -1,0 +1,66 @@
+{
+  "modelo": "claude-sonnet-5-5 (gravado)",
+  "respostas": [
+    {
+      "titulo": "Filtro por marca",
+      "slug": "filtro-por-marca",
+      "area": "catalogo",
+      "resumo": "Confere o filtro pela UI contra a lista da própria API, em vez de nomes fixos, e cobre a combinação com categoria e o caso sem resultados.",
+      "casos": [
+        {
+          "id": "CT-01",
+          "titulo": "Filtrar por uma marca",
+          "tipo": "positivo",
+          "prioridade": "alta",
+          "passos": [
+            "Abrir o catálogo",
+            "Marcar ForgeFlex Tools"
+          ],
+          "resultadoEsperado": "Só aparecem produtos que a API lista para essa marca",
+          "automatizado": true
+        },
+        {
+          "id": "CT-02",
+          "titulo": "Combinar marca e categoria",
+          "tipo": "positivo",
+          "prioridade": "media",
+          "passos": [
+            "Marcar ForgeFlex Tools",
+            "Marcar a categoria Hammer"
+          ],
+          "resultadoEsperado": "Só martelos da marca",
+          "automatizado": true
+        },
+        {
+          "id": "CT-03",
+          "titulo": "Busca sem relação com a marca",
+          "tipo": "negativo",
+          "prioridade": "media",
+          "passos": [
+            "Buscar um termo que não existe",
+            "Marcar ForgeFlex Tools"
+          ],
+          "resultadoEsperado": "Aviso de nenhum resultado",
+          "automatizado": true
+        },
+        {
+          "id": "CT-04",
+          "titulo": "Marcar e desmarcar a mesma marca",
+          "tipo": "borda",
+          "prioridade": "baixa",
+          "passos": [
+            "Marcar ForgeFlex Tools",
+            "Desmarcar"
+          ],
+          "resultadoEsperado": "A lista volta a ter todas as marcas",
+          "automatizado": false
+        }
+      ],
+      "codigo": "import { test, expect } from '../../fixtures';\n\ntype Marca = { id: string; name: string };\ntype Pagina = { data: { name: string }[]; last_page: number };\n\ntest.describe('Filtro por marca', () => {\n  test('mostra só produtos da ForgeFlex Tools', async ({ api, catalogo }) => {\n    // A API é a fonte da verdade: lista todos os produtos da marca, página por página.\n    const resposta = await (await api.get('/brands')).json();\n    const marcas: Marca[] = Array.isArray(resposta) ? resposta : resposta.data;\n    const forge = marcas.find(m => m.name === 'ForgeFlex Tools');\n    expect(forge, 'marca ForgeFlex Tools na API').toBeTruthy();\n    const daMarca: string[] = [];\n    for (let pagina = 1; ; pagina++) {\n      const corpo: Pagina = await (await api.get(`/products?by_brand=${forge!.id}&page=${pagina}`)).json();\n      daMarca.push(...corpo.data.map(p => p.name));\n      if (pagina >= corpo.last_page) break;\n    }\n\n    await catalogo.abrir();\n    await catalogo.filtrarPorMarca('ForgeFlex Tools');\n\n    const nomes = await catalogo.listaDeNomes();\n    expect(nomes.length).toBeGreaterThan(0);\n    expect(daMarca).toEqual(expect.arrayContaining(nomes));\n  });\n\n  test('combina marca e categoria @regressao', async ({ catalogo }) => {\n    await catalogo.abrir();\n    await catalogo.filtrarPorMarca('ForgeFlex Tools');\n    await catalogo.filtrarPorCategoria('Hammer');\n\n    for (const nome of await catalogo.listaDeNomes()) expect(nome).toMatch(/hammer/i);\n  });\n\n  test('avisa quando busca e marca não têm nada em comum', async ({ catalogo }) => {\n    await catalogo.abrir();\n    await catalogo.buscar('produtoquenaoexiste');\n    await catalogo.filtrarPorMarca('ForgeFlex Tools');\n\n    await expect(catalogo.semResultados).toBeVisible();\n  });\n});\n",
+      "suposicoes": [
+        "A API aceita by_brand com o id da marca, como diz a documentação Swagger do Toolshop.",
+        "Se ForgeFlex Tools não tiver martelos, o segundo teste passa com a lista vazia; vale revisar se isso deve virar falha."
+      ]
+    }
+  ]
+}

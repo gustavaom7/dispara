@@ -1,22 +1,20 @@
-import { test, expect, preco } from '../../fixtures';
+import { test, expect } from '../../fixtures';
 
 test.describe('Filtro e ordenação', () => {
-  test('filtra pela categoria Hammer', async ({ page }) => {
-    await page.goto('/');
-    await page.getByRole('checkbox', { name: 'Hammer', exact: true }).check();
+  test('filtra pela categoria Hammer', async ({ catalogo }) => {
+    await catalogo.abrir();
+    await catalogo.filtrarPorCategoria('Hammer');
 
-    await expect(page.getByTestId('filter_completed')).toBeVisible();
-    const nomes = await page.getByTestId('product-name').allTextContents();
+    const nomes = await catalogo.listaDeNomes();
     expect(nomes.length).toBeGreaterThan(0);
     for (const nome of nomes) expect(nome).toMatch(/hammer/i);
   });
 
-  test('ordena por preço do menor para o maior', async ({ page }) => {
-    await page.goto('/');
-    await page.getByTestId('sort').selectOption('price,asc');
+  test('ordena por preço do menor para o maior', async ({ catalogo }) => {
+    await catalogo.abrir();
+    await catalogo.ordenar('price,asc');
 
-    await expect(page.getByTestId('sorting_completed')).toBeVisible();
-    const precos = (await page.getByTestId('product-price').allTextContents()).map(preco);
+    const precos = await catalogo.listaDePrecos();
     expect(precos.length).toBeGreaterThan(1);
     expect(precos).toEqual([...precos].sort((a, b) => a - b));
   });

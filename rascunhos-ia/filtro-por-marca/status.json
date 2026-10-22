@@ -1,0 +1,80 @@
+{
+  "id": "filtro-por-marca",
+  "titulo": "Filtro por marca",
+  "area": "catalogo",
+  "resumo": "Confere o filtro pela UI contra a lista da própria API, em vez de nomes fixos, e cobre a combinação com categoria e o caso sem resultados.",
+  "historia": "historias/filtro-por-marca.md",
+  "modo": "simulado",
+  "modelo": "claude-sonnet-5-5 (gravado)",
+  "geradoEm": "2026-10-22T18:17:37.013Z",
+  "status": "pronto",
+  "tentativas": [
+    {
+      "numero": 1,
+      "erros": []
+    }
+  ],
+  "tokens": {
+    "entrada": 0,
+    "saida": 0
+  },
+  "casos": [
+    {
+      "id": "CT-01",
+      "titulo": "Filtrar por uma marca",
+      "tipo": "positivo",
+      "prioridade": "alta",
+      "passos": [
+        "Abrir o catálogo",
+        "Marcar ForgeFlex Tools"
+      ],
+      "resultadoEsperado": "Só aparecem produtos que a API lista para essa marca",
+      "automatizado": true
+    },
+    {
+      "id": "CT-02",
+      "titulo": "Combinar marca e categoria",
+      "tipo": "positivo",
+      "prioridade": "media",
+      "passos": [
+        "Marcar ForgeFlex Tools",
+        "Marcar a categoria Hammer"
+      ],
+      "resultadoEsperado": "Só martelos da marca",
+      "automatizado": true
+    },
+    {
+      "id": "CT-03",
+      "titulo": "Busca sem relação com a marca",
+      "tipo": "negativo",
+      "prioridade": "media",
+      "passos": [
+        "Buscar um termo que não existe",
+        "Marcar ForgeFlex Tools"
+      ],
+      "resultadoEsperado": "Aviso de nenhum resultado",
+      "automatizado": true
+    },
+    {
+      "id": "CT-04",
+      "titulo": "Marcar e desmarcar a mesma marca",
+      "tipo": "borda",
+      "prioridade": "baixa",
+      "passos": [
+        "Marcar ForgeFlex Tools",
+        "Desmarcar"
+      ],
+      "resultadoEsperado": "A lista volta a ter todas as marcas",
+      "automatizado": false
+    }
+  ],
+  "suposicoes": [
+    "A API aceita by_brand com o id da marca, como diz a documentação Swagger do Toolshop.",
+    "Se ForgeFlex Tools não tiver martelos, o segundo teste passa com a lista vazia; vale revisar se isso deve virar falha."
+  ],
+  "aprovado": {
+    "por": "Gustavo",
+    "em": "2026-10-22T18:17:39.157Z",
+    "destino": "exemplo-autor/catalogo/filtro-por-marca.spec.ts"
+  }
+}

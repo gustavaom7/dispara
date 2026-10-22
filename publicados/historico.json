@@ -1,15 +1,18 @@
 [
   {
-    "quando": "2026-10-22T17:11:40.431Z",
+    "quando": "2026-10-22T18:24:40.142Z",
     "autor": "Gustavo",
     "adicionados": [
+      "paginas-principais",
       "pedidos",
       "autenticacao",
+      "carrinho",
       "produtos",
       "adicionar-produto",
       "busca",
       "detalhe-produto",
       "filtro-e-ordenacao",
+      "filtro-por-marca",
       "compra-como-convidado",
       "cadastro",
       "login"

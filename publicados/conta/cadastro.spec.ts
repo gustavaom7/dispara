@@ -1,6 +1,6 @@
-import { test, expect, entrar, pessoaNova } from '../../fixtures';
+import { test, expect, pessoaNova } from '../../fixtures';
 
-test('cadastra cliente novo e entra com ele @destrutivo', async ({ page }) => {
+test('cadastra cliente novo e entra com ele @destrutivo', async ({ page, login }) => {
   const pessoa = pessoaNova();
   await page.goto('/auth/register');
 
@@ -19,6 +19,6 @@ test('cadastra cliente novo e entra com ele @destrutivo', async ({ page }) => {
   await page.getByTestId('register-submit').click();
 
   await expect(page).toHaveURL(/\/auth\/login/);
-  await entrar(page, { email: pessoa.email, senha: pessoa.senha });
-  await expect(page.getByTestId('page-title')).toHaveText('My account');
+  await login.entrarCom({ email: pessoa.email, senha: pessoa.senha });
+  await expect(login.titulo).toHaveText('My account');
 });

@@ -1,29 +1,29 @@
-import { test, expect, entrar, pessoaNova } from '../../fixtures';
+import { test, expect, pessoaNova } from '../../fixtures';
 
 test.describe('Login', () => {
-  test('entra com credenciais válidas @smoke', async ({ page, conta }) => {
-    await entrar(page, conta);
-    await expect(page.getByTestId('nav-sign-in')).toBeHidden();
+  test('entra com credenciais válidas @smoke', async ({ login, menu, conta }) => {
+    await login.entrarCom(conta);
+    await expect(menu.entrar).toBeHidden();
     const titulo = conta.avatar.id === 'admin' ? 'Sales over the years' : 'My account';
-    await expect(page.getByTestId('page-title')).toHaveText(titulo);
+    await expect(login.titulo).toHaveText(titulo);
   });
 
-  test('recusa e-mail que não existe', async ({ page }) => {
+  test('recusa e-mail que não existe', async ({ page, login }) => {
     // E-mail inexistente de propósito: errar a senha de uma conta pública
     // conta como tentativa falha e pode bloquear a conta para todo mundo.
     const pessoa = pessoaNova();
-    await page.goto('/auth/login');
-    await page.getByTestId('email').fill(pessoa.email);
-    await page.getByTestId('password').fill(pessoa.senha);
-    await page.getByTestId('login-submit').click();
-    await expect(page.getByTestId('login-error')).toContainText('Invalid email or password');
+    await login.abrir();
+    await login.email.fill(pessoa.email);
+    await login.senha.fill(pessoa.senha);
+    await login.enviar.click();
+    await expect(login.erro).toContainText('Invalid email or password');
     await expect(page).toHaveURL(/\/auth\/login/);
   });
 
-  test('exige e-mail e senha antes de enviar', async ({ page }) => {
-    await page.goto('/auth/login');
-    await page.getByTestId('login-submit').click();
-    await expect(page.getByTestId('email-error')).toBeVisible();
-    await expect(page.getByTestId('password-error')).toBeVisible();
+  test('exige e-mail e senha antes de enviar', async ({ login }) => {
+    await login.abrir();
+    await login.enviar.click();
+    await expect(login.erroEmail).toBeVisible();
+    await expect(login.erroSenha).toBeVisible();
   });
 });

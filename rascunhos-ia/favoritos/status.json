@@ -1,0 +1,104 @@
+{
+  "id": "favoritos",
+  "titulo": "Favoritos",
+  "area": "conta",
+  "resumo": "Cobre adicionar aos favoritos, o bloqueio para visitantes e a duplicidade. Cada teste cria um cliente novo pela API, porque os favoritos das contas públicas mudam o tempo todo.",
+  "historia": "historias/favoritos.md",
+  "modo": "simulado",
+  "modelo": "claude-sonnet-5-5 (gravado)",
+  "geradoEm": "2026-10-22T18:24:48.125Z",
+  "status": "corrigido",
+  "tentativas": [
+    {
+      "numero": 1,
+      "erros": [
+        {
+          "tipo": "estrutura",
+          "linha": 11,
+          "mensagem": "Sem waitForTimeout: espere por um estado com expect."
+        },
+        {
+          "tipo": "seletor",
+          "linha": 10,
+          "mensagem": "data-test \"add-to-favourites\" não existe no Toolshop (sprint5). Escolha um da lista <seletores>."
+        }
+      ]
+    },
+    {
+      "numero": 2,
+      "erros": []
+    }
+  ],
+  "tokens": {
+    "entrada": 0,
+    "saida": 0
+  },
+  "casos": [
+    {
+      "id": "CT-01",
+      "titulo": "Cliente logado adiciona produto aos favoritos",
+      "tipo": "positivo",
+      "prioridade": "alta",
+      "preCondicoes": [
+        "Cliente novo, logado"
+      ],
+      "passos": [
+        "Abrir o produto Combination Pliers",
+        "Clicar em Add to favourites",
+        "Abrir My favorites pelo menu da conta"
+      ],
+      "resultadoEsperado": "Confirmação de produto adicionado e o produto aparece uma vez na lista de favoritos",
+      "automatizado": true
+    },
+    {
+      "id": "CT-02",
+      "titulo": "Visitante sem login tenta favoritar",
+      "tipo": "negativo",
+      "prioridade": "media",
+      "preCondicoes": [
+        "Sem login"
+      ],
+      "passos": [
+        "Abrir o produto",
+        "Clicar em Add to favourites"
+      ],
+      "resultadoEsperado": "Aviso de que não é possível favoritar sem login",
+      "automatizado": true
+    },
+    {
+      "id": "CT-03",
+      "titulo": "Favoritar o mesmo produto duas vezes",
+      "tipo": "borda",
+      "prioridade": "media",
+      "preCondicoes": [
+        "Cliente novo, logado"
+      ],
+      "passos": [
+        "Favoritar o produto",
+        "Favoritar o mesmo produto de novo"
+      ],
+      "resultadoEsperado": "Aviso de que o produto já está nos favoritos, sem duplicar",
+      "automatizado": true
+    },
+    {
+      "id": "CT-04",
+      "titulo": "Remover produto da lista de favoritos",
+      "tipo": "positivo",
+      "prioridade": "baixa",
+      "preCondicoes": [
+        "Cliente com um favorito"
+      ],
+      "passos": [
+        "Abrir My favorites",
+        "Clicar no botão de remover do produto"
+      ],
+      "resultadoEsperado": "Produto sai da lista",
+      "automatizado": false
+    }
+  ],
+  "suposicoes": [
+    "O botão de remover favorito fica para um teste manual nesta versão: a história não fala de remoção, mas é o caminho de volta natural.",
+    "\"Combination Pliers\" segue em estoque no ambiente estável."
+  ],
+  "aprovado": null
+}

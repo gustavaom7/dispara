@@ -12,7 +12,10 @@
     "mapear": "node scripts/mapear-toolshop.mjs",
     "checar": "node scripts/checar-seletores.mjs",
     "tipos": "tsc -p tsconfig.json",
-    "test:scripts": "node --test scripts/lib/*.test.mjs"
+    "test:scripts": "node --test scripts/lib/*.test.mjs scripts/lib/ia/*.test.mjs",
+    "gerar": "node scripts/gerar-testes.mjs",
+    "aprovar": "node scripts/aprovar.mjs",
+    "resumo": "node scripts/resumo-ci.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.52.0",
@@ -21,5 +24,9 @@
   },
   "engines": {
     "node": ">=20.12"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "0.130.0",
+    "@axe-core/playwright": "^4.10.1"
   }
 }

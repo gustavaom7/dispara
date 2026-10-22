@@ -84,6 +84,10 @@ jobs:
             --ambiente ${{ matrix.ambiente }} --avatar admin --origem ci --quem "${{ github.actor }}" \
             --url-relatorio "$PAGES_URL/relatorios/${{ matrix.ambiente }}/admin/"
 
+      - name: Resumo na página da execução
+        if: ${{ !cancelled() }}
+        run: npm run -s resumo -- parcial/${{ matrix.ambiente }}.json --relatorio "$PAGES_URL/relatorios/${{ matrix.ambiente }}/cliente/" >> "$GITHUB_STEP_SUMMARY"
+
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:

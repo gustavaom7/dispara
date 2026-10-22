@@ -21,12 +21,12 @@ if (!mapa) {
   process.exit(1);
 }
 
-const pasta = resolve(RAIZ, a.pasta ?? 'exemplo-autor');
-const usados = seletoresDosTestes(pasta);
+const pastas = [...(a.pasta ? [a.pasta] : ['exemplo-autor']), 'paginas'].map(p => resolve(RAIZ, p));
+const usados = pastas.flatMap(p => seletoresDosTestes(p).map(u => ({ ...u, arquivo: `${p.replace(RAIZ + '/', '')}/${u.arquivo}` })));
 const faltando = usados.filter(u => !existe(u, mapa));
 const unicos = new Set(usados.map(u => u.id));
 
-console.log(`${usados.length} usos de ${unicos.size} seletores em ${pasta.replace(RAIZ + '/', '')}, conferidos contra ${mapa.sprint} @ ${mapa.commit.slice(0, 7)}`);
+console.log(`${usados.length} usos de ${unicos.size} seletores em ${pastas.map(p => p.replace(RAIZ + '/', '')).join(' e ')}, conferidos contra ${mapa.sprint} @ ${mapa.commit.slice(0, 7)}`);
 if (!faltando.length) {
   console.log('✔ Todos existem no código do Toolshop.');
   process.exit(0);

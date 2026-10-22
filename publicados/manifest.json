@@ -1,6 +1,40 @@
 {
-  "geradoEm": "2026-10-22T17:11:40.431Z",
+  "geradoEm": "2026-10-22T18:24:40.142Z",
   "testes": [
+    {
+      "id": "paginas-principais",
+      "titulo": "Acessibilidade",
+      "arquivo": "acessibilidade/paginas-principais.spec.ts",
+      "area": "acessibilidade",
+      "tags": [
+        "a11y"
+      ],
+      "casos": [
+        {
+          "titulo": "Catálogo sem violações críticas",
+          "tags": [
+            "a11y"
+          ]
+        },
+        {
+          "titulo": "Login sem violações críticas",
+          "tags": [
+            "a11y"
+          ]
+        },
+        {
+          "titulo": "Contato sem violações críticas",
+          "tags": [
+            "a11y"
+          ]
+        }
+      ],
+      "qtdTestes": 3,
+      "exigeAvatar": null,
+      "hash": "f5180c57b9e91e2b",
+      "atualizadoEm": "2026-10-22T18:24:40.134Z",
+      "avisos": []
+    },
     {
       "id": "pedidos",
       "titulo": "Admin vê a lista de pedidos",
@@ -19,17 +53,17 @@
       ],
       "qtdTestes": 1,
       "exigeAvatar": "admin",
-      "hash": "a06b55d720cae756",
-      "atualizadoEm": "2026-10-22T17:11:40.425Z",
+      "hash": "51cd0b17840cf7a9",
+      "atualizadoEm": "2026-10-22T18:24:40.134Z",
       "avisos": [
         {
           "regra": "caminho pessoal",
-          "linha": 16,
+          "linha": 15,
           "dica": "use arquivo(\"nome\") e coloque o arquivo em /arquivos"
         },
         {
           "regra": "e-mail real",
-          "linha": 17,
+          "linha": 16,
           "dica": "use conta.email"
         }
       ]
@@ -61,7 +95,41 @@
       "qtdTestes": 3,
       "exigeAvatar": null,
       "hash": "6b6850f1e838ce28",
-      "atualizadoEm": "2026-10-22T17:11:40.428Z",
+      "atualizadoEm": "2026-10-22T18:24:40.138Z",
+      "avisos": []
+    },
+    {
+      "id": "carrinho",
+      "titulo": "API do carrinho",
+      "arquivo": "api/carrinho.spec.ts",
+      "area": "api",
+      "tags": [
+        "smoke"
+      ],
+      "casos": [
+        {
+          "titulo": "Cria carrinho, adiciona item e lê o conteúdo",
+          "tags": [
+            "smoke"
+          ]
+        },
+        {
+          "titulo": "Recusa quantidade acima de 99",
+          "tags": []
+        },
+        {
+          "titulo": "Recusa produto que não existe",
+          "tags": []
+        },
+        {
+          "titulo": "Retorna 404 para carrinho que não existe",
+          "tags": []
+        }
+      ],
+      "qtdTestes": 4,
+      "exigeAvatar": null,
+      "hash": "ad43997482d6540a",
+      "atualizadoEm": "2026-10-22T18:24:40.140Z",
       "avisos": []
     },
     {
@@ -95,7 +163,7 @@
       "qtdTestes": 4,
       "exigeAvatar": null,
       "hash": "d3b130c2e6c6fea0",
-      "atualizadoEm": "2026-10-22T17:11:40.428Z",
+      "atualizadoEm": "2026-10-22T18:24:40.140Z",
       "avisos": []
     },
     {
@@ -116,8 +184,8 @@
       ],
       "qtdTestes": 1,
       "exigeAvatar": null,
-      "hash": "0057c31cc1633cfd",
-      "atualizadoEm": "2026-10-22T17:11:40.428Z",
+      "hash": "f1d00f3045166f7d",
+      "atualizadoEm": "2026-10-22T18:24:40.140Z",
       "avisos": []
     },
     {
@@ -142,8 +210,8 @@
       ],
       "qtdTestes": 2,
       "exigeAvatar": null,
-      "hash": "b2977999931faa3e",
-      "atualizadoEm": "2026-10-22T17:11:40.429Z",
+      "hash": "b98678227159b5a6",
+      "atualizadoEm": "2026-10-22T18:24:40.140Z",
       "avisos": []
     },
     {
@@ -160,8 +228,8 @@
       ],
       "qtdTestes": 1,
       "exigeAvatar": null,
-      "hash": "506314b67a7795be",
-      "atualizadoEm": "2026-10-22T17:11:40.429Z",
+      "hash": "fe0cec7d30aada69",
+      "atualizadoEm": "2026-10-22T18:24:40.141Z",
       "avisos": []
     },
     {
@@ -182,8 +250,38 @@
       ],
       "qtdTestes": 2,
       "exigeAvatar": null,
-      "hash": "741ada0d302ea185",
-      "atualizadoEm": "2026-10-22T17:11:40.429Z",
+      "hash": "d9cc8237819f8e13",
+      "atualizadoEm": "2026-10-22T18:24:40.141Z",
+      "avisos": []
+    },
+    {
+      "id": "filtro-por-marca",
+      "titulo": "Filtro por marca",
+      "arquivo": "catalogo/filtro-por-marca.spec.ts",
+      "area": "catalogo",
+      "tags": [
+        "regressao"
+      ],
+      "casos": [
+        {
+          "titulo": "Mostra só produtos da ForgeFlex Tools",
+          "tags": []
+        },
+        {
+          "titulo": "Combina marca e categoria",
+          "tags": [
+            "regressao"
+          ]
+        },
+        {
+          "titulo": "Avisa quando busca e marca não têm nada em comum",
+          "tags": []
+        }
+      ],
+      "qtdTestes": 3,
+      "exigeAvatar": null,
+      "hash": "709887babae307b6",
+      "atualizadoEm": "2026-10-22T18:24:40.141Z",
       "avisos": []
     },
     {
@@ -204,8 +302,8 @@
       ],
       "qtdTestes": 1,
       "exigeAvatar": null,
-      "hash": "8a6b33f897b9f713",
-      "atualizadoEm": "2026-10-22T17:11:40.429Z",
+      "hash": "67445898d1ba5d22",
+      "atualizadoEm": "2026-10-22T18:24:40.141Z",
       "avisos": []
     },
     {
@@ -226,8 +324,8 @@
       ],
       "qtdTestes": 1,
       "exigeAvatar": null,
-      "hash": "b0e3520bcf6652ea",
-      "atualizadoEm": "2026-10-22T17:11:40.429Z",
+      "hash": "39ac4a0716bc32be",
+      "atualizadoEm": "2026-10-22T18:24:40.141Z",
       "avisos": []
     },
     {
@@ -256,8 +354,8 @@
       ],
       "qtdTestes": 3,
       "exigeAvatar": null,
-      "hash": "bbcd7b2e4018362f",
-      "atualizadoEm": "2026-10-22T17:11:40.431Z",
+      "hash": "66ae379c65484a3e",
+      "atualizadoEm": "2026-10-22T18:24:40.141Z",
       "avisos": []
     }
   ]

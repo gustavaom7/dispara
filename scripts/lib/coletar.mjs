@@ -24,16 +24,21 @@ export function coletar(relatorio, contexto = {}) {
   const porArquivo = new Map();
   for (const suite of relatorio.suites ?? []) {
     for (const { arquivo, spec } of specsDe(suite)) {
-      const chave = arquivo.split('\\').join('/');
-      if (!porArquivo.has(chave)) porArquivo.set(chave, []);
-      for (const t of spec.tests ?? []) porArquivo.get(chave).push({ titulo: spec.title, ...t });
+      for (const t of spec.tests ?? []) {
+        // Um mesmo arquivo pode rodar em mais de um projeto (desktop e celular): uma execução para cada.
+        const chave = `${arquivo.split('\\').join('/')}::${t.projectName ?? ''}`;
+        if (!porArquivo.has(chave)) porArquivo.set(chave, []);
+        porArquivo.get(chave).push({ titulo: spec.title, ...t });
+      }
     }
   }
 
   const quando = contexto.agora ?? relatorio.stats?.startTime ?? new Date().toISOString();
   const ambiente = contexto.ambiente ?? relatorio.config?.metadata?.ambiente ?? 'desconhecido';
   const execucoes = [];
-  for (const [arquivo, testes] of porArquivo) {
+  for (const [chave, testes] of porArquivo) {
+    const [arquivo, projeto] = chave.split('::');
+    const celular = projeto === 'celular';
     const casos = { passou: 0, falhou: 0, pulado: 0, instavel: 0 };
     let erro = null;
     let duracaoMs = 0;
@@ -50,7 +55,7 @@ export function coletar(relatorio, contexto = {}) {
     }
     const status = casos.falhou ? 'falhou' : casos.passou ? 'passou' : 'pulado';
     execucoes.push({
-      id: `${ambiente}-${idDe(arquivo)}-${Date.parse(quando) || Date.now()}`,
+      id: `${ambiente}-${idDe(arquivo)}${celular ? '-celular' : ''}-${Date.parse(quando) || Date.now()}`,
       teste: idDe(arquivo),
       arquivo,
       ambiente,
@@ -63,10 +68,11 @@ export function coletar(relatorio, contexto = {}) {
       quando,
       ...(erro ? { erro } : {}),
       ...(casos.instavel ? { instavel: true } : {}),
+      ...(celular ? { dispositivo: 'celular' } : {}),
       ...(contexto.relatorio ? { relatorio: contexto.relatorio } : {}),
     });
   }
-  return execucoes.sort((a, b) => a.teste.localeCompare(b.teste));
+  return execucoes.sort((a, b) => a.teste.localeCompare(b.teste) || (a.dispositivo ?? '').localeCompare(b.dispositivo ?? ''));
 }
 
 /** Junta execuções novas ao histórico, mais recentes primeiro, sem duplicar ids. */

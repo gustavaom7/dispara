@@ -1,0 +1,74 @@
+{
+  "modelo": "claude-sonnet-5-5 (gravado)",
+  "respostas": [
+    {
+      "titulo": "Formulário de contato",
+      "slug": "contato",
+      "area": "conta",
+      "resumo": "Cobre o envio válido, os campos obrigatórios e o limite de 50 caracteres da mensagem, testando o lado que falha (49).",
+      "casos": [
+        {
+          "id": "CT-01",
+          "titulo": "Enviar mensagem com todos os campos válidos",
+          "tipo": "positivo",
+          "prioridade": "alta",
+          "preCondicoes": [
+            "Visitante sem login"
+          ],
+          "passos": [
+            "Abrir Contact",
+            "Preencher nome, sobrenome e e-mail",
+            "Escolher o assunto Warranty",
+            "Escrever mensagem com mais de 50 caracteres",
+            "Enviar"
+          ],
+          "resultadoEsperado": "Confirmação \"Thanks for your message! We will contact you shortly.\"",
+          "automatizado": true
+        },
+        {
+          "id": "CT-02",
+          "titulo": "Enviar o formulário vazio",
+          "tipo": "negativo",
+          "prioridade": "alta",
+          "passos": [
+            "Abrir Contact",
+            "Enviar sem preencher nada"
+          ],
+          "resultadoEsperado": "Erro em nome, sobrenome, assunto e mensagem",
+          "automatizado": true
+        },
+        {
+          "id": "CT-03",
+          "titulo": "Mensagem com 49 caracteres",
+          "tipo": "borda",
+          "prioridade": "media",
+          "passos": [
+            "Preencher todos os campos",
+            "Escrever mensagem com exatamente 49 caracteres",
+            "Enviar"
+          ],
+          "resultadoEsperado": "Erro \"Message must be minimal 50 characters\"",
+          "automatizado": true
+        },
+        {
+          "id": "CT-04",
+          "titulo": "Mensagem com exatamente 50 caracteres",
+          "tipo": "borda",
+          "prioridade": "baixa",
+          "passos": [
+            "Preencher todos os campos",
+            "Escrever mensagem com 50 caracteres",
+            "Enviar"
+          ],
+          "resultadoEsperado": "Mensagem aceita",
+          "automatizado": false
+        }
+      ],
+      "codigo": "import { test, expect, pessoaNova } from '../../fixtures';\n\ntest.describe('Formulário de contato', () => {\n  test('envia mensagem com todos os campos válidos @destrutivo', async ({ page }) => {\n    const pessoa = pessoaNova();\n    await page.goto('/contact');\n    await page.getByTestId('first-name').fill(pessoa.nome);\n    await page.getByTestId('last-name').fill(pessoa.sobrenome);\n    await page.getByTestId('email').fill(pessoa.email);\n    await page.getByTestId('subject').selectOption('warranty');\n    await page.getByTestId('message').fill('A garantia cobre o cabo do martelo que trincou com menos de seis meses de uso normal?');\n    await page.getByTestId('contact-submit').click();\n\n    await expect(page.getByRole('alert')).toContainText('Thanks for your message! We will contact you shortly.');\n  });\n\n  test('exige os campos obrigatórios', async ({ page }) => {\n    await page.goto('/contact');\n    await page.getByTestId('contact-submit').click();\n\n    await expect(page.getByTestId('first-name-error')).toBeVisible();\n    await expect(page.getByTestId('last-name-error')).toBeVisible();\n    await expect(page.getByTestId('subject-error')).toBeVisible();\n    await expect(page.getByTestId('message-error')).toBeVisible();\n  });\n\n  test('recusa mensagem com 49 caracteres', async ({ page }) => {\n    const pessoa = pessoaNova();\n    await page.goto('/contact');\n    await page.getByTestId('first-name').fill(pessoa.nome);\n    await page.getByTestId('last-name').fill(pessoa.sobrenome);\n    await page.getByTestId('email').fill(pessoa.email);\n    await page.getByTestId('subject').selectOption('return');\n    await page.getByTestId('message').fill('x'.repeat(49));\n    await page.getByTestId('contact-submit').click();\n\n    await expect(page.getByTestId('message-error')).toContainText('Message must be minimal 50 characters');\n  });\n});\n",
+      "suposicoes": [
+        "O e-mail é exigido mesmo sem login, como diz a história; o formulário só valida o formato dele.",
+        "O limite exato (50 caracteres aceitos) ficou como caso manual para não enviar duas mensagens reais por execução."
+      ]
+    }
+  ]
+}

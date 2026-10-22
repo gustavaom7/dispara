@@ -31,5 +31,9 @@ export default defineConfig({
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
   },
-  projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
+  projects: [
+    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
+    // Celular: só os @smoke de interface, no mesmo Chromium (sem instalar outro navegador no CI)
+    { name: 'celular', use: { ...devices['Pixel 7'] }, grep: /@smoke/, testIgnore: ['**/api/**'] },
+  ],
 });

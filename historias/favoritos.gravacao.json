@@ -1,0 +1,153 @@
+{
+  "modelo": "claude-sonnet-5-5 (gravado)",
+  "respostas": [
+    {
+      "titulo": "Favoritos",
+      "slug": "favoritos",
+      "area": "conta",
+      "resumo": "Cobre adicionar aos favoritos, o bloqueio para visitantes e a duplicidade. Cada teste cria um cliente novo pela API, porque os favoritos das contas públicas mudam o tempo todo.",
+      "casos": [
+        {
+          "id": "CT-01",
+          "titulo": "Cliente logado adiciona produto aos favoritos",
+          "tipo": "positivo",
+          "prioridade": "alta",
+          "preCondicoes": [
+            "Cliente novo, logado"
+          ],
+          "passos": [
+            "Abrir o produto Combination Pliers",
+            "Clicar em Add to favourites",
+            "Abrir My favorites pelo menu da conta"
+          ],
+          "resultadoEsperado": "Confirmação de produto adicionado e o produto aparece uma vez na lista de favoritos",
+          "automatizado": true
+        },
+        {
+          "id": "CT-02",
+          "titulo": "Visitante sem login tenta favoritar",
+          "tipo": "negativo",
+          "prioridade": "media",
+          "preCondicoes": [
+            "Sem login"
+          ],
+          "passos": [
+            "Abrir o produto",
+            "Clicar em Add to favourites"
+          ],
+          "resultadoEsperado": "Aviso de que não é possível favoritar sem login",
+          "automatizado": true
+        },
+        {
+          "id": "CT-03",
+          "titulo": "Favoritar o mesmo produto duas vezes",
+          "tipo": "borda",
+          "prioridade": "media",
+          "preCondicoes": [
+            "Cliente novo, logado"
+          ],
+          "passos": [
+            "Favoritar o produto",
+            "Favoritar o mesmo produto de novo"
+          ],
+          "resultadoEsperado": "Aviso de que o produto já está nos favoritos, sem duplicar",
+          "automatizado": true
+        },
+        {
+          "id": "CT-04",
+          "titulo": "Remover produto da lista de favoritos",
+          "tipo": "positivo",
+          "prioridade": "baixa",
+          "preCondicoes": [
+            "Cliente com um favorito"
+          ],
+          "passos": [
+            "Abrir My favorites",
+            "Clicar no botão de remover do produto"
+          ],
+          "resultadoEsperado": "Produto sai da lista",
+          "automatizado": false
+        }
+      ],
+      "codigo": "import { test, expect, cadastrarPorApi } from '../../fixtures';\n\n// Cada teste cria o próprio cliente: a lista de favoritos das contas públicas muda a toda hora.\ntest.describe('Favoritos', () => {\n  test('cliente logado adiciona produto aos favoritos @destrutivo', async ({ page, api, login, catalogo, produto, menu }) => {\n    const cliente = await cadastrarPorApi(api);\n    await login.entrarCom(cliente);\n    await catalogo.abrirProduto('Combination Pliers');\n\n    await page.getByTestId('add-to-favourites').click();\n    await page.waitForTimeout(1000);\n\n    await menu.irPara('nav-my-favorites');\n    await expect(page.getByTestId('page-title')).toHaveText('Favorites');\n    await expect(page.getByTestId(/^favorite-/)).toHaveCount(1);\n    await expect(page.getByTestId('product-name')).toHaveText('Combination Pliers');\n  });\n\n  test('visitante sem login não consegue favoritar', async ({ catalogo, produto }) => {\n    await catalogo.abrirProduto('Combination Pliers');\n    await produto.favoritar();\n    await expect(produto.aviso('Unauthorized, can not add product to your favorite list.')).toBeVisible();\n  });\n\n  test('não duplica produto que já está nos favoritos @destrutivo', async ({ api, login, catalogo, produto }) => {\n    const cliente = await cadastrarPorApi(api);\n    await login.entrarCom(cliente);\n    await catalogo.abrirProduto('Combination Pliers');\n\n    await produto.favoritar();\n    await expect(produto.aviso('Product added to your favorites list.')).toBeVisible();\n    await produto.favoritar();\n    await expect(produto.aviso('Product already in your favorites list.')).toBeVisible();\n  });\n});\n",
+      "suposicoes": [
+        "O botão de remover favorito fica para um teste manual nesta versão: a história não fala de remoção, mas é o caminho de volta natural.",
+        "\"Combination Pliers\" segue em estoque no ambiente estável."
+      ]
+    },
+    {
+      "titulo": "Favoritos",
+      "slug": "favoritos",
+      "area": "conta",
+      "resumo": "Cobre adicionar aos favoritos, o bloqueio para visitantes e a duplicidade. Cada teste cria um cliente novo pela API, porque os favoritos das contas públicas mudam o tempo todo.",
+      "casos": [
+        {
+          "id": "CT-01",
+          "titulo": "Cliente logado adiciona produto aos favoritos",
+          "tipo": "positivo",
+          "prioridade": "alta",
+          "preCondicoes": [
+            "Cliente novo, logado"
+          ],
+          "passos": [
+            "Abrir o produto Combination Pliers",
+            "Clicar em Add to favourites",
+            "Abrir My favorites pelo menu da conta"
+          ],
+          "resultadoEsperado": "Confirmação de produto adicionado e o produto aparece uma vez na lista de favoritos",
+          "automatizado": true
+        },
+        {
+          "id": "CT-02",
+          "titulo": "Visitante sem login tenta favoritar",
+          "tipo": "negativo",
+          "prioridade": "media",
+          "preCondicoes": [
+            "Sem login"
+          ],
+          "passos": [
+            "Abrir o produto",
+            "Clicar em Add to favourites"
+          ],
+          "resultadoEsperado": "Aviso de que não é possível favoritar sem login",
+          "automatizado": true
+        },
+        {
+          "id": "CT-03",
+          "titulo": "Favoritar o mesmo produto duas vezes",
+          "tipo": "borda",
+          "prioridade": "media",
+          "preCondicoes": [
+            "Cliente novo, logado"
+          ],
+          "passos": [
+            "Favoritar o produto",
+            "Favoritar o mesmo produto de novo"
+          ],
+          "resultadoEsperado": "Aviso de que o produto já está nos favoritos, sem duplicar",
+          "automatizado": true
+        },
+        {
+          "id": "CT-04",
+          "titulo": "Remover produto da lista de favoritos",
+          "tipo": "positivo",
+          "prioridade": "baixa",
+          "preCondicoes": [
+            "Cliente com um favorito"
+          ],
+          "passos": [
+            "Abrir My favorites",
+            "Clicar no botão de remover do produto"
+          ],
+          "resultadoEsperado": "Produto sai da lista",
+          "automatizado": false
+        }
+      ],
+      "codigo": "import { test, expect, cadastrarPorApi } from '../../fixtures';\n\n// Cada teste cria o próprio cliente: a lista de favoritos das contas públicas muda a toda hora.\ntest.describe('Favoritos', () => {\n  test('cliente logado adiciona produto aos favoritos @destrutivo', async ({ page, api, login, catalogo, produto, menu }) => {\n    const cliente = await cadastrarPorApi(api);\n    await login.entrarCom(cliente);\n    await catalogo.abrirProduto('Combination Pliers');\n\n    await produto.favoritar();\n    await expect(produto.aviso('Product added to your favorites list.')).toBeVisible();\n\n    await menu.irPara('nav-my-favorites');\n    await expect(page.getByTestId('page-title')).toHaveText('Favorites');\n    await expect(page.getByTestId(/^favorite-/)).toHaveCount(1);\n    await expect(page.getByTestId('product-name')).toHaveText('Combination Pliers');\n  });\n\n  test('visitante sem login não consegue favoritar', async ({ catalogo, produto }) => {\n    await catalogo.abrirProduto('Combination Pliers');\n    await produto.favoritar();\n    await expect(produto.aviso('Unauthorized, can not add product to your favorite list.')).toBeVisible();\n  });\n\n  test('não duplica produto que já está nos favoritos @destrutivo', async ({ api, login, catalogo, produto }) => {\n    const cliente = await cadastrarPorApi(api);\n    await login.entrarCom(cliente);\n    await catalogo.abrirProduto('Combination Pliers');\n\n    await produto.favoritar();\n    await expect(produto.aviso('Product added to your favorites list.')).toBeVisible();\n    await produto.favoritar();\n    await expect(produto.aviso('Product already in your favorites list.')).toBeVisible();\n  });\n});\n",
+      "suposicoes": [
+        "O botão de remover favorito fica para um teste manual nesta versão: a história não fala de remoção, mas é o caminho de volta natural.",
+        "\"Combination Pliers\" segue em estoque no ambiente estável."
+      ]
+    }
+  ]
+}

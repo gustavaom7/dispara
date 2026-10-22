@@ -51,21 +51,20 @@ export function mapearFonte(appDir) {
   };
 }
 
+/** getByTestId('x') de um trecho de código, com a linha de cada um. */
+export function seletoresDoTexto(texto, arquivo = '') {
+  const usados = [];
+  texto.split('\n').forEach((linha, i) => {
+    for (const m of linha.matchAll(/getByTestId\(\s*(['"`])([^'"`]+)\1/g)) usados.push({ id: m[2], arquivo, linha: i + 1 });
+    for (const m of linha.matchAll(/getByTestId\(\s*(\/\^?[^/]+\/[a-z]*)/g)) usados.push({ id: m[1], arquivo, linha: i + 1, regex: true });
+  });
+  return usados;
+}
+
 /** Todos os getByTestId('x') dos nossos specs, com arquivo e linha. */
 export function seletoresDosTestes(pasta) {
-  const usados = [];
-  for (const arquivo of andar(pasta, '.ts')) {
-    const linhas = readFileSync(arquivo, 'utf8').split('\n');
-    linhas.forEach((linha, i) => {
-      for (const m of linha.matchAll(/getByTestId\(\s*(['"`])([^'"`]+)\1/g)) {
-        usados.push({ id: m[2], arquivo: relative(pasta, arquivo).split(sep).join('/'), linha: i + 1 });
-      }
-      for (const m of linha.matchAll(/getByTestId\(\s*(\/\^?[^/]+\/[a-z]*)/g)) {
-        usados.push({ id: m[1], arquivo: relative(pasta, arquivo).split(sep).join('/'), linha: i + 1, regex: true });
-      }
-    });
-  }
-  return usados;
+  return andar(pasta, '.ts').flatMap(arquivo =>
+    seletoresDoTexto(readFileSync(arquivo, 'utf8'), relative(pasta, arquivo).split(sep).join('/')));
 }
 
 /** Confere um id usado contra o mapa. Regex só vale se casar com um prefixo dinâmico. */

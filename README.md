@@ -1,6 +1,6 @@
 # Dispara
 
-**Catálogo self-service de testes Playwright.** Quem escreve os testes publica; o resto do time escolhe **ambiente** e **conta de teste** num site, copia um comando e roda na própria máquina. O CI roda tudo todo dia e o site mostra os resultados.
+**Catálogo self-service de testes Playwright, com um gerador de testes por IA.** Quem escreve os testes publica; o resto do time escolhe **ambiente** e **conta de teste** num site, copia um comando e roda na própria máquina. O Claude transforma histórias de usuário em casos de teste e rascunhos Playwright, que só entram no catálogo depois de passar em checagens automáticas e numa revisão humana. O CI roda tudo todo dia e o site mostra os resultados.
 
 Os testes rodam de verdade contra o [Toolshop](https://practicesoftwaretesting.com), uma loja pública feita para prática de automação, em duas versões: a **estável** e uma **com bugs plantados de propósito**.
 
@@ -8,14 +8,18 @@ Os testes rodam de verdade contra o [Toolshop](https://practicesoftwaretesting.c
 
 | Habilidade | Onde ver |
 | --- | --- |
-| Testes E2E de UI com Playwright (19 casos em 10 arquivos) | `exemplo-autor/` |
-| Testes de API com o `request` do Playwright | `exemplo-autor/api/` |
+| **IA aplicada a QA:** história de usuário → casos positivos, negativos e de borda + rascunho Playwright, com checagens e correção automática | `scripts/gerar-testes.mjs`, `scripts/lib/ia/` |
+| Testes E2E de UI com Playwright (29 casos em 13 arquivos, mais 3 no celular) | `exemplo-autor/` |
+| Page objects para as telas do Toolshop | `paginas/` |
+| Testes de API com o `request` do Playwright (produtos, autenticação, carrinho) | `exemplo-autor/api/` |
+| Acessibilidade com axe (WCAG 2.1 AA, reprova só violação crítica) | `exemplo-autor/acessibilidade/` |
+| Smoke no celular (Pixel 7) no mesmo pipeline | `playwright.config.ts` |
 | Fixtures, dados únicos por execução e testes independentes de ordem | `fixtures.ts` |
 | Mesmo teste em vários ambientes e contas, sem mudar código | `config/`, `ambiente.ts` |
 | Seletores estáveis (`data-test`) conferidos contra o código-fonte da aplicação | `npm run checar` |
 | Segredos fora do código e limpeza automática na publicação | `scripts/lib/sanitizar.mjs` |
 | CI com matriz de ambientes, nova tentativa, relatório publicado e execução diária | `.github/workflows/testes.yml` |
-| Testes dos próprios scripts (19 testes com `node:test`) | `scripts/lib/*.test.mjs` |
+| Testes dos próprios scripts (33 testes com `node:test`, incluindo o gerador) | `scripts/lib/**/*.test.mjs` |
 | Ferramenta interna com UI (catálogo, execuções, revisão de segurança) | `site/template.html` |
 
 ## Como funciona
@@ -37,6 +41,24 @@ pasta da autora ──publicar──▶ publicados/ (Git) ──sync──▶ me
 | Coletar | `scripts/coletar-resultados.mjs` | Transforma o relatório JSON do Playwright em execuções (passou, falhou, pulado, instável) para o site |
 | Site | `scripts/gerar-site.mjs` | Página estática com catálogo, execuções, contas, primeiro acesso, publicações e revisão de segurança |
 
+## Gerador de testes com IA
+
+```bash
+npm run gerar -- --historia historias/favoritos.md            # chama a API do Claude (ANTHROPIC_API_KEY no .env)
+npm run gerar -- --historia historias/favoritos.md --simular  # usa a resposta gravada em historias/favoritos.gravacao.json
+npm run aprovar -- favoritos                                  # leva o rascunho revisado para a pasta da autora
+```
+
+Como funciona:
+
+1. **Contexto:** a história vai junto com os `data-test` reais do Toolshop (do mapa em `ref/`), as fixtures, os page objects e um teste de exemplo. A parte fixa usa cache de prompt.
+2. **Resposta estruturada:** o Claude é obrigado a chamar a ferramenta `registrar_casos_de_teste` (tool use), que exige casos positivos, negativos e de borda e o arquivo `.spec.ts` completo.
+3. **Checagens:** formato, regras de qualidade (import das fixtures, sem `waitForTimeout`, tags válidas, `getByTestId`), seletores contra o código do Toolshop, valores sensíveis e typecheck com as fixtures e os page objects.
+4. **Correção:** se algo falha, os erros exatos voltam ao Claude como `tool_result` e ele corrige uma vez. Se falhar de novo, o rascunho fica reprovado com os erros anotados.
+5. **Revisão humana:** o rascunho aparece na tela **Rascunhos de IA**. `npm run aprovar` confere tudo de novo, copia o arquivo para a pasta da autora e registra quem aprovou. Daí em diante ele é um teste como outro qualquer.
+
+Os três exemplos em `historias/` têm respostas gravadas, para tudo funcionar sem chave. O de favoritos mostra a correção: na primeira tentativa a IA inventa o seletor `add-to-favourites` e usa `waitForTimeout`, e as checagens pegam os dois.
+
 ## Rodando na sua máquina
 
 ```bash
@@ -47,6 +69,7 @@ cp .env.example .env          # já vem com as contas públicas do Toolshop
 npm run t -- busca                                   # um teste, ambiente e conta padrão
 npm run t -- login --ambiente=com-bugs --avatar=admin
 npm run t -- --todos --exceto=pedidos --headed       # tudo, vendo o navegador
+npx playwright test --project=celular                # só o smoke no Pixel 7
 npx playwright show-report                           # relatório da última execução
 ```
 
@@ -88,6 +111,9 @@ O arquivo `exemplo-autor/admin/pedidos.spec.ts` tem um caminho pessoal e um e-ma
 | `npm run mapear` | Refaz `ref/toolshop-seletores.json` a partir do código do Toolshop |
 | `npm run coletar` | Registra o resultado da última execução no histórico |
 | `npm run site -- --demo` | Gera o site (com execuções de exemplo quando ainda não há reais) |
+| `npm run gerar -- --historia <arquivo.md>` | Gera casos e rascunho com IA (`--simular` usa a gravação) |
+| `npm run aprovar -- <id>` | Aprova um rascunho de IA e copia para a pasta da autora |
+| `npm run resumo -- <parcial.json>` | Resumo em Markdown de uma execução (usado no GitHub Actions) |
 | `npm run tipos` | Typecheck dos testes |
 | `npm run test:scripts` | Testes dos scripts do Dispara |
 
@@ -101,6 +127,6 @@ O site fica em `https://<usuario>.github.io/dispara/`, com os relatórios do Pla
 
 ## Próximos passos
 
-- **Gerar testes com IA:** história de usuário → Claude API → casos de teste + esqueleto Playwright que entra no catálogo como rascunho para revisão.
+- **IA para triagem de falhas:** ler o trace de um teste que falhou e sugerir se é bug, instabilidade ou teste desatualizado.
 - **Login e papéis no site** com Supabase ou login do GitHub.
 - **App de apostas próprio** como segundo alvo, para cobrir o domínio de iGaming.

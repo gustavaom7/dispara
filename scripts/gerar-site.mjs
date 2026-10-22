@@ -7,6 +7,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { RAIZ, argumentos, lerJson } from './lib/util.mjs';
+import { listarRascunhos } from './lib/ia/saida.mjs';
 
 const a = argumentos();
 const manifesto = lerJson(join(RAIZ, 'publicados', 'manifest.json'), null);
@@ -39,6 +40,7 @@ const dados = {
   nomesAreas: lerJson(join(RAIZ, 'config', 'areas.json'), {}),
   execucoes,
   fonteExecucoes,
+  rascunhos: listarRascunhos().map(({ pasta, ...r }) => r),
   demo: Boolean(a.demo),
   repo: a.repo ?? 'https://github.com/SEU-USUARIO/dispara.git',
 };

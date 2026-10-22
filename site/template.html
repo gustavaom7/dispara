@@ -11,6 +11,7 @@
   --ok: #14724a; --ok-soft: #dcf3e7; --danger: #b42330; --danger-soft: #fde7e9; --amber: #8a5000; --amber-soft: #fbefd8;
   --side-bg: #0f1730; --side-ink: #c8d1ea; --side-dim: #7c88ab; --side-hover: #18223f; --side-active: #222f5c; --side-line: #222d4f; --side-hi: #ffffff;
   --code-bg: #0e1528; --code-ink: #d6def5; --code-dim: #56638a; --tk-kw: #c9a3ff; --tk-str: #9fe0b0; --tk-com: #6f7da6; --tk-fn: #8fc1ff; --tk-num: #ffc58a;
+  --serie-1: #2a78d6; --serie-2: #eb6834; --serie-3: #1baf7a;
   --shadow: 0 1px 2px rgba(16, 23, 42, .05), 0 6px 20px rgba(16, 23, 42, .05);
   --shadow-lg: 0 24px 60px rgba(10, 15, 30, .25);
   --scrim: rgba(10, 15, 30, .42);
@@ -23,7 +24,7 @@
   --accent: #8da1ff; --accent-ink: #b3c1ff; --accent-soft: #1c2852; --on-accent: #0a0f1e;
   --ok: #5fd39c; --ok-soft: #123020; --danger: #ff8590; --danger-soft: #3a1720; --amber: #f2b45c; --amber-soft: #33240f;
   --side-bg: #070c19; --side-hover: #101831; --side-active: #1b2650; --side-line: #172140;
-  --code-bg: #070c19;
+  --code-bg: #070c19; --serie-1: #3987e5; --serie-2: #d95926; --serie-3: #199e70;
   --shadow: 0 1px 2px rgba(0, 0, 0, .3); --shadow-lg: 0 24px 60px rgba(0, 0, 0, .55); --scrim: rgba(0, 0, 0, .6);
   color-scheme: dark } }
 :root[data-theme="dark"] {
@@ -31,7 +32,7 @@
   --accent: #8da1ff; --accent-ink: #b3c1ff; --accent-soft: #1c2852; --on-accent: #0a0f1e;
   --ok: #5fd39c; --ok-soft: #123020; --danger: #ff8590; --danger-soft: #3a1720; --amber: #f2b45c; --amber-soft: #33240f;
   --side-bg: #070c19; --side-hover: #101831; --side-active: #1b2650; --side-line: #172140;
-  --code-bg: #070c19;
+  --code-bg: #070c19; --serie-1: #3987e5; --serie-2: #d95926; --serie-3: #199e70;
   --shadow: 0 1px 2px rgba(0, 0, 0, .3); --shadow-lg: 0 24px 60px rgba(0, 0, 0, .55); --scrim: rgba(0, 0, 0, .6);
   color-scheme: dark }
 
@@ -143,6 +144,22 @@ select.alterado { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(-
 .spark { width: 112px; height: 36px; flex: none }
 .medidor { height: 6px; border-radius: 3px; background: var(--surface-2); overflow: hidden; margin: 6px 0 2px }
 .medidor i { display: block; height: 100%; background: var(--ok); border-radius: 3px }
+.tendencia { position: relative; padding: 8px 16px 12px }
+.tendencia svg { display: block; width: 100%; height: auto; overflow: visible }
+.tendencia .eixo { font: 11px var(--f-body); fill: var(--muted); font-variant-numeric: tabular-nums }
+.tendencia .rotulo { font: 600 11.5px var(--f-body); fill: var(--ink) }
+.legenda { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--muted) }
+.legenda span { display: inline-flex; align-items: center; gap: 6px }
+.legenda i { width: 14px; height: 3px; border-radius: 2px; display: inline-block }
+.dica { position: absolute; pointer-events: none; background: var(--surface); border: 1px solid var(--line-2); border-radius: 8px; box-shadow: var(--shadow-lg); padding: 8px 10px; font-size: 12.5px; min-width: 150px; display: grid; gap: 3px; z-index: 2 }
+.dica b { font-weight: 600 }
+.dica div { display: flex; align-items: center; gap: 6px; justify-content: space-between }
+.dica i { width: 10px; height: 3px; border-radius: 2px; display: inline-block; margin-right: 4px }
+.tendencia details { margin-top: 6px; font-size: 13px }
+.tendencia summary { cursor: pointer; color: var(--accent); font-weight: 500 }
+.tendencia table { border-collapse: collapse; margin-top: 8px; font-size: 12.5px; font-variant-numeric: tabular-nums }
+.tendencia th, .tendencia td { padding: 4px 10px; border-bottom: 1px solid var(--line); text-align: right }
+.tendencia th:first-child, .tendencia td:first-child { text-align: left }
 .duo { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 20px; align-items: start }
 .pilha { display: grid; gap: 20px; min-width: 0 }
 .lst { list-style: none; margin: 0; padding: 0 }
@@ -278,6 +295,42 @@ input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--accent);
 .casos { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px }
 .casos li { display: flex; gap: 10px; align-items: start; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface-2) }
 .casos li .ic { color: var(--accent); margin-top: 2px; width: 16px; height: 16px }
+.rasc-grade { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px }
+.rasc { padding: 16px; display: grid; gap: 10px; align-content: start }
+.rasc-topo { display: flex; justify-content: space-between; align-items: center; gap: 8px }
+.rasc-topo small { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted) }
+.rasc h3 { margin: 0; font: 600 18px/1.25 var(--f-display) }
+.rasc p { margin: 0; color: var(--muted); font-size: 14px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden }
+.tipos { display: flex; flex-wrap: wrap; gap: 6px }
+.tipo { font-size: 12px; font-weight: 500; padding: 2px 8px; border-radius: 6px }
+.tipo.positivo { background: var(--ok-soft); color: var(--ok) }
+.tipo.negativo { background: var(--danger-soft); color: var(--danger) }
+.tipo.borda { background: var(--amber-soft); color: var(--amber) }
+.checagem { display: flex; gap: 8px; align-items: center; font-size: 13.5px }
+.checagem .ic { width: 16px; height: 16px }
+.checagem.ok { color: var(--ok) } .checagem.corrigido { color: var(--amber) } .checagem.falha { color: var(--danger) }
+.rasc-pe { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; border-top: 1px solid var(--line); padding-top: 12px; font-size: 12.5px; color: var(--muted) }
+.pill.corrigido { background: var(--amber-soft); color: var(--amber) }
+.pill.aprovado { background: var(--accent-soft); color: var(--accent) }
+.tbl-casos-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px }
+.tbl-casos { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 520px }
+.tbl-casos th { text-align: left; font-size: 11px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); background: var(--surface-2); padding: 8px 10px; border-bottom: 1px solid var(--line) }
+.tbl-casos td { padding: 10px; border-bottom: 1px solid var(--line); vertical-align: top }
+.tbl-casos tr:last-child td { border-bottom: 0 }
+.tbl-casos ol { margin: 6px 0 0; padding-left: 18px; color: var(--muted); font-size: 12.5px }
+.historia { white-space: pre-wrap; font: 14px/1.6 var(--f-body); background: var(--surface-2); border: 1px solid var(--line); border-radius: 10px; padding: 14px; margin: 0 }
+@media (max-width: 640px) {
+  .tbl-casos { min-width: 0 }
+  .tbl-casos thead { display: none }
+  .tbl-casos, .tbl-casos tbody, .tbl-casos tr, .tbl-casos td { display: block }
+  .tbl-casos tr { padding: 12px; border-bottom: 1px solid var(--line) }
+  .tbl-casos tr:last-child { border-bottom: 0 }
+  .tbl-casos td { padding: 0 0 6px; border: 0 }
+  .tbl-casos td[data-rotulo]::before { content: attr(data-rotulo) ": "; font-weight: 600; color: var(--muted) }
+}
+.tentativa { border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; display: grid; gap: 8px }
+.tentativa ul { margin: 0; padding-left: 18px; font-size: 13.5px; display: grid; gap: 4px }
+.tentativa code { font-size: 12px }
 .casos li div { display: grid; gap: 4px; min-width: 0 }
 .form2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px }
 .form2 label { display: grid; gap: 5px; font-size: 13px; font-weight: 500; color: var(--muted); min-width: 0 }
@@ -427,7 +480,7 @@ const DADOS = "__DADOS__";
 (function () {
   if (typeof DADOS === 'string') { document.getElementById('view').innerHTML = '<p class="vazio">Gere o site com <code>npm run site</code>.</p>'; return; }
 
-  const { manifesto, ambientes, avatares, historico, demo, repo, nomesAreas = {}, execucoes: execBrutas = [], fonteExecucoes = 'nenhuma' } = DADOS;
+  const { manifesto, ambientes, avatares, historico, demo, repo, nomesAreas = {}, execucoes: execBrutas = [], fonteExecucoes = 'nenhuma', rascunhos = [] } = DADOS;
   const testes = manifesto.testes;
   const $ = id => document.getElementById(id);
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -488,6 +541,7 @@ const DADOS = "__DADOS__";
     servidor: 'M3.5 4h13v5h-13zM3.5 11h13v5h-13zM6.5 6.5h.01M6.5 13.5h.01',
     info: 'M10 17.5a7.5 7.5 0 1 0 0-15 7.5 7.5 0 0 0 0 15ZM10 9v5M10 6.2h.01',
     alerta: 'M10 3 2.5 16.5h15zM10 8v4M10 14.3h.01',
+    ia: 'M9 2.5l1.7 4.3 4.3 1.7-4.3 1.7L9 14.5l-1.7-4.3L3 8.5l4.3-1.7zM15.5 12.5l.8 1.9 1.9.8-1.9.8-.8 1.9-.8-1.9-1.9-.8 1.9-.8z',
   };
   const icon = (n, cls = 'ic') => `<svg class="${cls}" viewBox="0 0 20 20" aria-hidden="true"><path d="${ICONES[n]}"/></svg>`;
   const fmtCurta = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digit' });
@@ -540,6 +594,7 @@ const DADOS = "__DADOS__";
       { v: 'inicio', nome: 'Início', ic: 'home' },
       { v: 'testes', nome: 'Catálogo', ic: 'lista', badge: () => testes.length },
       { v: 'execucoes', nome: 'Execuções', ic: 'play', badge: () => { const n = execucoes.filter(e => e.status === 'falhou' && agora - e.t < DIA).length; return n ? { n, alerta: true } : null; } },
+      { v: 'rascunhos', nome: 'Rascunhos de IA', ic: 'ia', badge: () => { const n = rascunhos.filter(r => !r.aprovado && r.status !== 'reprovado').length; return n || null; } },
     ] },
     { grupo: 'Configuração', itens: [
       { v: 'contas', nome: 'Contas e ambientes', ic: 'contas' },
@@ -623,6 +678,7 @@ const DADOS = "__DADOS__";
           ${tx == null ? '<small>Sem dados ainda</small>' : `<div class="medidor"><i style="width:${tx}%"></i></div><small>${variacao == null ? 'Primeira semana com dados' : `<span class="${variacao >= 0 ? 'delta-pos' : 'delta-neg'}">${variacao >= 0 ? '+' : '−'}${Math.abs(variacao)} pts</span> vs semana anterior`}</small>`}</div>
         <div class="card stat"><span>Última publicação</span><div class="valor"><strong style="font-size:24px">${ultPub ? esc(rel(Date.parse(ultPub.quando))) : '—'}</strong></div><small>${ultPub ? `por ${esc(ultPub.autor)} · ${deltasHtml(ultPub)}` : 'Nada publicado ainda'}</small></div>
       </section>
+      ${graficoTendencia()}
       <section class="duo">
         <div class="card">
           <div class="card-h"><h2>Execuções recentes</h2>${execucoes.length ? '<button class="link" data-acao="nav" data-v="execucoes">Ver todas</button>' : ''}</div>
@@ -644,6 +700,87 @@ const DADOS = "__DADOS__";
       </section>`;
   };
 
+  const DIAS_TENDENCIA = 14;
+  function dadosTendencia() {
+    const hoje0 = new Date(); hoje0.setHours(0, 0, 0, 0);
+    const dias = Array.from({ length: DIAS_TENDENCIA }, (_, i) => hoje0.getTime() - (DIAS_TENDENCIA - 1 - i) * DIA);
+    const series = ambientes.map((a, k) => ({
+      a, cor: `var(--serie-${(k % 3) + 1})`,
+      pts: dias.map(ini => {
+        const l = execucoes.filter(e => e.ambiente === a.id && contaNoResultado(e) && e.t >= ini && e.t < ini + DIA);
+        return l.length ? { tx: Math.round(100 * l.filter(e => e.status === 'passou').length / l.length), n: l.length } : null;
+      }),
+    })).filter(sr => sr.pts.some(Boolean));
+    return { dias, series };
+  }
+  const GT = { H: 220, ml: 40, mr: 104, mt: 12, mb: 28 };
+
+  function graficoTendencia() {
+    const { dias, series } = dadosTendencia();
+    if (!series.length) return '';
+    const tabela = `<details><summary>Ver como tabela</summary><div style="overflow-x:auto"><table><thead><tr><th>Dia</th>${series.map(sr => `<th>${esc(sr.a.nome)}</th>`).join('')}</tr></thead><tbody>${dias.map((d, i) => `<tr><td>${fmtCurta.format(d)}</td>${series.map(sr => `<td>${sr.pts[i] ? `${sr.pts[i].tx}% (${sr.pts[i].n})` : '—'}</td>`).join('')}</tr>`).join('')}</tbody></table></div></details>`;
+    return `<div class="card">
+      <div class="card-h"><h2>Taxa de sucesso por ambiente</h2><div class="legenda">${series.map(sr => `<span><i style="background:${sr.cor}"></i>${esc(sr.a.nome)}</span>`).join('')}</div></div>
+      <div class="tendencia" id="tendencia"><div id="tendenciaSvg" style="height:${GT.H}px"></div><div class="dica" id="dica" hidden></div>${tabela}</div>
+    </div>`;
+  }
+
+  /** Desenha na largura real do cartão (texto sempre no tamanho certo) e redesenha quando ela muda. */
+  function desenharTendencia(W) {
+    const { dias, series } = dadosTendencia();
+    const estreito = W < 480;
+    const mr = estreito ? 12 : GT.mr;
+    const X = i => GT.ml + i * ((W - GT.ml - mr) / (DIAS_TENDENCIA - 1));
+    const Y = v => GT.mt + (100 - v) / 100 * (GT.H - GT.mt - GT.mb);
+    const passo = estreito ? 4 : 3;
+    const grade = [0, 25, 50, 75, 100].map(v => `<line x1="${GT.ml}" x2="${W - mr}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)" stroke-width="1"/><text class="eixo" x="${GT.ml - 8}" y="${Y(v) + 4}" text-anchor="end">${v}%</text>`).join('');
+    const xs = dias.map((d, i) => (i === dias.length - 1 || (dias.length - 1 - i) % passo === 0 && i > 0) ? `<text class="eixo" x="${X(i)}" y="${GT.H - 8}" text-anchor="${i === dias.length - 1 ? 'end' : 'middle'}">${i === dias.length - 1 ? 'hoje' : fmtCurta.format(d)}</text>` : '').join('');
+    const linhas = series.map(sr => {
+      let d = '', anterior = false;
+      sr.pts.forEach((p, i) => { if (p) { d += `${anterior ? 'L' : 'M'}${X(i).toFixed(1)} ${Y(p.tx).toFixed(1)}`; anterior = true; } else anterior = false; });
+      const pontos = sr.pts.map((p, i) => p ? `<circle cx="${X(i)}" cy="${Y(p.tx)}" r="4" fill="${sr.cor}" stroke="var(--surface)" stroke-width="2"/>` : '').join('');
+      return `<path d="${d}" fill="none" stroke="${sr.cor}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>${pontos}`;
+    }).join('');
+    let rotulos = '';
+    if (!estreito) {
+      const finais = series.map(sr => { const i = sr.pts.findLastIndex(Boolean); return { sr, i, y: Y(sr.pts[i].tx) }; }).sort((a, b) => a.y - b.y);
+      finais.forEach((f, k) => { if (k && f.y - finais[k - 1].y < 15) f.y = finais[k - 1].y + 15; });
+      rotulos = finais.map(f => `<text class="rotulo" x="${X(DIAS_TENDENCIA - 1) + 10}" y="${f.y + 4}">${esc(f.sr.a.nome)} ${f.sr.pts[f.i].tx}%</text>`).join('');
+    }
+    $('tendenciaSvg').innerHTML = `<svg width="${W}" height="${GT.H}" viewBox="0 0 ${W} ${GT.H}" role="img" aria-label="Taxa de sucesso diária por ambiente nos últimos ${DIAS_TENDENCIA} dias">${grade}${xs}
+      <line id="cruz" x1="0" x2="0" y1="${GT.mt}" y2="${GT.H - GT.mb}" stroke="var(--muted)" stroke-width="1" stroke-dasharray="3 3" visibility="hidden"/>${linhas}${rotulos}</svg>`;
+    return { X, mr };
+  }
+
+  function ligarTendencia() {
+    const caixa = $('tendencia'); if (!caixa) return;
+    const alvo = $('tendenciaSvg'), dica = $('dica');
+    const { dias, series } = dadosTendencia();
+    let geo = desenharTendencia(alvo.clientWidth);
+    try {
+      let largura = alvo.clientWidth;
+      new ResizeObserver(() => { if (alvo.isConnected && alvo.clientWidth !== largura) { largura = alvo.clientWidth; geo = desenharTendencia(largura); } }).observe(alvo);
+    } catch {}
+    const indice = clientX => {
+      const r = alvo.getBoundingClientRect(), x = clientX - r.left;
+      const largura = (r.width - GT.ml - geo.mr) / (DIAS_TENDENCIA - 1);
+      return Math.max(0, Math.min(DIAS_TENDENCIA - 1, Math.round((x - GT.ml) / largura)));
+    };
+    const mostrar = i => {
+      const cruz = $('cruz');
+      cruz.setAttribute('x1', geo.X(i)); cruz.setAttribute('x2', geo.X(i)); cruz.setAttribute('visibility', 'visible');
+      dica.innerHTML = `<b>${i === DIAS_TENDENCIA - 1 ? 'Hoje' : fmtCurta.format(dias[i])}</b>${series.map(sr => `<div><span><i style="background:${sr.cor}"></i>${esc(sr.a.nome)}</span><span>${sr.pts[i] ? `${sr.pts[i].tx}% · ${plural(sr.pts[i].n, 'execução', 'execuções')}` : 'sem execução'}</span></div>`).join('')}`;
+      dica.hidden = false;
+      const px = alvo.offsetLeft + geo.X(i);
+      const direita = px + 14 + dica.offsetWidth <= caixa.clientWidth;
+      dica.style.left = `${Math.max(0, direita ? px + 14 : px - 14 - dica.offsetWidth)}px`;
+      dica.style.top = '8px';
+    };
+    const esconder = () => { dica.hidden = true; $('cruz')?.setAttribute('visibility', 'hidden'); };
+    alvo.addEventListener('pointermove', e => mostrar(indice(e.clientX)));
+    alvo.addEventListener('pointerleave', esconder);
+  }
+
   function deltasHtml(h) {
     const partes = [['d-mais', '+', h.adicionados], ['d-til', '~', h.alterados], ['d-menos', '−', h.removidos]].filter(([, , l]) => l.length);
     return partes.length ? `<span class="deltas">${partes.map(([c, s, l]) => `<span class="${c}">${s}${l.length}</span>`).join('')}</span>` : 'sem mudanças';
@@ -653,7 +790,7 @@ const DADOS = "__DADOS__";
     const t = testeDe(e.teste);
     const titulo = t ? t.titulo : e.teste;
     const casos = e.casos ? [e.casos.passou && `${e.casos.passou} ok`, e.casos.falhou && `${e.casos.falhou} falha`, e.casos.pulado && `${e.casos.pulado} pulado`].filter(Boolean).join(', ') : '';
-    const selos = `${e.instavel ? ' <span class="badge instavel" title="Passou só na segunda tentativa">instável</span>' : ''}${e.origem === 'ci' ? ' <span class="badge">CI</span>' : ''}`;
+    const selos = `${e.instavel ? ' <span class="badge instavel" title="Passou só na segunda tentativa">instável</span>' : ''}${e.origem === 'ci' ? ' <span class="badge">CI</span>' : ''}${e.dispositivo === 'celular' ? ' <span class="badge">celular</span>' : ''}`;
     const link = e.relatorio ? ` · <a href="${esc(e.relatorio)}" target="_blank" rel="noopener">relatório</a>` : '';
     const meta = `${esc(ambDe(e.ambiente)?.nome ?? e.ambiente)} · ${esc(avDe(e.avatar)?.nome ?? e.avatar)} · ${esc(e.quem)}${casos ? ` · ${casos}` : ''}${link}${selos}`;
     const nome = t ? `<button class="tnome" data-acao="abrir" data-id="${esc(t.id)}">${esc(titulo)}</button>` : `<b>${esc(titulo)}</b>`;
@@ -848,6 +985,105 @@ const DADOS = "__DADOS__";
       </div>
     </section>`;
 
+  const STATUS_RASC = {
+    pronto: ['ok', 'Pronto para revisão'],
+    corrigido: ['corrigido', 'Pronto para revisão'],
+    reprovado: ['falha', 'Reprovado nas checagens'],
+  };
+  const pillRasc = r => r.aprovado ? '<span class="pill aprovado">Aprovado</span>'
+    : r.status === 'reprovado' ? '<span class="pill falha">Reprovado</span>'
+    : `<span class="pill ${r.status === 'corrigido' ? 'corrigido' : 'ok'}">Aguardando revisão</span>`;
+  const contagemTipos = r => ['positivo', 'negativo', 'borda'].map(t => {
+    const n = r.casos.filter(c => c.tipo === t).length;
+    return n ? `<span class="tipo ${t}">${n} ${t}${n > 1 ? 's' : ''}</span>` : '';
+  }).join('');
+  function resumoChecagens(r) {
+    const ultima = r.tentativas.at(-1), primeira = r.tentativas[0];
+    if (r.status === 'pronto') return `<div class="checagem ok">${icon('check')}Passou nas checagens de primeira</div>`;
+    if (r.status === 'corrigido') return `<div class="checagem corrigido">${icon('refazer')}Corrigido na ${r.tentativas.length}ª tentativa (${plural(primeira.erros.length, 'problema', 'problemas')} na 1ª)</div>`;
+    return `<div class="checagem falha">${icon('alerta')}${plural(ultima.erros.length, 'problema restante', 'problemas restantes')}</div>`;
+  }
+
+  VIEWS.rascunhos = () => {
+    const pend = rascunhos.filter(r => !r.aprovado && r.status !== 'reprovado').length;
+    const aprov = rascunhos.filter(r => r.aprovado).length;
+    const reprov = rascunhos.filter(r => r.status === 'reprovado').length;
+    const casos = rascunhos.reduce((n, r) => n + r.casos.length, 0);
+    const cmdGerar = 'npm run gerar -- --historia historias/minha-historia.md';
+    return `
+      <header class="vh">
+        <div><h1>Rascunhos de IA</h1><p>Casos de teste e código Playwright gerados pelo Claude a partir de histórias de usuário. Nada entra no catálogo sem passar nas checagens automáticas e numa revisão humana.</p></div>
+        <div class="acoes"><button class="btn contorno" data-acao="copiar-texto" data-txt="${esc(cmdGerar)}" data-msg="Comando de geração copiado">${icon('ia')}Copiar comando para gerar</button></div>
+      </header>
+      ${rascunhos.some(r => r.modo === 'simulado') ? `<div class="nota info">${icon('info')}<span>Estes rascunhos vieram do modo simulado, com respostas gravadas do Claude, para a demo funcionar sem chave de API. Com <code>ANTHROPIC_API_KEY</code> no <code>.env</code>, o mesmo comando chama a API de verdade.</span></div>` : ''}
+      ${rascunhos.length ? `<section class="stats">
+        <div class="card stat"><span>Rascunhos</span><div class="valor"><strong>${rascunhos.length}</strong></div><small>${plural(casos, 'caso de teste', 'casos de teste')}</small></div>
+        <div class="card stat"><span>Aguardando revisão</span><div class="valor"><strong>${pend}</strong></div><small>Passaram nas checagens</small></div>
+        <div class="card stat"><span>Aprovados</span><div class="valor"><strong>${aprov}</strong></div><small>Já estão no catálogo</small></div>
+        <div class="card stat"><span>Reprovados</span><div class="valor"><strong>${reprov}</strong></div><small>Falharam mesmo após correção</small></div>
+      </section>
+      <section class="rasc-grade">${rascunhos.map(r => `
+        <article class="card rasc">
+          <div class="rasc-topo"><small>${esc(nomeArea(r.area))}</small>${pillRasc(r)}</div>
+          <h3><button class="tnome" style="font-size:inherit;font-family:inherit" data-acao="abrir-rascunho" data-id="${esc(r.id)}">${esc(r.titulo)}</button></h3>
+          <p>${esc(r.resumo)}</p>
+          <div class="tipos">${contagemTipos(r)}<span class="badge">${r.casos.filter(c => c.automatizado).length} de ${r.casos.length} automatizados</span></div>
+          ${resumoChecagens(r)}
+          <div class="rasc-pe"><span>${esc(r.modelo)} · ${esc(rel(Date.parse(r.geradoEm)))}</span>
+            ${r.aprovado ? `<span>Aprovado por ${esc(r.aprovado.por)}</span>` : r.status === 'reprovado' ? '' : `<button class="btn pq" data-acao="copiar-texto" data-txt="npm run aprovar -- ${esc(r.id)}" data-msg="Comando de aprovação copiado">${icon('copiar')}Aprovar</button>`}
+          </div>
+        </article>`).join('')}</section>`
+      : `<section class="card"><div class="vazio">${icon('ia')}<b>Nenhum rascunho ainda</b><span>Escreva uma história em <code>historias/</code> e rode <code>${esc(cmdGerar)}</code>.</span></div></section>`}`;
+  };
+
+  function abrirRascunho(id, aba = 'casos') {
+    if (!rascunhos.some(r => r.id === id)) return;
+    S.drawer = { tipo: 'rascunho', id, aba };
+    renderDrawer();
+    $('drawer').classList.add('on'); $('drawer').setAttribute('aria-hidden', 'false');
+    $('scrim').classList.add('on');
+    setTimeout(() => $('drawer').querySelector('[data-acao="fechar-drawer"]')?.focus(), 50);
+  }
+
+  function renderDrawerRascunho() {
+    const d = S.drawer, r = rascunhos.find(x => x.id === d.id);
+    let corpo;
+    if (d.aba === 'codigo') {
+      corpo = `<div class="bloco"><h3>${esc(r.id)}.spec.ts</h3><pre class="cod" aria-label="Código gerado">${realce(r.codigo)}</pre></div>`;
+    } else if (d.aba === 'historia') {
+      corpo = `<div class="bloco"><h3>${esc(r.historia)}</h3><pre class="historia">${esc(r.textoHistoria)}</pre></div>`;
+    } else if (d.aba === 'checagens') {
+      corpo = `<div class="bloco"><h3>O que é conferido</h3><p class="muted" style="margin:0;font-size:14px">Formato da resposta, regras de qualidade (import das fixtures, sem waitForTimeout, tags válidas), seletores contra o código do Toolshop, valores sensíveis e typecheck com as fixtures e os page objects. Se algo falha, os erros voltam para o Claude numa rodada de correção.</p></div>
+        <div class="bloco"><h3>${plural(r.tentativas.length, 'tentativa', 'tentativas')}</h3>${r.tentativas.map(t => `
+          <div class="tentativa"><div class="checagem ${t.erros.length ? 'falha' : 'ok'}">${icon(t.erros.length ? 'alerta' : 'check')}<b>Tentativa ${t.numero}</b>&nbsp;· ${t.erros.length ? plural(t.erros.length, 'problema', 'problemas') : 'passou'}</div>
+          ${t.erros.length ? `<ul>${t.erros.map(e => `<li>${e.linha ? `<code>linha ${e.linha}</code> ` : ''}<b>${esc(e.tipo)}</b>: ${esc(e.mensagem)}</li>`).join('')}</ul>` : ''}</div>`).join('')}</div>`;
+    } else {
+      corpo = `
+        <div class="bloco"><h3>${plural(r.casos.length, 'caso', 'casos')}</h3>
+          <div class="tbl-casos-wrap"><table class="tbl-casos"><thead><tr><th>ID</th><th>Caso</th><th>Esperado</th><th>Auto</th></tr></thead><tbody>
+          ${r.casos.map(c => `<tr><td class="mono" style="white-space:nowrap">${esc(c.id)}<br><span class="tipo ${c.tipo}">${c.tipo}</span></td>
+            <td><b style="font-weight:600">${esc(c.titulo)}</b><ol>${c.passos.map(p => `<li>${esc(p)}</li>`).join('')}</ol></td>
+            <td data-rotulo="Esperado">${esc(c.resultadoEsperado)}</td><td data-rotulo="Automatizado">${c.automatizado ? 'sim' : '<span class="muted">manual</span>'}</td></tr>`).join('')}
+          </tbody></table></div></div>
+        ${r.suposicoes?.length ? `<div class="bloco"><h3>Suposições da IA</h3><ul class="casos">${r.suposicoes.map(x => `<li>${icon('info')}<div><span>${esc(x)}</span></div></li>`).join('')}</ul></div>` : ''}
+        <div class="bloco"><h3>${r.aprovado ? 'Aprovado' : 'Aprovar'}</h3>
+          ${r.aprovado ? `<div class="nota info">${icon('check')}<span>Aprovado por <b>${esc(r.aprovado.por)}</b> ${esc(rel(Date.parse(r.aprovado.em)))}. Está em <code>${esc(r.aprovado.destino)}</code> e entra no catálogo com <code>npm run publicar</code>.</span></div>`
+          : r.status === 'reprovado' ? `<div class="nota perigo">${icon('alerta')}<span>Reprovado nas checagens. Ajuste a história e gere de novo, ou corrija o arquivo à mão e aprove com <code>--forcar</code>.</span></div>`
+          : `<div class="term"><span class="cifrao">$</span><code>npm run aprovar -- ${esc(r.id)}</code><button class="ibtn" data-acao="copiar-texto" data-txt="npm run aprovar -- ${esc(r.id)}" aria-label="Copiar">${icon('copiar')}</button></div>
+             <p class="muted" style="margin:0;font-size:13px">Confere o arquivo de novo (você pode ter editado), copia para a sua pasta de testes e registra quem aprovou.</p>`}
+        </div>`;
+    }
+    $('drawer').innerHTML = `
+      <div class="dw-cab">
+        <div class="dw-topo"><div style="min-width:0"><small>Rascunho de IA · ${esc(nomeArea(r.area))}</small><h2>${esc(r.titulo)}</h2></div>
+          <button class="ibtn" data-acao="fechar-drawer" aria-label="Fechar">${icon('x')}</button></div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">${pillRasc(r)}<span class="meta">${esc(r.modelo)} · ${esc(r.modo)} · ${esc(rel(Date.parse(r.geradoEm)))}</span></div>
+        <div class="abas" role="tablist">${[['casos', 'Casos'], ['codigo', 'Código'], ['historia', 'História'], ['checagens', `Checagens (${r.tentativas.length})`]].map(([a, n]) =>
+          `<button role="tab" data-acao="aba" data-aba="${a}" aria-selected="${d.aba === a}">${n}</button>`).join('')}</div>
+      </div>
+      <div class="dw-corpo">${corpo}</div>`;
+  }
+
   VIEWS.revisao = () => {
     const comAviso = testes.filter(t => t.avisos.length);
     return `
@@ -891,6 +1127,7 @@ const DADOS = "__DADOS__";
 
   function renderDrawer() {
     const d = S.drawer; if (!d) return;
+    if (d.tipo === 'rascunho') return renderDrawerRascunho();
     const t = testeDe(d.id), s = selDe(t), runs = porTeste.get(t.id) || [];
     const trava = bloqueado(t, s.amb);
     const cmd = comando([t.id], s.amb, s.av, d.modo);
@@ -941,6 +1178,7 @@ const DADOS = "__DADOS__";
     const q = $('palInput').value.trim().toLowerCase();
     const itens = [
       ...testes.map(t => ({ teste: true, id: t.id, nome: t.titulo, extra: t.arquivo, tipo: nomeArea(t.area), ic: 'codigo', busca: `${t.titulo} ${t.arquivo} ${t.tags.join(' ')}` })),
+      ...rascunhos.map(r => ({ rascunho: true, id: r.id, nome: r.titulo, extra: `rascunhos-ia/${r.id}`, tipo: 'Rascunho de IA', ic: 'ia', busca: `${r.titulo} ${r.id} rascunho ia` })),
       ...navItens().map(n => ({ id: n.v, nome: n.nome, tipo: 'Página', ic: n.ic, busca: n.nome })),
     ];
     pal.itens = itens.filter(x => !q || x.busca.toLowerCase().includes(q)).slice(0, 10);
@@ -949,7 +1187,7 @@ const DADOS = "__DADOS__";
       `<button class="pitem" role="option" data-acao="pal-ir" data-i="${i}" aria-selected="${i === pal.i}">${icon(x.ic)}<span class="pnome"><span>${esc(x.nome)}</span>${x.extra ? `<small class="mono">${esc(x.extra)}</small>` : ''}</span><span class="ptipo">${esc(x.tipo)}</span></button>`).join('')
       : '<p class="pvazio">Nada encontrado</p>';
   }
-  function irPaleta(i) { const x = pal.itens[i]; if (!x) return; fecharPaleta(); if (x.teste) abrirDrawer(x.id); else navegar(x.id); }
+  function irPaleta(i) { const x = pal.itens[i]; if (!x) return; fecharPaleta(); if (x.teste) abrirDrawer(x.id); else if (x.rascunho) abrirRascunho(x.id); else navegar(x.id); }
 
   // ---------- menu mobile ----------
   function abrirMenu() { $('side').classList.add('on'); $('scrim').classList.add('on'); }
@@ -959,6 +1197,7 @@ const DADOS = "__DADOS__";
   function renderView() {
     $('view').innerHTML = VIEWS[S.view]();
     if (S.view === 'testes') { renderFiltros(); renderLista(); }
+    if (S.view === 'inicio') ligarTendencia();
   }
   function render() { renderNav(); renderView(); renderSelbar(); }
 
@@ -974,6 +1213,7 @@ const DADOS = "__DADOS__";
     'pal-ir': el => irPaleta(Number(el.dataset.i)),
     papel: el => { S.papel = el.dataset.p; gravar('papel', S.papel); if (!permitido(S.view)) S.view = 'inicio'; render(); avisar(S.papel === 'admin' ? 'Vendo como admin' : 'Vendo como membro'); },
     abrir: el => abrirDrawer(el.dataset.id, el.dataset.aba),
+    'abrir-rascunho': el => abrirRascunho(el.dataset.id, el.dataset.aba),
     'fechar-drawer': fecharDrawer,
     aba: el => { S.drawer.aba = el.dataset.aba; renderDrawer(); },
     modo: el => { S.drawer.modo = el.dataset.m; renderDrawer(); },

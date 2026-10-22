@@ -42,3 +42,21 @@ test('junta ao histórico sem duplicar e mais recentes primeiro', () => {
 test('limita o tamanho da mensagem de erro', () => {
   assert.ok(resumirErro('x'.repeat(500)).length <= 220);
 });
+
+test('separa o mesmo arquivo rodado no desktop e no celular', () => {
+  const t = (projectName, status) => ({ projectName, status, results: [{ duration: 10 }] });
+  const r = { suites: [{ file: 'conta/login.spec.ts', specs: [{ title: 'x', tests: [t('chromium', 'expected'), t('celular', 'unexpected')] }] }] };
+  const execs = coletar(r, { ambiente: 'estavel', agora: '2026-10-22T12:00:00Z' });
+  assert.deepEqual(execs.map(e => [e.teste, e.status, e.dispositivo ?? 'desktop']), [['login', 'passou', 'desktop'], ['login', 'falhou', 'celular']]);
+  assert.notEqual(execs[0].id, execs[1].id);
+});
+
+test('resumo do CI lista falhas primeiro e mostra o link do relatório', async () => {
+  const { resumoMarkdown } = await import('../resumo-ci.mjs');
+  const execs = coletar(relatorio, { ambiente: 'com-bugs', avatar: 'cliente' });
+  const md = resumoMarkdown(execs, { relatorio: 'https://exemplo/relatorio/' });
+  const linhas = md.split('\n');
+  assert.match(linhas[0], /❌ Toolshop · com-bugs/);
+  assert.match(md, /\[relatório do Playwright\]\(https:\/\/exemplo\/relatorio\/\)/);
+  assert.match(linhas.find(l => l.startsWith('| ❌')), /api\/produtos\.spec\.ts.*instável.*status da API/);
+});
