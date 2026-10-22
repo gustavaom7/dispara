@@ -11,6 +11,11 @@ export class PaginaLogin {
   get erroSenha() { return this.page.getByTestId('password-error'); }
   get titulo() { return this.page.getByTestId('page-title'); }
 
+  /** Título que a pessoa vê logo depois de entrar: admin cai no painel, cliente na conta. */
+  static tituloAposEntrar(avatar: string) {
+    return ({ admin: 'Sales over the years' } as Record<string, string>)[avatar] ?? 'My account';
+  }
+
   async abrir() {
     await this.page.goto('/auth/login');
   }

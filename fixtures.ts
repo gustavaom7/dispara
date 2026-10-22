@@ -86,6 +86,21 @@ export async function cadastrarPorApi(api: APIRequestContext) {
   return { ...pessoa, email: pessoa.email, senha: pessoa.senha };
 }
 
+/** Nomes de todos os produtos de uma marca, segundo a API (percorre todas as páginas). */
+export async function produtosDaMarca(api: APIRequestContext, marca: string) {
+  const corpo = await (await api.get('/brands')).json();
+  const marcas: { id: string; name: string }[] = Array.isArray(corpo) ? corpo : corpo.data;
+  const encontrada = marcas.find(m => m.name === marca);
+  if (!encontrada) throw new Error(`Marca "${marca}" não existe na API`);
+  const nomes: string[] = [];
+  for (let pagina = 1, ultima = 1; pagina <= ultima; pagina++) {
+    const resposta: { data: { name: string }[]; last_page: number } = await (await api.get(`/products?by_brand=${encontrada.id}&page=${pagina}`)).json();
+    nomes.push(...resposta.data.map(p => p.name));
+    ultima = resposta.last_page;
+  }
+  return nomes;
+}
+
 export { preco } from './paginas';
 
 /** Arquivos de apoio versionados no repo. */

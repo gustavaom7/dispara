@@ -28,8 +28,12 @@ jobs:
         run: npm run test:scripts
       - name: Typecheck dos testes
         run: npm run tipos
+      - name: Lint dos testes (eslint-plugin-playwright)
+        run: npm run lint
       - name: Seletores contra o mapa versionado
         run: npm run checar
+      - name: Rascunhos de IA continuam válidos
+        run: npm run checar:rascunhos
       - name: Seletores contra o código atual do Toolshop
         # Só avisa: se o Toolshop mudou, o mapa em ref/ precisa ser atualizado (npm run mapear)
         continue-on-error: true
@@ -83,6 +87,15 @@ jobs:
           npm run coletar -- --relatorio-json test-results/admin.json --historico parcial/${{ matrix.ambiente }}.json \
             --ambiente ${{ matrix.ambiente }} --avatar admin --origem ci --quem "${{ github.actor }}" \
             --url-relatorio "$PAGES_URL/relatorios/${{ matrix.ambiente }}/admin/"
+
+      - name: Triagem das falhas
+        if: ${{ !cancelled() }}
+        # Com o secret ANTHROPIC_API_KEY, quem classifica é o Claude; sem ele, as regras locais.
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          npm run -s triar -- --execucoes parcial/${{ matrix.ambiente }}.json --relatorio-json test-results/cliente.json --avatar cliente
+          npm run -s triar -- --execucoes parcial/${{ matrix.ambiente }}.json --relatorio-json test-results/admin.json --avatar admin
 
       - name: Resumo na página da execução
         if: ${{ !cancelled() }}

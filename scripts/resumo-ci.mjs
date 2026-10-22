@@ -4,6 +4,7 @@
 import { readFileSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { RAIZ, argumentos, executadoDireto } from './lib/util.mjs';
+import { CATEGORIAS } from './lib/ia/triagem.mjs';
 
 const ICONE = { passou: '✅', falhou: '❌', pulado: '⏭️' };
 const dur = ms => (ms < 60000 ? `${Math.round(ms / 1000)} s` : `${Math.floor(ms / 60000)} min ${Math.round((ms % 60000) / 1000)} s`);
@@ -19,11 +20,11 @@ export function resumoMarkdown(execucoes, { relatorio } = {}) {
     '',
     `**${conta('passou')}** arquivo(s) passaram, **${conta('falhou')}** falharam e **${conta('pulado')}** foram pulados · ${casos.passou} caso(s) ok, ${casos.falhou} com falha${casos.instavel ? `, ${casos.instavel} instável(is)` : ''}${relatorio ? ` · [relatório do Playwright](${relatorio})` : ''}`,
     '',
-    '| | Teste | Dispositivo | Conta | Casos | Duração | Erro |',
-    '| --- | --- | --- | --- | --- | --- | --- |',
+    '| | Teste | Dispositivo | Conta | Casos | Duração | Erro | Diagnóstico |',
+    '| --- | --- | --- | --- | --- | --- | --- | --- |',
     ...[...execucoes]
       .sort((a, b) => (a.status === 'falhou' ? -1 : 0) - (b.status === 'falhou' ? -1 : 0) || a.teste.localeCompare(b.teste))
-      .map(e => `| ${ICONE[e.status] ?? ''} | ${celula(e.arquivo ?? e.teste)} | ${e.dispositivo ?? 'desktop'} | ${e.avatar} | ${e.casos ? `${e.casos.passou}/${e.casos.passou + e.casos.falhou + e.casos.pulado}` : ''}${e.instavel ? ' (instável)' : ''} | ${dur(e.duracaoMs)} | ${celula(e.erro ?? '')} |`),
+      .map(e => `| ${ICONE[e.status] ?? ''} | ${celula(e.arquivo ?? e.teste)} | ${e.dispositivo ?? 'desktop'} | ${e.avatar} | ${e.casos ? `${e.casos.passou}/${e.casos.passou + e.casos.falhou + e.casos.pulado}` : ''}${e.instavel ? ' (instável)' : ''} | ${dur(e.duracaoMs)} | ${celula(e.erro ?? '')} | ${e.triagem ? `${CATEGORIAS[e.triagem.categoria]} (${e.triagem.confianca}${e.triagem.modo === 'ia' ? ', Claude' : ''}): ${celula(e.triagem.proximoPasso)}` : ''} |`),
     '',
   ];
   return linhas.join('\n');

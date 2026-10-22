@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-10-22T18:24:40.142Z",
+  "geradoEm": "2026-10-22T23:54:52.681Z",
   "testes": [
     {
       "id": "paginas-principais",
@@ -32,7 +32,7 @@
       "qtdTestes": 3,
       "exigeAvatar": null,
       "hash": "f5180c57b9e91e2b",
-      "atualizadoEm": "2026-10-22T18:24:40.134Z",
+      "atualizadoEm": "2026-10-22T23:54:52.675Z",
       "avisos": []
     },
     {
@@ -54,7 +54,7 @@
       "qtdTestes": 1,
       "exigeAvatar": "admin",
       "hash": "51cd0b17840cf7a9",
-      "atualizadoEm": "2026-10-22T18:24:40.134Z",
+      "atualizadoEm": "2026-10-22T23:54:52.675Z",
       "avisos": [
         {
           "regra": "caminho pessoal",
@@ -95,7 +95,7 @@
       "qtdTestes": 3,
       "exigeAvatar": null,
       "hash": "6b6850f1e838ce28",
-      "atualizadoEm": "2026-10-22T18:24:40.138Z",
+      "atualizadoEm": "2026-10-22T23:54:52.678Z",
       "avisos": []
     },
     {
@@ -129,7 +129,7 @@
       "qtdTestes": 4,
       "exigeAvatar": null,
       "hash": "ad43997482d6540a",
-      "atualizadoEm": "2026-10-22T18:24:40.140Z",
+      "atualizadoEm": "2026-10-22T23:54:52.679Z",
       "avisos": []
     },
     {
@@ -163,7 +163,7 @@
       "qtdTestes": 4,
       "exigeAvatar": null,
       "hash": "d3b130c2e6c6fea0",
-      "atualizadoEm": "2026-10-22T18:24:40.140Z",
+      "atualizadoEm": "2026-10-22T23:54:52.680Z",
       "avisos": []
     },
     {
@@ -185,7 +185,7 @@
       "qtdTestes": 1,
       "exigeAvatar": null,
       "hash": "f1d00f3045166f7d",
-      "atualizadoEm": "2026-10-22T18:24:40.140Z",
+      "atualizadoEm": "2026-10-22T23:54:52.680Z",
       "avisos": []
     },
     {
@@ -211,7 +211,7 @@
       "qtdTestes": 2,
       "exigeAvatar": null,
       "hash": "b98678227159b5a6",
-      "atualizadoEm": "2026-10-22T18:24:40.140Z",
+      "atualizadoEm": "2026-10-22T23:54:52.680Z",
       "avisos": []
     },
     {
@@ -229,7 +229,7 @@
       "qtdTestes": 1,
       "exigeAvatar": null,
       "hash": "fe0cec7d30aada69",
-      "atualizadoEm": "2026-10-22T18:24:40.141Z",
+      "atualizadoEm": "2026-10-22T23:54:52.680Z",
       "avisos": []
     },
     {
@@ -251,7 +251,7 @@
       "qtdTestes": 2,
       "exigeAvatar": null,
       "hash": "d9cc8237819f8e13",
-      "atualizadoEm": "2026-10-22T18:24:40.141Z",
+      "atualizadoEm": "2026-10-22T23:54:52.680Z",
       "avisos": []
     },
     {
@@ -280,8 +280,8 @@
       ],
       "qtdTestes": 3,
       "exigeAvatar": null,
-      "hash": "709887babae307b6",
-      "atualizadoEm": "2026-10-22T18:24:40.141Z",
+      "hash": "9eb0d6c3b99f1e33",
+      "atualizadoEm": "2026-10-22T23:54:52.680Z",
       "avisos": []
     },
     {
@@ -303,7 +303,7 @@
       "qtdTestes": 1,
       "exigeAvatar": null,
       "hash": "67445898d1ba5d22",
-      "atualizadoEm": "2026-10-22T18:24:40.141Z",
+      "atualizadoEm": "2026-10-22T23:54:52.681Z",
       "avisos": []
     },
     {
@@ -325,7 +325,7 @@
       "qtdTestes": 1,
       "exigeAvatar": null,
       "hash": "39ac4a0716bc32be",
-      "atualizadoEm": "2026-10-22T18:24:40.141Z",
+      "atualizadoEm": "2026-10-22T23:54:52.681Z",
       "avisos": []
     },
     {
@@ -354,8 +354,8 @@
       ],
       "qtdTestes": 3,
       "exigeAvatar": null,
-      "hash": "66ae379c65484a3e",
-      "atualizadoEm": "2026-10-22T18:24:40.141Z",
+      "hash": "23211a37538e31b7",
+      "atualizadoEm": "2026-10-22T23:54:52.681Z",
       "avisos": []
     }
   ]

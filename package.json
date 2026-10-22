@@ -15,12 +15,18 @@
     "test:scripts": "node --test scripts/lib/*.test.mjs scripts/lib/ia/*.test.mjs",
     "gerar": "node scripts/gerar-testes.mjs",
     "aprovar": "node scripts/aprovar.mjs",
-    "resumo": "node scripts/resumo-ci.mjs"
+    "resumo": "node scripts/resumo-ci.mjs",
+    "triar": "node scripts/triar.mjs",
+    "lint": "eslint .",
+    "checar:rascunhos": "node scripts/checar-rascunhos.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.52.0",
     "@types/node": "^22.10.2",
-    "typescript": "^5.6.3"
+    "eslint": "^9.17.0",
+    "eslint-plugin-playwright": "^2.1.0",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.18.0"
   },
   "engines": {
     "node": ">=20.12"

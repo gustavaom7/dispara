@@ -9,6 +9,8 @@ Os testes rodam de verdade contra o [Toolshop](https://practicesoftwaretesting.c
 | Habilidade | Onde ver |
 | --- | --- |
 | **IA aplicada a QA:** história de usuário → casos positivos, negativos e de borda + rascunho Playwright, com checagens e correção automática | `scripts/gerar-testes.mjs`, `scripts/lib/ia/` |
+| **IA na triagem de falhas:** cada falha recebe um diagnóstico (bug no produto, teste desatualizado, instabilidade ou ambiente) com evidências e próximo passo | `scripts/triar.mjs`, `scripts/lib/ia/triagem.mjs` |
+| Lint dos testes com `eslint-plugin-playwright` no CI | `eslint.config.mjs` |
 | Testes E2E de UI com Playwright (29 casos em 13 arquivos, mais 3 no celular) | `exemplo-autor/` |
 | Page objects para as telas do Toolshop | `paginas/` |
 | Testes de API com o `request` do Playwright (produtos, autenticação, carrinho) | `exemplo-autor/api/` |
@@ -19,7 +21,7 @@ Os testes rodam de verdade contra o [Toolshop](https://practicesoftwaretesting.c
 | Seletores estáveis (`data-test`) conferidos contra o código-fonte da aplicação | `npm run checar` |
 | Segredos fora do código e limpeza automática na publicação | `scripts/lib/sanitizar.mjs` |
 | CI com matriz de ambientes, nova tentativa, relatório publicado e execução diária | `.github/workflows/testes.yml` |
-| Testes dos próprios scripts (33 testes com `node:test`, incluindo o gerador) | `scripts/lib/**/*.test.mjs` |
+| Testes dos próprios scripts (47 testes com `node:test`, incluindo gerador e triagem) | `scripts/lib/**/*.test.mjs` |
 | Ferramenta interna com UI (catálogo, execuções, revisão de segurança) | `site/template.html` |
 
 ## Como funciona
@@ -58,6 +60,18 @@ Como funciona:
 5. **Revisão humana:** o rascunho aparece na tela **Rascunhos de IA**. `npm run aprovar` confere tudo de novo, copia o arquivo para a pasta da autora e registra quem aprovou. Daí em diante ele é um teste como outro qualquer.
 
 Os três exemplos em `historias/` têm respostas gravadas, para tudo funcionar sem chave. O de favoritos mostra a correção: na primeira tentativa a IA inventa o seletor `add-to-favourites` e usa `waitForTimeout`, e as checagens pegam os dois.
+
+## Triagem de falhas
+
+Depois de cada execução no CI, cada arquivo que falhou recebe um diagnóstico, que aparece na tela de Execuções e no resumo do GitHub Actions.
+
+```bash
+npm run triar -- --execucoes parcial/estavel.json --relatorio-json test-results/cliente.json
+```
+
+- **Com `ANTHROPIC_API_KEY`** (no `.env` ou como secret do repositório), quem classifica é o Claude. Ele recebe a mensagem de erro completa, o código do teste, o histórico daquele teste nos outros ambientes e sinais já calculados.
+- **Sem a chave**, regras locais fazem a mesma classificação, com confiança mais baixa. Exemplos: falha de rede ou `.env` faltando é problema de ambiente; seletor que não existe mais no Toolshop é teste desatualizado; falha só no ambiente com bugs, passando no estável, é bug no produto; teste que alterna entre passar e falhar é instabilidade.
+- Se a IA responder fora do formato ou a chamada falhar, as regras assumem e o motivo fica anotado. O pipeline nunca para por causa da triagem.
 
 ## Rodando na sua máquina
 
@@ -114,6 +128,9 @@ O arquivo `exemplo-autor/admin/pedidos.spec.ts` tem um caminho pessoal e um e-ma
 | `npm run gerar -- --historia <arquivo.md>` | Gera casos e rascunho com IA (`--simular` usa a gravação) |
 | `npm run aprovar -- <id>` | Aprova um rascunho de IA e copia para a pasta da autora |
 | `npm run resumo -- <parcial.json>` | Resumo em Markdown de uma execução (usado no GitHub Actions) |
+| `npm run triar -- --execucoes <arquivo>` | Diagnostica as falhas de uma execução (Claude ou regras) |
+| `npm run lint` | ESLint com as regras do Playwright |
+| `npm run checar:rascunhos` | Confere se os rascunhos de IA continuam válidos |
 | `npm run tipos` | Typecheck dos testes |
 | `npm run test:scripts` | Testes dos scripts do Dispara |
 
@@ -127,6 +144,6 @@ O site fica em `https://<usuario>.github.io/dispara/`, com os relatórios do Pla
 
 ## Próximos passos
 
-- **IA para triagem de falhas:** ler o trace de um teste que falhou e sugerir se é bug, instabilidade ou teste desatualizado.
+- **Triagem com o trace:** mandar para o Claude também o passo do trace onde o teste quebrou e o screenshot da falha.
 - **Login e papéis no site** com Supabase ou login do GitHub.
 - **App de apostas próprio** como segundo alvo, para cobrir o domínio de iGaming.
