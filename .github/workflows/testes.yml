@@ -1,0 +1,137 @@
+name: Testes
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    # Todo dia às 06:17 de Brasília: mostra a tendência e pega mudanças no Toolshop
+    - cron: '17 9 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: testes-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PAGES_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
+
+jobs:
+  verificar:
+    name: Scripts, tipos e seletores
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - name: Testes dos scripts do Dispara
+        run: npm run test:scripts
+      - name: Typecheck dos testes
+        run: npm run tipos
+      - name: Seletores contra o mapa versionado
+        run: npm run checar
+      - name: Seletores contra o código atual do Toolshop
+        # Só avisa: se o Toolshop mudou, o mapa em ref/ precisa ser atualizado (npm run mapear)
+        continue-on-error: true
+        run: npm run checar -- --atualizar
+
+  testes:
+    name: Playwright · ${{ matrix.ambiente }}
+    needs: verificar
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        ambiente: [estavel, com-bugs]
+    # Em "com-bugs" as falhas são esperadas: não derrubam o pipeline
+    continue-on-error: ${{ matrix.ambiente == 'com-bugs' }}
+    env:
+      AMBIENTE: ${{ matrix.ambiente }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Contas de teste (públicas, veja .env.example)
+        run: cp .env.example .env
+      - name: Sincroniza o catálogo publicado
+        run: npm run sync
+
+      - name: Roda o catálogo com a conta Cliente
+        id: cliente
+        env:
+          RELATORIO_HTML: relatorios/${{ matrix.ambiente }}/cliente
+          RELATORIO_JSON: test-results/cliente.json
+        run: npm run t -- --todos --exceto=pedidos --ambiente=${{ matrix.ambiente }} --avatar=cliente --sem-sync
+
+      - name: Roda os testes de admin com a conta Admin
+        id: admin
+        if: ${{ !cancelled() }}
+        env:
+          RELATORIO_HTML: relatorios/${{ matrix.ambiente }}/admin
+          RELATORIO_JSON: test-results/admin.json
+        run: npm run t -- pedidos login --ambiente=${{ matrix.ambiente }} --avatar=admin --sem-sync
+
+      - name: Registra os resultados
+        if: ${{ !cancelled() }}
+        run: |
+          npm run coletar -- --relatorio-json test-results/cliente.json --historico parcial/${{ matrix.ambiente }}.json \
+            --ambiente ${{ matrix.ambiente }} --avatar cliente --origem ci --quem "${{ github.actor }}" \
+            --url-relatorio "$PAGES_URL/relatorios/${{ matrix.ambiente }}/cliente/"
+          npm run coletar -- --relatorio-json test-results/admin.json --historico parcial/${{ matrix.ambiente }}.json \
+            --ambiente ${{ matrix.ambiente }} --avatar admin --origem ci --quem "${{ github.actor }}" \
+            --url-relatorio "$PAGES_URL/relatorios/${{ matrix.ambiente }}/admin/"
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: resultado-${{ matrix.ambiente }}
+          path: |
+            relatorios/
+            parcial/
+          retention-days: 14
+
+  site:
+    name: Publica site e relatórios
+    needs: testes
+    if: ${{ !cancelled() && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: resultado-*
+          merge-multiple: true
+      - name: Junta com o histórico já publicado
+        run: |
+          mkdir -p resultados
+          curl -fsSL "$PAGES_URL/dados/execucoes.json" -o resultados/execucoes.json || echo '[]' > resultados/execucoes.json
+          npm run coletar -- --juntar parcial/*.json --historico resultados/execucoes.json
+      - name: Gera o site
+        run: npm run site -- --repo "https://github.com/${{ github.repository }}.git"
+      - name: Monta a pasta publicada
+        run: |
+          mkdir -p site/dist/dados
+          cp resultados/execucoes.json site/dist/dados/execucoes.json
+          rm -f site/dist/fragmento.html
+          if [ -d relatorios ]; then cp -r relatorios site/dist/relatorios; fi
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with: { path: site/dist }
+      - id: deploy
+        uses: actions/deploy-pages@v4

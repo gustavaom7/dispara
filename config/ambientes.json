@@ -1,0 +1,24 @@
+[
+  {
+    "id": "estavel",
+    "nome": "Estável",
+    "descricao": "Sprint 5, a versão atual do Toolshop",
+    "baseURL": "https://practicesoftwaretesting.com",
+    "apiURL": "https://api.practicesoftwaretesting.com",
+    "padrao": true
+  },
+  {
+    "id": "com-bugs",
+    "nome": "Com bugs",
+    "descricao": "Sprint 5 com defeitos plantados de propósito: falhas aqui são esperadas",
+    "baseURL": "https://with-bugs.practicesoftwaretesting.com",
+    "apiURL": "https://api-with-bugs.practicesoftwaretesting.com"
+  },
+  {
+    "id": "sprint4",
+    "nome": "Sprint 4",
+    "descricao": "Versão anterior, sem algumas funcionalidades da sprint 5",
+    "baseURL": "https://v4.practicesoftwaretesting.com",
+    "apiURL": "https://api-v4.practicesoftwaretesting.com"
+  }
+]

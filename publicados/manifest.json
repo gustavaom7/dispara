@@ -1,0 +1,264 @@
+{
+  "geradoEm": "2026-10-22T17:11:40.431Z",
+  "testes": [
+    {
+      "id": "pedidos",
+      "titulo": "Admin vê a lista de pedidos",
+      "arquivo": "admin/pedidos.spec.ts",
+      "area": "admin",
+      "tags": [
+        "regressao"
+      ],
+      "casos": [
+        {
+          "titulo": "Admin vê a lista de pedidos",
+          "tags": [
+            "regressao"
+          ]
+        }
+      ],
+      "qtdTestes": 1,
+      "exigeAvatar": "admin",
+      "hash": "a06b55d720cae756",
+      "atualizadoEm": "2026-10-22T17:11:40.425Z",
+      "avisos": [
+        {
+          "regra": "caminho pessoal",
+          "linha": 16,
+          "dica": "use arquivo(\"nome\") e coloque o arquivo em /arquivos"
+        },
+        {
+          "regra": "e-mail real",
+          "linha": 17,
+          "dica": "use conta.email"
+        }
+      ]
+    },
+    {
+      "id": "autenticacao",
+      "titulo": "API de autenticação",
+      "arquivo": "api/autenticacao.spec.ts",
+      "area": "api",
+      "tags": [
+        "smoke"
+      ],
+      "casos": [
+        {
+          "titulo": "Gera token e identifica a conta",
+          "tags": [
+            "smoke"
+          ]
+        },
+        {
+          "titulo": "Recusa credenciais de quem não tem conta",
+          "tags": []
+        },
+        {
+          "titulo": "Bloqueia /users/me sem token",
+          "tags": []
+        }
+      ],
+      "qtdTestes": 3,
+      "exigeAvatar": null,
+      "hash": "6b6850f1e838ce28",
+      "atualizadoEm": "2026-10-22T17:11:40.428Z",
+      "avisos": []
+    },
+    {
+      "id": "produtos",
+      "titulo": "API de produtos",
+      "arquivo": "api/produtos.spec.ts",
+      "area": "api",
+      "tags": [
+        "smoke"
+      ],
+      "casos": [
+        {
+          "titulo": "Lista produtos com paginação",
+          "tags": [
+            "smoke"
+          ]
+        },
+        {
+          "titulo": "Busca um produto pelo id",
+          "tags": []
+        },
+        {
+          "titulo": "Retorna 404 para produto que não existe",
+          "tags": []
+        },
+        {
+          "titulo": "Pesquisa produtos pelo nome",
+          "tags": []
+        }
+      ],
+      "qtdTestes": 4,
+      "exigeAvatar": null,
+      "hash": "d3b130c2e6c6fea0",
+      "atualizadoEm": "2026-10-22T17:11:40.428Z",
+      "avisos": []
+    },
+    {
+      "id": "adicionar-produto",
+      "titulo": "Adiciona 2 unidades ao carrinho com o total certo",
+      "arquivo": "carrinho/adicionar-produto.spec.ts",
+      "area": "carrinho",
+      "tags": [
+        "smoke"
+      ],
+      "casos": [
+        {
+          "titulo": "Adiciona 2 unidades ao carrinho com o total certo",
+          "tags": [
+            "smoke"
+          ]
+        }
+      ],
+      "qtdTestes": 1,
+      "exigeAvatar": null,
+      "hash": "0057c31cc1633cfd",
+      "atualizadoEm": "2026-10-22T17:11:40.428Z",
+      "avisos": []
+    },
+    {
+      "id": "busca",
+      "titulo": "Busca",
+      "arquivo": "catalogo/busca.spec.ts",
+      "area": "catalogo",
+      "tags": [
+        "smoke"
+      ],
+      "casos": [
+        {
+          "titulo": "Encontra produtos pelo nome",
+          "tags": [
+            "smoke"
+          ]
+        },
+        {
+          "titulo": "Avisa quando nada é encontrado",
+          "tags": []
+        }
+      ],
+      "qtdTestes": 2,
+      "exigeAvatar": null,
+      "hash": "b2977999931faa3e",
+      "atualizadoEm": "2026-10-22T17:11:40.429Z",
+      "avisos": []
+    },
+    {
+      "id": "detalhe-produto",
+      "titulo": "Mostra o mesmo nome e preço da listagem no detalhe",
+      "arquivo": "catalogo/detalhe-produto.spec.ts",
+      "area": "catalogo",
+      "tags": [],
+      "casos": [
+        {
+          "titulo": "Mostra o mesmo nome e preço da listagem no detalhe",
+          "tags": []
+        }
+      ],
+      "qtdTestes": 1,
+      "exigeAvatar": null,
+      "hash": "506314b67a7795be",
+      "atualizadoEm": "2026-10-22T17:11:40.429Z",
+      "avisos": []
+    },
+    {
+      "id": "filtro-e-ordenacao",
+      "titulo": "Filtro e ordenação",
+      "arquivo": "catalogo/filtro-e-ordenacao.spec.ts",
+      "area": "catalogo",
+      "tags": [],
+      "casos": [
+        {
+          "titulo": "Filtra pela categoria Hammer",
+          "tags": []
+        },
+        {
+          "titulo": "Ordena por preço do menor para o maior",
+          "tags": []
+        }
+      ],
+      "qtdTestes": 2,
+      "exigeAvatar": null,
+      "hash": "741ada0d302ea185",
+      "atualizadoEm": "2026-10-22T17:11:40.429Z",
+      "avisos": []
+    },
+    {
+      "id": "compra-como-convidado",
+      "titulo": "Compra como convidado até o número da fatura",
+      "arquivo": "checkout/compra-como-convidado.spec.ts",
+      "area": "checkout",
+      "tags": [
+        "destrutivo"
+      ],
+      "casos": [
+        {
+          "titulo": "Compra como convidado até o número da fatura",
+          "tags": [
+            "destrutivo"
+          ]
+        }
+      ],
+      "qtdTestes": 1,
+      "exigeAvatar": null,
+      "hash": "8a6b33f897b9f713",
+      "atualizadoEm": "2026-10-22T17:11:40.429Z",
+      "avisos": []
+    },
+    {
+      "id": "cadastro",
+      "titulo": "Cadastra cliente novo e entra com ele",
+      "arquivo": "conta/cadastro.spec.ts",
+      "area": "conta",
+      "tags": [
+        "destrutivo"
+      ],
+      "casos": [
+        {
+          "titulo": "Cadastra cliente novo e entra com ele",
+          "tags": [
+            "destrutivo"
+          ]
+        }
+      ],
+      "qtdTestes": 1,
+      "exigeAvatar": null,
+      "hash": "b0e3520bcf6652ea",
+      "atualizadoEm": "2026-10-22T17:11:40.429Z",
+      "avisos": []
+    },
+    {
+      "id": "login",
+      "titulo": "Login",
+      "arquivo": "conta/login.spec.ts",
+      "area": "conta",
+      "tags": [
+        "smoke"
+      ],
+      "casos": [
+        {
+          "titulo": "Entra com credenciais válidas",
+          "tags": [
+            "smoke"
+          ]
+        },
+        {
+          "titulo": "Recusa e-mail que não existe",
+          "tags": []
+        },
+        {
+          "titulo": "Exige e-mail e senha antes de enviar",
+          "tags": []
+        }
+      ],
+      "qtdTestes": 3,
+      "exigeAvatar": null,
+      "hash": "bbcd7b2e4018362f",
+      "atualizadoEm": "2026-10-22T17:11:40.431Z",
+      "avisos": []
+    }
+  ]
+}

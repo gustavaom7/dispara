@@ -1,0 +1,25 @@
+{
+  "name": "dispara",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Catálogo self-service de testes Playwright contra o Toolshop: qualquer pessoa do time escolhe ambiente e conta de teste e roda na própria máquina.",
+  "scripts": {
+    "t": "node scripts/rodar.mjs",
+    "publicar": "node scripts/publicar.mjs",
+    "sync": "node scripts/sincronizar.mjs",
+    "site": "node scripts/gerar-site.mjs",
+    "coletar": "node scripts/coletar-resultados.mjs",
+    "mapear": "node scripts/mapear-toolshop.mjs",
+    "checar": "node scripts/checar-seletores.mjs",
+    "tipos": "tsc -p tsconfig.json",
+    "test:scripts": "node --test scripts/lib/*.test.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.52.0",
+    "@types/node": "^22.10.2",
+    "typescript": "^5.6.3"
+  },
+  "engines": {
+    "node": ">=20.12"
+  }
+}

@@ -1,0 +1,20 @@
+[
+  {
+    "quando": "2026-10-22T17:11:40.431Z",
+    "autor": "Gustavo",
+    "adicionados": [
+      "pedidos",
+      "autenticacao",
+      "produtos",
+      "adicionar-produto",
+      "busca",
+      "detalhe-produto",
+      "filtro-e-ordenacao",
+      "compra-como-convidado",
+      "cadastro",
+      "login"
+    ],
+    "alterados": [],
+    "removidos": []
+  }
+]

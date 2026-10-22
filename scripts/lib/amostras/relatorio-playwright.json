@@ -1,0 +1,399 @@
+{
+ "config": {
+  "argv": [
+   "/opt/node22/bin/node",
+   "/projeto/node_modules/.bin/playwright",
+   "test",
+   "-c",
+   "pw.config.ts"
+  ],
+  "configFile": "/projeto/pw.config.ts",
+  "rootDir": "/projeto/t",
+  "failOnFlakyTests": false,
+  "forbidOnly": false,
+  "fullyParallel": false,
+  "globalSetup": null,
+  "globalTeardown": null,
+  "globalTimeout": 0,
+  "grep": {},
+  "grepInvert": null,
+  "maxFailures": 0,
+  "metadata": {
+   "ambiente": "com-bugs",
+   "actualWorkers": 1
+  },
+  "preserveOutput": "always",
+  "projects": [
+   {
+    "outputDir": "/projeto/test-results",
+    "repeatEach": 1,
+    "retries": 1,
+    "metadata": {
+     "ambiente": "com-bugs",
+     "actualWorkers": 1
+    },
+    "id": "",
+    "name": "",
+    "testDir": "/projeto/t",
+    "testIgnore": [],
+    "testMatch": [
+     "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+    ],
+    "timeout": 30000
+   }
+  ],
+  "filteredProjects": [
+   {
+    "grep": {},
+    "grepInvert": null,
+    "outputDir": "/projeto/test-results",
+    "repeatEach": 1,
+    "retries": 1,
+    "metadata": {
+     "ambiente": "com-bugs",
+     "actualWorkers": 1
+    },
+    "name": "",
+    "testDir": "/projeto/t",
+    "snapshotDir": "/projeto/t",
+    "testIgnore": [],
+    "testMatch": "**/*.@(spec|test).?(c|m)[jt]s?(x)",
+    "timeout": 30000,
+    "use": {},
+    "dependencies": [],
+    "ignoreSnapshots": false,
+    "__projectId": ""
+   }
+  ],
+  "quiet": false,
+  "reporter": [
+   [
+    "json",
+    {
+     "outputFile": "resultado.json"
+    }
+   ]
+  ],
+  "reportSlowTests": {
+   "max": 5,
+   "threshold": 300000
+  },
+  "shard": null,
+  "tags": [],
+  "updateSnapshots": "default",
+  "updateSourceMethod": "patch",
+  "version": "1.64.1",
+  "workers": 1,
+  "webServer": null
+ },
+ "suites": [
+  {
+   "title": "api/produtos.spec.ts",
+   "file": "api/produtos.spec.ts",
+   "column": 0,
+   "line": 0,
+   "specs": [
+    {
+     "title": "falha de verdade",
+     "ok": false,
+     "tags": [],
+     "tests": [
+      {
+       "timeout": 30000,
+       "annotations": [],
+       "expectedStatus": "passed",
+       "projectId": "",
+       "projectName": "",
+       "results": [
+        {
+         "workerIndex": 0,
+         "parallelIndex": 0,
+         "status": "failed",
+         "duration": 13,
+         "error": {
+          "message": "Error: status da API\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m200\u001b[39m\nReceived: \u001b[31m404\u001b[39m",
+          "stack": "Error: status da API\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m200\u001b[39m\nReceived: \u001b[31m404\u001b[39m\n    at /projeto/t/api/produtos.spec.ts:2:69",
+          "location": {
+           "file": "/projeto/t/api/produtos.spec.ts",
+           "column": 69,
+           "line": 2
+          },
+          "snippet": "  1 | import { test, expect } from '@playwright/test';\n> 2 | test('falha de verdade', async () => { expect(404, 'status da API').toBe(200); });\n    |                                                                     ^\n  3 | test('instável', async ({}, info) => { expect(info.retry).toBe(1); });\n  4 |"
+         },
+         "errors": [
+          {
+           "location": {
+            "file": "/projeto/t/api/produtos.spec.ts",
+            "column": 69,
+            "line": 2
+           },
+           "message": "Error: status da API\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m200\u001b[39m\nReceived: \u001b[31m404\u001b[39m\n\n  1 | import { test, expect } from '@playwright/test';\n> 2 | test('falha de verdade', async () => { expect(404, 'status da API').toBe(200); });\n    |                                                                     ^\n  3 | test('instável', async ({}, info) => { expect(info.retry).toBe(1); });\n  4 |\n    at /projeto/t/api/produtos.spec.ts:2:69"
+          }
+         ],
+         "stdout": [],
+         "stderr": [],
+         "retry": 0,
+         "startTime": "2026-10-22T17:12:39.622Z",
+         "annotations": [],
+         "attachments": [
+          {
+           "name": "error-context",
+           "contentType": "text/markdown",
+           "path": "/projeto/test-results/api-produtos-falha-de-verdade/error-context.md"
+          }
+         ],
+         "errorLocation": {
+          "file": "/projeto/t/api/produtos.spec.ts",
+          "column": 69,
+          "line": 2
+         }
+        },
+        {
+         "workerIndex": 1,
+         "parallelIndex": 0,
+         "status": "failed",
+         "duration": 16,
+         "error": {
+          "message": "Error: status da API\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m200\u001b[39m\nReceived: \u001b[31m404\u001b[39m",
+          "stack": "Error: status da API\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m200\u001b[39m\nReceived: \u001b[31m404\u001b[39m\n    at /projeto/t/api/produtos.spec.ts:2:69",
+          "location": {
+           "file": "/projeto/t/api/produtos.spec.ts",
+           "column": 69,
+           "line": 2
+          },
+          "snippet": "  1 | import { test, expect } from '@playwright/test';\n> 2 | test('falha de verdade', async () => { expect(404, 'status da API').toBe(200); });\n    |                                                                     ^\n  3 | test('instável', async ({}, info) => { expect(info.retry).toBe(1); });\n  4 |"
+         },
+         "errors": [
+          {
+           "location": {
+            "file": "/projeto/t/api/produtos.spec.ts",
+            "column": 69,
+            "line": 2
+           },
+           "message": "Error: status da API\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m200\u001b[39m\nReceived: \u001b[31m404\u001b[39m\n\n  1 | import { test, expect } from '@playwright/test';\n> 2 | test('falha de verdade', async () => { expect(404, 'status da API').toBe(200); });\n    |                                                                     ^\n  3 | test('instável', async ({}, info) => { expect(info.retry).toBe(1); });\n  4 |\n    at /projeto/t/api/produtos.spec.ts:2:69"
+          }
+         ],
+         "stdout": [],
+         "stderr": [],
+         "retry": 1,
+         "startTime": "2026-10-22T17:12:40.429Z",
+         "annotations": [],
+         "attachments": [
+          {
+           "name": "error-context",
+           "contentType": "text/markdown",
+           "path": "/projeto/test-results/api-produtos-falha-de-verdade-retry1/error-context.md"
+          }
+         ],
+         "errorLocation": {
+          "file": "/projeto/t/api/produtos.spec.ts",
+          "column": 69,
+          "line": 2
+         }
+        }
+       ],
+       "status": "unexpected"
+      }
+     ],
+     "id": "1c966aeadcb3b5804e31-46dc3065e1d0f748cb36",
+     "file": "api/produtos.spec.ts",
+     "line": 2,
+     "column": 5
+    },
+    {
+     "title": "instável",
+     "ok": true,
+     "tags": [],
+     "tests": [
+      {
+       "timeout": 30000,
+       "annotations": [],
+       "expectedStatus": "passed",
+       "projectId": "",
+       "projectName": "",
+       "results": [
+        {
+         "workerIndex": 2,
+         "parallelIndex": 0,
+         "status": "failed",
+         "duration": 14,
+         "error": {
+          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m1\u001b[39m\nReceived: \u001b[31m0\u001b[39m",
+          "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m1\u001b[39m\nReceived: \u001b[31m0\u001b[39m\n    at /projeto/t/api/produtos.spec.ts:3:59",
+          "location": {
+           "file": "/projeto/t/api/produtos.spec.ts",
+           "column": 59,
+           "line": 3
+          },
+          "snippet": "  1 | import { test, expect } from '@playwright/test';\n  2 | test('falha de verdade', async () => { expect(404, 'status da API').toBe(200); });\n> 3 | test('instável', async ({}, info) => { expect(info.retry).toBe(1); });\n    |                                                           ^\n  4 |"
+         },
+         "errors": [
+          {
+           "location": {
+            "file": "/projeto/t/api/produtos.spec.ts",
+            "column": 59,
+            "line": 3
+           },
+           "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m1\u001b[39m\nReceived: \u001b[31m0\u001b[39m\n\n  1 | import { test, expect } from '@playwright/test';\n  2 | test('falha de verdade', async () => { expect(404, 'status da API').toBe(200); });\n> 3 | test('instável', async ({}, info) => { expect(info.retry).toBe(1); });\n    |                                                           ^\n  4 |\n    at /projeto/t/api/produtos.spec.ts:3:59"
+          }
+         ],
+         "stdout": [],
+         "stderr": [],
+         "retry": 0,
+         "startTime": "2026-10-22T17:12:41.172Z",
+         "annotations": [],
+         "attachments": [
+          {
+           "name": "error-context",
+           "contentType": "text/markdown",
+           "path": "/projeto/test-results/api-produtos-instável/error-context.md"
+          }
+         ],
+         "errorLocation": {
+          "file": "/projeto/t/api/produtos.spec.ts",
+          "column": 59,
+          "line": 3
+         }
+        },
+        {
+         "workerIndex": 3,
+         "parallelIndex": 0,
+         "status": "passed",
+         "duration": 13,
+         "errors": [],
+         "stdout": [],
+         "stderr": [],
+         "retry": 1,
+         "startTime": "2026-10-22T17:12:41.885Z",
+         "annotations": [],
+         "attachments": []
+        }
+       ],
+       "status": "flaky"
+      }
+     ],
+     "id": "1c966aeadcb3b5804e31-96c1bfa33f404dbc8700",
+     "file": "api/produtos.spec.ts",
+     "line": 3,
+     "column": 5
+    }
+   ]
+  },
+  {
+   "title": "conta/login.spec.ts",
+   "file": "conta/login.spec.ts",
+   "column": 0,
+   "line": 0,
+   "specs": [],
+   "suites": [
+    {
+     "title": "Login",
+     "file": "conta/login.spec.ts",
+     "line": 2,
+     "column": 6,
+     "specs": [
+      {
+       "title": "passa @smoke",
+       "ok": true,
+       "tags": [
+        "smoke"
+       ],
+       "tests": [
+        {
+         "timeout": 30000,
+         "annotations": [],
+         "expectedStatus": "passed",
+         "projectId": "",
+         "projectName": "",
+         "results": [
+          {
+           "workerIndex": 3,
+           "parallelIndex": 0,
+           "status": "passed",
+           "duration": 11,
+           "errors": [],
+           "stdout": [],
+           "stderr": [],
+           "retry": 0,
+           "startTime": "2026-10-22T17:12:41.974Z",
+           "annotations": [],
+           "attachments": []
+          }
+         ],
+         "status": "expected"
+        }
+       ],
+       "id": "5c30c97bda6ae5594100-d11afcb672b7feefba71",
+       "file": "conta/login.spec.ts",
+       "line": 3,
+       "column": 7
+      },
+      {
+       "title": "pulado",
+       "ok": true,
+       "tags": [],
+       "tests": [
+        {
+         "timeout": 30000,
+         "annotations": [
+          {
+           "type": "skip",
+           "description": "Rode com a conta \"Admin\"",
+           "location": {
+            "file": "/projeto/t/conta/login.spec.ts",
+            "line": 4,
+            "column": 37
+           }
+          }
+         ],
+         "expectedStatus": "skipped",
+         "projectId": "",
+         "projectName": "",
+         "results": [
+          {
+           "workerIndex": 3,
+           "parallelIndex": 0,
+           "status": "skipped",
+           "duration": 8,
+           "errors": [],
+           "stdout": [],
+           "stderr": [],
+           "retry": 0,
+           "startTime": "2026-10-22T17:12:42.029Z",
+           "annotations": [
+            {
+             "type": "skip",
+             "description": "Rode com a conta \"Admin\"",
+             "location": {
+              "file": "/projeto/t/conta/login.spec.ts",
+              "line": 4,
+              "column": 37
+             }
+            }
+           ],
+           "attachments": []
+          }
+         ],
+         "status": "skipped"
+        }
+       ],
+       "id": "5c30c97bda6ae5594100-276796eb2941ca58afc3",
+       "file": "conta/login.spec.ts",
+       "line": 4,
+       "column": 7
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "errors": [],
+ "stats": {
+  "startTime": "2026-10-22T17:12:39.011Z",
+  "duration": 3082.415,
+  "expected": 1,
+  "skipped": 1,
+  "unexpected": 1,
+  "flaky": 1
+ }
+}

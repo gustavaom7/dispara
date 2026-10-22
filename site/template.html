@@ -1,0 +1,1048 @@
+<title>Dispara</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: console de lançamento. Menu lateral escuro e flutuante, área de trabalho clara, painel de detalhes que desliza da direita. */
+:root {
+  --bg: #eef1f6; --surface: #ffffff; --surface-2: #f5f7fb; --ink: #10172a; --muted: #5b6680; --line: #dde3ee; --line-2: #c9d1e1;
+  --accent: #2a46d6; --accent-ink: #1e36b0; --accent-soft: #e5eaff; --on-accent: #ffffff;
+  --ok: #14724a; --ok-soft: #dcf3e7; --danger: #b42330; --danger-soft: #fde7e9; --amber: #8a5000; --amber-soft: #fbefd8;
+  --side-bg: #0f1730; --side-ink: #c8d1ea; --side-dim: #7c88ab; --side-hover: #18223f; --side-active: #222f5c; --side-line: #222d4f; --side-hi: #ffffff;
+  --code-bg: #0e1528; --code-ink: #d6def5; --code-dim: #56638a; --tk-kw: #c9a3ff; --tk-str: #9fe0b0; --tk-com: #6f7da6; --tk-fn: #8fc1ff; --tk-num: #ffc58a;
+  --shadow: 0 1px 2px rgba(16, 23, 42, .05), 0 6px 20px rgba(16, 23, 42, .05);
+  --shadow-lg: 0 24px 60px rgba(10, 15, 30, .25);
+  --scrim: rgba(10, 15, 30, .42);
+  --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0a0f1e; --surface: #111930; --surface-2: #161f39; --ink: #e6eaf5; --muted: #94a0bd; --line: #222c48; --line-2: #2f3b5e;
+  --accent: #8da1ff; --accent-ink: #b3c1ff; --accent-soft: #1c2852; --on-accent: #0a0f1e;
+  --ok: #5fd39c; --ok-soft: #123020; --danger: #ff8590; --danger-soft: #3a1720; --amber: #f2b45c; --amber-soft: #33240f;
+  --side-bg: #070c19; --side-hover: #101831; --side-active: #1b2650; --side-line: #172140;
+  --code-bg: #070c19;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3); --shadow-lg: 0 24px 60px rgba(0, 0, 0, .55); --scrim: rgba(0, 0, 0, .6);
+  color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0a0f1e; --surface: #111930; --surface-2: #161f39; --ink: #e6eaf5; --muted: #94a0bd; --line: #222c48; --line-2: #2f3b5e;
+  --accent: #8da1ff; --accent-ink: #b3c1ff; --accent-soft: #1c2852; --on-accent: #0a0f1e;
+  --ok: #5fd39c; --ok-soft: #123020; --danger: #ff8590; --danger-soft: #3a1720; --amber: #f2b45c; --amber-soft: #33240f;
+  --side-bg: #070c19; --side-hover: #101831; --side-active: #1b2650; --side-line: #172140;
+  --code-bg: #070c19;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3); --shadow-lg: 0 24px 60px rgba(0, 0, 0, .55); --scrim: rgba(0, 0, 0, .6);
+  color-scheme: dark }
+
+* { box-sizing: border-box }
+[hidden] { display: none !important }
+body { background: var(--bg); color: var(--ink); font: 400 14.5px/1.5 var(--f-body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 16px }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg) }
+button, select, input, textarea { font: inherit; color: inherit }
+button { cursor: pointer }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+code, pre, .mono, kbd { font-family: var(--f-mono) }
+.ic { width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap }
+
+/* ---------- casca ---------- */
+.app { display: grid; grid-template-columns: 248px minmax(0, 1fr); gap: 20px; max-width: 1440px; margin: 0 auto; align-items: start }
+.side { position: sticky; top: calc(16px + env(safe-area-inset-top, 0px)); z-index: 40;
+  height: calc(100dvh - 32px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)); min-height: 520px;
+  background: var(--side-bg); color: var(--side-ink); border-radius: 16px; padding: 18px 12px 14px; display: flex; flex-direction: column; gap: 18px; overflow-y: auto }
+.marca { display: flex; align-items: center; gap: 10px; padding: 0 6px }
+.marca svg { width: 34px; height: 34px; flex: none }
+.marca b { display: block; font: 700 21px/1 var(--f-display); color: var(--side-hi); letter-spacing: -0.01em }
+.marca small { display: block; font-size: 12px; color: var(--side-dim); margin-top: 3px }
+.busca-btn { display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 10px; border-radius: 10px; border: 1px solid var(--side-line); background: transparent; color: var(--side-dim); text-align: left }
+.busca-btn:hover { color: var(--side-ink); border-color: var(--side-dim) }
+.busca-btn span { flex: 1 }
+kbd { font-size: 11px; padding: 1px 6px; border-radius: 5px; border: 1px solid currentColor; opacity: .75 }
+nav { display: grid; gap: 16px }
+.ngrupo { display: grid; gap: 2px }
+.nrot { font-size: 11px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--side-dim); padding: 0 10px 6px }
+.nitem { display: flex; align-items: center; gap: 10px; width: 100%; padding: 8px 10px; border-radius: 9px; border: 0; background: transparent; color: var(--side-ink); text-align: left; font-weight: 500 }
+.nitem:hover { background: var(--side-hover) }
+.nitem[aria-current="page"] { background: var(--side-active); color: var(--side-hi) }
+.nitem[aria-current="page"] .ic { color: var(--accent) }
+:root:not([data-theme="dark"]) .nitem[aria-current="page"] .ic { color: #9fb0ff }
+.nitem span:first-of-type { flex: 1 }
+.nbadge { font: 500 11px/1 var(--f-mono); padding: 3px 7px; border-radius: 999px; background: var(--side-line); color: var(--side-ink) }
+.nbadge.alerta { background: #c4313d; color: #fff }
+.side-pe { margin-top: auto; display: grid; gap: 10px; padding-top: 14px; border-top: 1px solid var(--side-line) }
+.papel { display: grid; gap: 6px; padding: 0 4px }
+.papel > span { font-size: 11px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--side-dim) }
+.seg-escuro { display: grid; grid-template-columns: 1fr 1fr; background: var(--side-hover); border-radius: 9px; padding: 3px }
+.seg-escuro button { border: 0; background: transparent; color: var(--side-dim); border-radius: 7px; padding: 6px; font-size: 13px; font-weight: 500 }
+.seg-escuro button[aria-pressed="true"] { background: var(--side-active); color: var(--side-hi) }
+.pessoa { display: flex; align-items: center; gap: 10px; padding: 4px }
+.avatar { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; font: 600 13px/1 var(--f-body); flex: none; background: #2f3f7c; color: #fff }
+.pessoa b { display: block; font-size: 13px; font-weight: 600; color: var(--side-hi) }
+.pessoa small { color: var(--side-dim); font-size: 12px }
+
+.topm { display: none }
+main { min-width: 0; display: grid; gap: 20px; padding-bottom: 96px }
+.demo { background: var(--amber-soft); color: var(--amber); border: 1px solid color-mix(in srgb, var(--amber) 30%, transparent); border-radius: 10px; padding: 9px 14px; font-size: 13px }
+.demo b { font-weight: 600 }
+.vh { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px 24px; padding-top: 6px }
+.vh h1 { font: 700 30px/1.1 var(--f-display); letter-spacing: -0.02em; margin: 0; text-wrap: balance }
+.vh p { margin: 6px 0 0; color: var(--muted); max-width: 64ch }
+.acoes { display: flex; flex-wrap: wrap; gap: 8px }
+
+/* ---------- peças ---------- */
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); min-width: 0 }
+.card-h { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--line) }
+.card-h h2 { font: 600 16px/1.2 var(--f-display); margin: 0 }
+.card-h .link { font-size: 13px }
+.card-b { padding: 16px }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 8px 13px; border-radius: 9px; border: 1px solid var(--line-2); background: var(--surface); font-weight: 500; font-size: 14px; white-space: nowrap }
+.btn:hover { border-color: var(--muted) }
+.btn .ic { width: 16px; height: 16px }
+.btn.primario { background: var(--accent); border-color: var(--accent); color: var(--on-accent) }
+.btn.primario:hover { background: var(--accent-ink); border-color: var(--accent-ink) }
+.btn.contorno { border-color: var(--accent); color: var(--accent); background: transparent }
+.btn.contorno:hover { background: var(--accent); color: var(--on-accent) }
+.btn:disabled { opacity: .45; cursor: not-allowed; background: transparent; color: var(--muted); border-color: var(--line-2) }
+.btn.pq { padding: 6px 10px; font-size: 13px }
+.link { border: 0; background: none; padding: 0; color: var(--accent); font-weight: 500 }
+.link:hover { text-decoration: underline }
+.ibtn { display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: 8px; border: 0; background: transparent; color: var(--muted) }
+.ibtn:hover { background: var(--surface-2); color: var(--ink) }
+select { padding: 7px 28px 7px 10px; border: 1px solid var(--line-2); border-radius: 8px; background: var(--surface); max-width: 100%; font-size: 14px }
+select.alterado { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent) }
+.tag { display: inline-block; font: 500 11px/1 var(--f-mono); padding: 3px 6px; border-radius: 4px; background: var(--accent-soft); color: var(--accent) }
+.tag.destrutivo { background: var(--danger-soft); color: var(--danger) }
+.tag.smoke { background: var(--ok-soft); color: var(--ok) }
+.tags { display: inline-flex; flex-wrap: wrap; gap: 4px }
+.pill { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 500; padding: 3px 9px 3px 8px; border-radius: 999px; white-space: nowrap }
+.pill::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor }
+.pill.ok { background: var(--ok-soft); color: var(--ok) }
+.pill.falha { background: var(--danger-soft); color: var(--danger) }
+.pill.nada { background: var(--surface-2); color: var(--muted) }
+.badge { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 500; padding: 2px 8px; border-radius: 6px; background: var(--surface-2); color: var(--muted); border: 1px solid var(--line) }
+.badge.protegido { background: var(--danger-soft); color: var(--danger); border-color: transparent }
+.badge.instavel { background: var(--amber-soft); color: var(--amber); border-color: transparent }
+.demo a { color: inherit; font-weight: 600 }
+.badge.padrao { background: var(--accent-soft); color: var(--accent); border-color: transparent }
+.badge .ic { width: 13px; height: 13px }
+.muted { color: var(--muted) }
+.vazio { padding: 40px 20px; text-align: center; color: var(--muted); display: grid; justify-items: center; gap: 8px }
+.vazio .ic { width: 28px; height: 28px; color: var(--line-2) }
+.vazio b { color: var(--ink); font-weight: 600 }
+
+/* ---------- início ---------- */
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px }
+.stat { padding: 16px; display: grid; gap: 4px; align-content: start }
+.stat > span { font-size: 12px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--muted) }
+.stat .valor { display: flex; align-items: end; justify-content: space-between; gap: 10px }
+.stat strong { font: 700 32px/1.05 var(--f-display); font-variant-numeric: tabular-nums; letter-spacing: -0.02em }
+.stat small { color: var(--muted); font-size: 13px }
+.delta-pos { color: var(--ok); font-weight: 500 } .delta-neg { color: var(--danger); font-weight: 500 }
+.spark { width: 112px; height: 36px; flex: none }
+.medidor { height: 6px; border-radius: 3px; background: var(--surface-2); overflow: hidden; margin: 6px 0 2px }
+.medidor i { display: block; height: 100%; background: var(--ok); border-radius: 3px }
+.duo { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 20px; align-items: start }
+.pilha { display: grid; gap: 20px; min-width: 0 }
+.lst { list-style: none; margin: 0; padding: 0 }
+.lst > li { border-bottom: 1px solid var(--line) }
+.lst > li:last-child { border-bottom: 0 }
+.exec { display: grid; grid-template-columns: 78px minmax(0, 1fr) auto; gap: 4px 14px; align-items: center; padding: 11px 16px }
+.exec .tnome { font-weight: 600 }
+.exec .meta { grid-column: 2; font-size: 12.5px; color: var(--muted) }
+.exec .quando { grid-row: 1 / span 2; grid-column: 3; text-align: right; font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; display: grid; gap: 2px; justify-items: end }
+.exec .erro { grid-column: 2 / -1; font: 12px/1.45 var(--f-mono); color: var(--danger); overflow-wrap: anywhere }
+.area-linha { display: grid; grid-template-columns: minmax(0, 1fr) 46px; gap: 6px 12px; align-items: center; padding: 10px 16px }
+.area-linha b { font-weight: 500 }
+.area-linha small { color: var(--muted); font-size: 12px; font-weight: 400; margin-left: 6px }
+.area-linha .pct { text-align: right; font: 500 13px var(--f-mono); font-variant-numeric: tabular-nums }
+.barra { grid-column: 1 / -1; height: 6px; border-radius: 3px; background: var(--danger-soft); overflow: hidden }
+.barra i { display: block; height: 100%; background: var(--ok) }
+.barra.sem { background: var(--surface-2) }
+.term { background: var(--code-bg); color: var(--code-ink); border-radius: 10px; padding: 12px 14px; font: 13px/1.6 var(--f-mono); display: flex; gap: 10px; align-items: start; min-width: 0 }
+.term code { flex: 1; min-width: 0; white-space: pre-wrap; word-break: break-word }
+.term .cifrao { color: var(--code-dim); user-select: none }
+.term .ibtn { color: var(--code-dim); width: 28px; height: 28px; margin: -4px -6px -4px 0 }
+.term .ibtn:hover { background: rgba(255, 255, 255, .08); color: var(--code-ink) }
+
+/* ---------- catálogo ---------- */
+.ferr { padding: 14px 16px; display: grid; gap: 12px }
+.ferr-l1 { display: flex; flex-wrap: wrap; gap: 10px; align-items: center }
+.campo-busca { position: relative; flex: 1 1 260px; min-width: 0 }
+.campo-busca .ic { position: absolute; left: 11px; top: 50%; translate: 0 -50%; width: 16px; height: 16px; color: var(--muted) }
+.campo-busca input { width: 100%; padding: 9px 40px 9px 34px; border: 1px solid var(--line-2); border-radius: 9px; background: var(--surface-2) }
+.campo-busca kbd { position: absolute; right: 10px; top: 50%; translate: 0 -50%; color: var(--muted) }
+.padroes { display: flex; flex-wrap: wrap; gap: 8px; align-items: center }
+.padroes > span { font-size: 12px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--muted) }
+.ferr-l2 { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; justify-content: space-between }
+.chips { display: flex; flex-wrap: wrap; gap: 6px }
+.chip { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line-2); background: transparent; border-radius: 999px; padding: 4px 11px; font-size: 13px; color: var(--muted) }
+.chip:hover { color: var(--ink) }
+.chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--surface) }
+.chip .ic { width: 14px; height: 14px }
+.chip small { font: 500 11px var(--f-mono); opacity: .7 }
+.tbl-cab, .linha { display: grid; grid-template-columns: 22px 26px minmax(0, 1fr) 104px 400px; gap: 12px; align-items: center; padding: 12px 16px }
+.tbl-cab { padding-block: 9px; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--line); background: var(--surface-2) }
+.tbl-cab > span:last-child { display: grid; grid-template-columns: 1fr 1fr 92px; gap: 8px }
+.linha { border-bottom: 1px solid var(--line); position: relative }
+.linha:last-child { border-bottom: 0 }
+.linha:hover { background: var(--surface-2) }
+.linha.sel { background: var(--accent-soft) }
+input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--accent); margin: 0 }
+.estrela { width: 26px; height: 26px; display: grid; place-items: center; border: 0; background: transparent; color: var(--line-2); border-radius: 6px }
+.estrela:hover { color: var(--amber) }
+.estrela.on { color: #e6a118 }
+.estrela.on .ic { fill: currentColor }
+.nome { min-width: 0; display: grid; gap: 3px }
+.tnome { border: 0; background: none; padding: 0; text-align: left; font-weight: 600; font-size: 15px; color: var(--ink) }
+.tnome:hover { color: var(--accent); text-decoration: underline; text-underline-offset: 3px }
+.nome-l1 { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px }
+.nome .meta { font: 12px/1.4 var(--f-mono); color: var(--muted); overflow-wrap: anywhere }
+.ctl { display: grid; grid-template-columns: 1fr 1fr 92px; gap: 8px; min-width: 0 }
+.ctl select { width: 100%; min-width: 0 }
+.trava { grid-column: 3 / -1; display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--danger); margin-top: -4px }
+.trava .ic { width: 14px; height: 14px }
+.dica-conta { color: var(--amber) }
+.rodape { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center; padding: 12px 16px; border-top: 1px solid var(--line); background: var(--surface-2); border-radius: 0 0 14px 14px; font-size: 13px; color: var(--muted) }
+
+.selbar { position: fixed; z-index: 45; left: 50%; translate: -50% 0; bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+  display: flex; align-items: center; gap: 10px; padding: 8px 8px 8px 16px; border-radius: 14px; background: var(--ink); color: var(--surface); box-shadow: var(--shadow-lg); max-width: calc(100% - 32px) }
+.selbar b { font-weight: 600; white-space: nowrap }
+.selbar .btn { background: var(--surface); color: var(--ink); border-color: transparent }
+.selbar .btn.fantasma { background: transparent; color: var(--surface); border-color: transparent; opacity: .8 }
+
+/* ---------- execuções ---------- */
+.seg { display: inline-flex; background: var(--surface-2); border: 1px solid var(--line); border-radius: 10px; padding: 3px; gap: 2px; flex-wrap: wrap }
+.seg button { border: 0; background: transparent; border-radius: 7px; padding: 5px 12px; font-size: 13px; font-weight: 500; color: var(--muted) }
+.seg button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: var(--shadow) }
+.seg small { font: 500 11px var(--f-mono); opacity: .7; margin-left: 4px }
+.exec-tbl .exec { grid-template-columns: 78px minmax(0, 1.4fr) minmax(0, 1fr) 72px 92px 32px }
+.exec-tbl .exec .meta { grid-column: auto }
+.exec-tbl .exec .quando { grid-row: auto; grid-column: auto }
+.exec-tbl .exec .erro { grid-column: 2 / -1 }
+.exec-cab { display: grid; grid-template-columns: 78px minmax(0, 1.4fr) minmax(0, 1fr) 72px 92px 32px; gap: 14px; padding: 9px 16px; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); background: var(--surface-2); border-bottom: 1px solid var(--line) }
+.num { font-variant-numeric: tabular-nums; font-size: 13px; color: var(--muted) }
+
+/* ---------- contas, acesso, publicações ---------- */
+.grade-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px }
+.cartao { padding: 16px; display: grid; gap: 10px; align-content: start }
+.cartao h3 { font: 600 17px/1.2 var(--f-display); margin: 0; display: flex; align-items: center; gap: 8px; flex-wrap: wrap }
+.cartao p { margin: 0; color: var(--muted); font-size: 14px }
+.cartao .vars { display: flex; flex-wrap: wrap; gap: 6px }
+.cartao .vars code { font-size: 12px; padding: 2px 6px; border-radius: 5px; background: var(--surface-2); border: 1px solid var(--line) }
+.cartao .pe { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 10px }
+.secao-t { font: 600 18px/1.2 var(--f-display); margin: 6px 0 -6px }
+.progresso { display: grid; gap: 8px; padding: 16px }
+.progresso .medidor { height: 8px; margin: 0 }
+.progresso .medidor i { background: var(--accent) }
+.passos { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; counter-reset: passo }
+.passo { display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 14px; padding: 16px; counter-increment: passo }
+.passo::before { content: counter(passo); width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; font: 700 15px var(--f-display); background: var(--accent-soft); color: var(--accent) }
+.passo.feito::before { content: "✓"; background: var(--ok-soft); color: var(--ok) }
+.passo h3 { margin: 4px 0 4px; font: 600 16px/1.3 var(--f-display) }
+.passo p { margin: 0 0 10px; color: var(--muted) }
+.passo label { display: inline-flex; align-items: center; gap: 8px; font-size: 13.5px; margin-top: 10px; cursor: pointer; color: var(--muted) }
+.tempo { list-style: none; margin: 0; padding: 0 16px; display: grid }
+.tempo li { display: grid; grid-template-columns: 14px minmax(0, 1fr); gap: 14px; padding: 14px 0; position: relative }
+.tempo li::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); margin-top: 6px; box-shadow: 0 0 0 4px var(--accent-soft) }
+.tempo li:not(:last-child)::after { content: ""; position: absolute; left: 4.5px; top: 30px; bottom: -6px; width: 1px; background: var(--line) }
+.tempo b { font-weight: 600 }
+.tempo .nomes { font: 12.5px/1.5 var(--f-mono); color: var(--muted); overflow-wrap: anywhere }
+.deltas { display: inline-flex; gap: 6px; margin-left: 6px }
+.deltas span { font: 500 12px var(--f-mono); padding: 1px 6px; border-radius: 4px }
+.d-mais { background: var(--ok-soft); color: var(--ok) } .d-til { background: var(--amber-soft); color: var(--amber) } .d-menos { background: var(--danger-soft); color: var(--danger) }
+.aviso-tbl { list-style: none; margin: 0; padding: 0 }
+.aviso-tbl li { display: grid; grid-template-columns: 72px minmax(0, 180px) minmax(0, 1fr); gap: 12px; padding: 10px 16px; border-top: 1px solid var(--line); font-size: 14px; align-items: baseline }
+.aviso-tbl .lin { font: 500 12.5px var(--f-mono); color: var(--muted) }
+.aviso-tbl .regra { font-weight: 600; color: var(--danger) }
+
+/* ---------- painel lateral (drawer) ---------- */
+.scrim { position: fixed; inset: 0; background: var(--scrim); z-index: 50; opacity: 0; pointer-events: none; transition: opacity .2s }
+.scrim.on { opacity: 1; pointer-events: auto }
+.drawer { position: fixed; z-index: 60; top: 0; right: 0; bottom: 0; width: min(600px, 100%); background: var(--surface); border-left: 1px solid var(--line); box-shadow: var(--shadow-lg);
+  translate: 100% 0; transition: translate .24s cubic-bezier(.2, .8, .2, 1); display: flex; flex-direction: column;
+  padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); padding-right: env(safe-area-inset-right, 0px) }
+.drawer.on { translate: 0 0 }
+.dw-cab { padding: 18px 20px 0; display: grid; gap: 8px; border-bottom: 1px solid var(--line) }
+.dw-topo { display: flex; justify-content: space-between; align-items: start; gap: 12px }
+.dw-topo small { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted) }
+.dw-topo h2 { font: 700 23px/1.2 var(--f-display); margin: 4px 0 0; letter-spacing: -0.01em; text-wrap: balance }
+.dw-cab .meta { font: 12.5px var(--f-mono); color: var(--muted); overflow-wrap: anywhere }
+.abas { display: flex; gap: 2px; margin-top: 6px; overflow-x: auto }
+.abas button { border: 0; background: none; padding: 10px 12px; font-weight: 500; color: var(--muted); border-bottom: 2px solid transparent; white-space: nowrap }
+.abas button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent) }
+.dw-corpo { flex: 1; overflow-y: auto; padding: 20px; display: grid; gap: 20px; align-content: start }
+.bloco { display: grid; gap: 10px }
+.bloco > h3 { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 }
+.casos { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px }
+.casos li { display: flex; gap: 10px; align-items: start; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface-2) }
+.casos li .ic { color: var(--accent); margin-top: 2px; width: 16px; height: 16px }
+.casos li div { display: grid; gap: 4px; min-width: 0 }
+.form2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px }
+.form2 label { display: grid; gap: 5px; font-size: 13px; font-weight: 500; color: var(--muted); min-width: 0 }
+.form2 select { width: 100% }
+.nota { display: flex; gap: 8px; align-items: start; font-size: 13.5px; padding: 10px 12px; border-radius: 10px }
+.nota .ic { width: 16px; height: 16px; margin-top: 2px }
+.nota.perigo { background: var(--danger-soft); color: var(--danger) }
+.nota.atencao { background: var(--amber-soft); color: var(--amber) }
+.nota.info { background: var(--surface-2); color: var(--muted); border: 1px solid var(--line) }
+.cod { margin: 0; background: var(--code-bg); color: var(--code-ink); border-radius: 12px; padding: 14px 0; overflow-x: auto; font: 12.5px/1.7 var(--f-mono); counter-reset: ln }
+.cod .ln { display: block; padding: 0 16px 0 0; white-space: pre; counter-increment: ln }
+.cod .ln::before { content: counter(ln); display: inline-block; width: 40px; padding-right: 14px; text-align: right; color: var(--code-dim); user-select: none }
+.tk-kw { color: var(--tk-kw) } .tk-str { color: var(--tk-str) } .tk-com { color: var(--tk-com); font-style: italic } .tk-fn { color: var(--tk-fn) } .tk-num { color: var(--tk-num) }
+
+/* ---------- busca rápida, modal e aviso ---------- */
+.paleta { position: fixed; inset: 0; z-index: 80; background: var(--scrim); display: grid; justify-items: center; align-items: start;
+  padding: calc(10vh + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) 16px max(16px, env(safe-area-inset-left, 0px)) }
+.pal-caixa { width: min(620px, 100%); background: var(--surface); border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow-lg); overflow: hidden }
+.pal-in { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-bottom: 1px solid var(--line) }
+.pal-in .ic { color: var(--muted) }
+.pal-in input { flex: 1; min-width: 0; border: 0; background: transparent; font-size: 16px; outline: none }
+.pal-lista { padding: 6px; max-height: 60vh; overflow-y: auto }
+.pitem { display: flex; align-items: center; gap: 12px; width: 100%; border: 0; background: transparent; text-align: left; padding: 9px 10px; border-radius: 9px }
+.pitem[aria-selected="true"] { background: var(--accent-soft) }
+.pitem .ic { color: var(--muted) }
+.pnome { flex: 1; min-width: 0; display: grid }
+.pnome small { font-size: 12px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+.ptipo { font-size: 12px; color: var(--muted) }
+.pvazio { padding: 20px; text-align: center; color: var(--muted); margin: 0 }
+.pal-pe { display: flex; gap: 14px; padding: 9px 16px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); background: var(--surface-2) }
+.modal-caixa { width: min(560px, 100%); background: var(--surface); border-radius: 16px; padding: 18px; display: grid; gap: 12px; box-shadow: var(--shadow-lg) }
+.modal-caixa h2 { margin: 0; font: 600 18px var(--f-display) }
+.modal-caixa textarea { width: 100%; min-height: 84px; font: 13px/1.5 var(--f-mono); padding: 10px; border-radius: 10px; border: 1px solid var(--line-2); background: var(--surface-2); resize: vertical }
+.toast { position: fixed; z-index: 90; left: 50%; top: calc(16px + env(safe-area-inset-top, 0px)); translate: -50% -12px; opacity: 0; pointer-events: none;
+  display: flex; align-items: center; gap: 8px; background: var(--ink); color: var(--surface); padding: 10px 16px; border-radius: 10px; font-size: 14px; box-shadow: var(--shadow-lg);
+  transition: opacity .18s, translate .18s; max-width: calc(100% - 32px) }
+.toast.on { opacity: 1; translate: -50% 0 }
+.toast .ic { color: var(--ok); width: 16px; height: 16px }
+
+/* ---------- responsivo ---------- */
+@media (max-width: 1280px) {
+  .tbl-cab, .linha { grid-template-columns: 22px 26px minmax(0, 1fr) 104px }
+  .tbl-cab > span:last-child { display: none }
+  .ctl { grid-column: 3 / -1 }
+  .trava { grid-column: 3 / -1 }
+}
+@media (max-width: 1100px) {
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)) }
+  .duo { grid-template-columns: minmax(0, 1fr) }
+  .exec-cab { display: none }
+  .exec-tbl .exec { grid-template-columns: 78px minmax(0, 1fr) auto }
+  .exec-tbl .exec .meta { grid-column: 2 }
+  .exec-tbl .exec .dur { display: none }
+  .exec-tbl .exec .arq { display: none }
+  .exec-tbl .exec .quando { grid-column: 3; grid-row: 1 }
+  .exec-tbl .exec .rerun { grid-column: 3; grid-row: 2; justify-self: end }
+}
+@media (max-width: 900px) {
+  body { padding-block: 0 16px }
+  .app { grid-template-columns: minmax(0, 1fr); gap: 0 }
+  .side { position: fixed; top: 0; bottom: 0; left: 0; height: auto; min-height: 0; width: min(300px, 86%); border-radius: 0 16px 16px 0;
+    padding-top: calc(18px + env(safe-area-inset-top, 0px)); padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px)); padding-left: calc(12px + env(safe-area-inset-left, 0px));
+    translate: -105% 0; transition: translate .24s cubic-bezier(.2, .8, .2, 1); z-index: 70 }
+  .side.on { translate: 0 0 }
+  .topm { display: flex; align-items: center; gap: 8px; position: sticky; top: env(safe-area-inset-top, 0px); z-index: 25; background: var(--bg); padding-block: 10px; margin-bottom: 4px }
+  .topm .marca { flex: 1; padding: 0 }
+  .topm .marca b { color: var(--ink); font-size: 19px }
+  .topm .marca small { color: var(--muted) }
+  .topm .marca svg { width: 30px; height: 30px }
+  .vh h1 { font-size: 26px }
+}
+@media (max-width: 640px) {
+  .tbl-cab { display: none }
+  .linha { grid-template-columns: 22px 26px minmax(0, 1fr); row-gap: 10px }
+  .linha .ult { grid-column: 3; grid-row: 2 }
+  .ctl { grid-column: 1 / -1; grid-template-columns: 1fr 1fr }
+  .ctl .btn { grid-column: 1 / -1 }
+  .trava { grid-column: 1 / -1 }
+  .form2 { grid-template-columns: 1fr }
+  .padroes { display: grid; grid-template-columns: 1fr 1fr; width: 100% }
+  .padroes > span { grid-column: 1 / -1 }
+  .padroes select { width: 100% }
+  .aviso-tbl li { grid-template-columns: 60px minmax(0, 1fr) }
+  .aviso-tbl li > span:last-child { grid-column: 2 }
+  .selbar { left: 16px; right: 16px; translate: none; justify-content: space-between }
+  .exec { grid-template-columns: 72px minmax(0, 1fr) auto }
+}
+@media (prefers-reduced-motion: reduce) { .drawer, .side, .scrim, .toast { transition: none } }
+</style>
+
+<div class="app">
+  <aside class="side" id="side" aria-label="Menu">
+    <div class="marca">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#3552e6"/><path d="M16 11.5v17l13.5-8.5z" fill="#fff"/><path d="M10 14.5v11" stroke="#fff" stroke-width="2.6" stroke-linecap="round" opacity=".5"/></svg>
+      <div><b>Dispara</b><small id="espaco">Catálogo de testes</small></div>
+    </div>
+    <button class="busca-btn" data-acao="paleta"><svg class="ic" viewBox="0 0 20 20"><path d="M9 15a6 6 0 1 0 0-12 6 6 0 0 0 0 12ZM17 17l-3.6-3.6"/></svg><span>Buscar teste</span><kbd id="atalho">Ctrl K</kbd></button>
+    <nav id="nav"></nav>
+    <div class="side-pe">
+      <div class="papel">
+        <span>Ver como</span>
+        <div class="seg-escuro" id="papel" role="group" aria-label="Ver como">
+          <button data-acao="papel" data-p="membro">Membro</button>
+          <button data-acao="papel" data-p="admin">Admin</button>
+        </div>
+      </div>
+      <div class="pessoa" id="pessoa"></div>
+    </div>
+  </aside>
+
+  <main>
+    <div class="topm">
+      <button class="ibtn" data-acao="menu" aria-label="Abrir menu"><svg class="ic" viewBox="0 0 20 20"><path d="M3.5 6h13M3.5 10h13M3.5 14h13"/></svg></button>
+      <div class="marca">
+        <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#3552e6"/><path d="M16 11.5v17l13.5-8.5z" fill="#fff"/><path d="M10 14.5v11" stroke="#fff" stroke-width="2.6" stroke-linecap="round" opacity=".5"/></svg>
+        <div><b>Dispara</b></div>
+      </div>
+      <button class="ibtn" data-acao="paleta" aria-label="Buscar teste"><svg class="ic" viewBox="0 0 20 20"><path d="M9 15a6 6 0 1 0 0-12 6 6 0 0 0 0 12ZM17 17l-3.6-3.6"/></svg></button>
+    </div>
+    <div class="demo" id="demo" hidden><b>Projeto de portfólio.</b> Os testes rodam de verdade contra o <a href="https://practicesoftwaretesting.com" target="_blank" rel="noopener">Toolshop</a>, uma loja pública feita para prática de automação. As pessoas e o painel "Ver como" são da demo.</div>
+    <div id="view" style="display:grid;gap:20px;min-width:0"></div>
+  </main>
+</div>
+
+<div class="scrim" id="scrim" data-acao="fechar-tudo"></div>
+<aside class="drawer" id="drawer" aria-hidden="true" aria-label="Detalhes do teste"></aside>
+<div class="selbar" id="selbar" hidden></div>
+<div class="paleta" id="paleta" hidden data-acao="fundo-paleta">
+  <div class="pal-caixa" role="dialog" aria-label="Buscar">
+    <div class="pal-in"><svg class="ic" viewBox="0 0 20 20"><path d="M9 15a6 6 0 1 0 0-12 6 6 0 0 0 0 12ZM17 17l-3.6-3.6"/></svg><input id="palInput" placeholder="Buscar teste ou página" aria-label="Buscar teste ou página" autocomplete="off"></div>
+    <div class="pal-lista" id="palLista" role="listbox"></div>
+    <div class="pal-pe"><span>↑↓ navegar</span><span>Enter abrir</span><span>Esc fechar</span></div>
+  </div>
+</div>
+<div class="paleta" id="modalCopia" hidden data-acao="fundo-modal">
+  <div class="modal-caixa" role="dialog" aria-label="Copiar comando">
+    <h2>Copie o comando</h2>
+    <p class="muted" style="margin:0">Seu navegador não deixou copiar automaticamente. O texto já está selecionado: use Ctrl+C ou ⌘C.</p>
+    <textarea id="copiaTexto" readonly aria-label="Comando"></textarea>
+    <div style="display:flex;justify-content:end"><button class="btn" data-acao="fechar-modal">Fechar</button></div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const DADOS = "__DADOS__";
+(function () {
+  if (typeof DADOS === 'string') { document.getElementById('view').innerHTML = '<p class="vazio">Gere o site com <code>npm run site</code>.</p>'; return; }
+
+  const { manifesto, ambientes, avatares, historico, demo, repo, nomesAreas = {}, execucoes: execBrutas = [], fonteExecucoes = 'nenhuma' } = DADOS;
+  const testes = manifesto.testes;
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const ler = (k, padrao) => { try { const v = localStorage.getItem('dispara:' + k); return v == null ? padrao : JSON.parse(v); } catch { return padrao; } };
+  const gravar = (k, v) => { try { localStorage.setItem('dispara:' + k, JSON.stringify(v)); } catch {} };
+  const valido = (v, lista, alt) => (lista.some(x => x.id === v) ? v : alt);
+
+  const DIA = 864e5;
+  const agora = Date.now();
+  const execucoes = execBrutas.map(e => ({ ...e, t: e.quando ? Date.parse(e.quando) : agora - e.atras })).sort((a, b) => b.t - a.t);
+  const porTeste = new Map();
+  for (const e of execucoes) { if (!porTeste.has(e.teste)) porTeste.set(e.teste, []); porTeste.get(e.teste).push(e); }
+  const testeDe = id => testes.find(t => t.id === id);
+  const ambDe = id => ambientes.find(a => a.id === id);
+  const avDe = id => avatares.find(a => a.id === id);
+  const areas = [...new Set(testes.map(t => t.area))].sort();
+  const nomeArea = a => nomesAreas[a] ?? a.replace(/-/g, ' ').replace(/^./, c => c.toUpperCase());
+  const totalAvisos = testes.reduce((n, t) => n + t.avisos.length, 0);
+  const TAGS = [...new Set(testes.flatMap(t => t.tags))].sort();
+  const mac = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
+  $('atalho').textContent = mac ? '⌘K' : 'Ctrl K';
+
+  const ambInicial = ambientes.find(a => a.padrao)?.id ?? ambientes[0].id;
+  const avInicial = avatares.find(a => a.padrao)?.id ?? avatares[0].id;
+  const S = {
+    view: 'inicio',
+    papel: ler('papel', 'membro') === 'admin' ? 'admin' : 'membro',
+    amb: valido(ler('amb', ambInicial), ambientes, ambInicial),
+    av: valido(ler('av', avInicial), avatares, avInicial),
+    linha: ler('linha', {}) || {},
+    favs: new Set(ler('favs', [])),
+    passos: new Set(ler('passos', [])),
+    ultimo: ler('ultimo', null),
+    busca: '', area: '', tags: new Set(), soFavs: false, sel: new Set(), filtroExec: 'todas',
+    drawer: null,
+  };
+
+  // ---------- utilidades ----------
+  const ICONES = {
+    home: 'M3 9.5 10 4l7 5.5V16a1 1 0 0 1-1 1h-3.5v-4.5h-5V17H4a1 1 0 0 1-1-1z',
+    lista: 'M7 5.5h10M7 10h10M7 14.5h10M3.5 5.5h.01M3.5 10h.01M3.5 14.5h.01',
+    play: 'M6 4.5v11l9-5.5z',
+    contas: 'M7.5 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM2 17c0-3 2.5-5 5.5-5s5.5 2 5.5 5M13.5 3.2a3 3 0 0 1 0 5.6M15.5 12.3c1.6.7 2.5 2.4 2.5 4.7',
+    bandeira: 'M4.5 17.5V3.5M4.5 4h10l-2 3.5 2 3.5h-10',
+    upload: 'M10 13V3.5M6 7l4-4 4 4M3.5 13v2.5a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1V13',
+    escudo: 'M10 2.5 4 5v4.5c0 4 2.6 6.9 6 8 3.4-1.1 6-4 6-8V5z',
+    busca: 'M9 15a6 6 0 1 0 0-12 6 6 0 0 0 0 12ZM17 17l-3.6-3.6',
+    estrela: 'M10 2.8l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5L2.8 8.1l5-.7z',
+    copiar: 'M7 7h9v9H7zM13 7V4H4v9h3',
+    x: 'M5 5l10 10M15 5 5 15',
+    check: 'M4.5 10.5l3.5 3.5 7.5-8',
+    codigo: 'M7 6l-4 4 4 4M13 6l4 4-4 4',
+    relogio: 'M10 17.5a7.5 7.5 0 1 0 0-15 7.5 7.5 0 0 0 0 15ZM10 6v4.5l3 1.5',
+    cadeado: 'M5.5 9h9v8h-9zM7.5 9V6.5a2.5 2.5 0 0 1 5 0V9',
+    refazer: 'M15.6 8A6 6 0 1 0 16 12M16 4v4h-4',
+    terminal: 'M3 4.5h14v11H3zM6 8l2.5 2L6 12M10 12.5h4',
+    seta: 'M4 10h12M11 5l5 5-5 5',
+    servidor: 'M3.5 4h13v5h-13zM3.5 11h13v5h-13zM6.5 6.5h.01M6.5 13.5h.01',
+    info: 'M10 17.5a7.5 7.5 0 1 0 0-15 7.5 7.5 0 0 0 0 15ZM10 9v5M10 6.2h.01',
+    alerta: 'M10 3 2.5 16.5h15zM10 8v4M10 14.3h.01',
+  };
+  const icon = (n, cls = 'ic') => `<svg class="${cls}" viewBox="0 0 20 20" aria-hidden="true"><path d="${ICONES[n]}"/></svg>`;
+  const fmtCurta = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digit' });
+  const fmtHora = new Intl.DateTimeFormat('pt-BR', { hour: '2-digit', minute: '2-digit' });
+  const fmtLonga = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+  function rel(t) {
+    const d = (agora - t) / 1000;
+    if (d < 60) return 'agora';
+    if (d < 3600) return `há ${Math.floor(d / 60)} min`;
+    if (d < 86400) return `há ${Math.floor(d / 3600)} h`;
+    if (d < 2 * 86400) return `ontem, ${fmtHora.format(t)}`;
+    if (d < 7 * 86400) return `há ${Math.floor(d / 86400)} dias`;
+    return fmtCurta.format(t);
+  }
+  const dur = ms => { const s = Math.round(ms / 1000); return s < 60 ? `${s} s` : `${Math.floor(s / 60)} min ${s % 60} s`; };
+  const iniciais = nome => nome.split(' ').map(p => p[0]).slice(0, 2).join('').toUpperCase();
+  const plural = (n, um, varios) => `${n} ${n === 1 ? um : varios}`;
+
+  function selDe(t) {
+    const l = S.linha[t.id] || {};
+    return { amb: valido(l.amb, ambientes, S.amb), av: valido(l.av, avatares, t.exigeAvatar ?? S.av) };
+  }
+  function setLinha(id, campo, valor) { S.linha[id] = { ...(S.linha[id] || {}), [campo]: valor }; gravar('linha', S.linha); }
+  const bloqueado = (t, ambId) => Boolean(ambDe(ambId)?.protegido && t.tags.includes('destrutivo'));
+  const comando = (ids, amb, av, modo) => `npm run t -- ${ids.join(' ')} --ambiente=${amb} --avatar=${av}${modo ? ' --' + modo : ''}`;
+  const opcoes = (lista, sel) => lista.map(x => `<option value="${esc(x.id)}"${x.id === sel ? ' selected' : ''}>${esc(x.nome)}</option>`).join('');
+  const pillExec = e => !e ? '<span class="pill nada">Nunca rodou</span>'
+    : e.status === 'passou' ? '<span class="pill ok">Passou</span>'
+    : e.status === 'pulado' ? '<span class="pill nada">Pulado</span>'
+    : '<span class="pill falha">Falhou</span>';
+  const contaNoResultado = e => e.status !== 'pulado';
+  const tagsHtml = tags => tags.length ? `<span class="tags">${tags.map(g => `<span class="tag ${esc(g)}">@${esc(g)}</span>`).join('')}</span>` : '';
+
+  // ---------- copiar ----------
+  let timerToast;
+  function avisar(msg) {
+    const t = $('toast'); t.innerHTML = icon('check') + `<span>${esc(msg)}</span>`; t.classList.add('on');
+    clearTimeout(timerToast); timerToast = setTimeout(() => t.classList.remove('on'), 2400);
+  }
+  function copiar(texto, msg = 'Comando copiado') {
+    S.ultimo = { cmd: texto, t: Date.now() }; gravar('ultimo', S.ultimo);
+    const manual = () => { $('modalCopia').hidden = false; const ta = $('copiaTexto'); ta.value = texto; ta.focus(); ta.select(); };
+    try { navigator.clipboard.writeText(texto).then(() => avisar(msg), manual); } catch { manual(); }
+    if (S.view === 'inicio') renderView();
+  }
+
+  // ---------- navegação ----------
+  const NAV = [
+    { grupo: 'Testes', itens: [
+      { v: 'inicio', nome: 'Início', ic: 'home' },
+      { v: 'testes', nome: 'Catálogo', ic: 'lista', badge: () => testes.length },
+      { v: 'execucoes', nome: 'Execuções', ic: 'play', badge: () => { const n = execucoes.filter(e => e.status === 'falhou' && agora - e.t < DIA).length; return n ? { n, alerta: true } : null; } },
+    ] },
+    { grupo: 'Configuração', itens: [
+      { v: 'contas', nome: 'Contas e ambientes', ic: 'contas' },
+      { v: 'primeiro-acesso', nome: 'Primeiro acesso', ic: 'bandeira', badge: () => S.passos.size < 4 ? `${S.passos.size}/4` : null },
+    ] },
+    { grupo: 'Administração', admin: true, itens: [
+      { v: 'publicacoes', nome: 'Publicações', ic: 'upload' },
+      { v: 'revisao', nome: 'Revisão de segurança', ic: 'escudo', badge: () => totalAvisos ? { n: totalAvisos, alerta: true } : null },
+    ] },
+  ];
+  const navItens = () => NAV.filter(g => !g.admin || S.papel === 'admin').flatMap(g => g.itens);
+  const permitido = v => navItens().some(i => i.v === v);
+
+  function renderNav() {
+    $('nav').innerHTML = NAV.filter(g => !g.admin || S.papel === 'admin').map(g => `
+      <div class="ngrupo"><span class="nrot">${g.grupo}</span>${g.itens.map(i => {
+        const b = i.badge?.();
+        const badge = b == null ? '' : typeof b === 'object' ? `<span class="nbadge alerta">${b.n}</span>` : `<span class="nbadge">${esc(b)}</span>`;
+        return `<button class="nitem" data-acao="nav" data-v="${i.v}" aria-current="${S.view === i.v ? 'page' : 'false'}">${icon(i.ic)}<span>${i.nome}</span>${badge}</button>`;
+      }).join('')}</div>`).join('');
+    $('papel').querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.p === S.papel)));
+    const pessoa = S.papel === 'admin' ? ['Gustavo', 'Admin · publica testes'] : ['Ana Ribeiro', 'Membro · roda testes'];
+    $('pessoa').innerHTML = `<span class="avatar">${iniciais(pessoa[0])}</span><div><b>${pessoa[0]}</b><small>${pessoa[1]}</small></div>`;
+  }
+
+  function navegar(v) {
+    if (!permitido(v)) v = 'inicio';
+    S.view = v;
+    try { history.replaceState(null, '', '#' + v); } catch {}
+    fecharMenu();
+    render();
+    window.scrollTo({ top: 0 });
+  }
+
+  // ---------- views ----------
+  const VIEWS = {};
+
+  VIEWS.inicio = () => {
+    const h = new Date().getHours();
+    const saudacao = h < 12 ? 'Bom dia' : h < 18 ? 'Boa tarde' : 'Boa noite';
+    const nome = S.papel === 'admin' ? 'Gustavo' : 'Ana';
+    const casos = testes.reduce((n, t) => n + t.qtdTestes, 0);
+    const janela = (de, ate) => execucoes.filter(e => agora - e.t >= de * DIA && agora - e.t < ate * DIA);
+    const semana = janela(0, 7), anterior = janela(7, 14);
+    const taxa = l => { const v = l.filter(contaNoResultado); return v.length ? Math.round(100 * v.filter(e => e.status === 'passou').length / v.length) : null; };
+    const tx = taxa(semana), txAnt = taxa(anterior);
+    const falhas = semana.filter(e => e.status === 'falhou').length;
+    const hoje0 = new Date(); hoje0.setHours(0, 0, 0, 0);
+    const dias = Array.from({ length: 7 }, (_, i) => {
+      const ini = hoje0.getTime() - (6 - i) * DIA, fim = ini + DIA;
+      const l = execucoes.filter(e => e.t >= ini && e.t < fim);
+      return { total: l.length, falhas: l.filter(e => e.status === 'falhou').length };
+    });
+    const max = Math.max(1, ...dias.map(d => d.total));
+    const spark = `<svg class="spark" viewBox="0 0 112 36" role="img" aria-label="Execuções por dia nos últimos 7 dias">${dias.map((d, i) => {
+      const x = i * 16 + 2, hT = Math.max(2, (d.total / max) * 34), hF = (d.falhas / max) * 34;
+      return `<rect x="${x}" y="${36 - hT}" width="11" height="${hT}" rx="2" fill="var(--accent)" opacity="${i === 6 ? 1 : .45}"/>${d.falhas ? `<rect x="${x}" y="${36 - hF}" width="11" height="${hF}" rx="2" fill="var(--danger)"/>` : ''}`;
+    }).join('')}</svg>`;
+    const ultPub = historico[0];
+    const smoke = testes.filter(t => t.tags.includes('smoke') && !bloqueado(t, S.amb));
+    const variacao = tx != null && txAnt != null ? tx - txAnt : null;
+
+    const saude = areas.map(a => {
+      const ids = new Set(testes.filter(t => t.area === a).map(t => t.id));
+      const l = semana.filter(e => ids.has(e.teste));
+      return { a, n: ids.size, runs: l.length, tx: taxa(l) };
+    }).sort((x, y) => (x.tx ?? 101) - (y.tx ?? 101));
+
+    return `
+      <header class="vh">
+        <div><h1>${saudacao}, ${nome}</h1><p>${plural(testes.length, 'arquivo de teste pronto', 'arquivos de teste prontos')} para rodar em ${plural(ambientes.length, 'ambiente', 'ambientes')}.</p></div>
+        <div class="acoes">
+          <button class="btn" data-acao="nav" data-v="testes">${icon('lista')}Abrir catálogo</button>
+          <button class="btn primario" data-acao="copiar-smoke" ${smoke.length ? '' : 'disabled'}>${icon('copiar')}Copiar smoke · ${esc(ambDe(S.amb).nome)}</button>
+        </div>
+      </header>
+      <section class="stats">
+        <div class="card stat"><span>Testes publicados</span><div class="valor"><strong>${testes.length}</strong></div><small>${plural(casos, 'caso', 'casos')} em ${plural(areas.length, 'área', 'áreas')}</small></div>
+        <div class="card stat"><span>Execuções · 7 dias</span><div class="valor"><strong>${execucoes.length ? semana.length : '—'}</strong>${execucoes.length ? spark : ''}</div><small>${execucoes.length ? `${plural(falhas, 'falha', 'falhas')} na semana` : 'Nenhuma execução registrada'}</small></div>
+        <div class="card stat"><span>Taxa de sucesso</span><div class="valor"><strong>${tx == null ? '—' : tx + '%'}</strong></div>
+          ${tx == null ? '<small>Sem dados ainda</small>' : `<div class="medidor"><i style="width:${tx}%"></i></div><small>${variacao == null ? 'Primeira semana com dados' : `<span class="${variacao >= 0 ? 'delta-pos' : 'delta-neg'}">${variacao >= 0 ? '+' : '−'}${Math.abs(variacao)} pts</span> vs semana anterior`}</small>`}</div>
+        <div class="card stat"><span>Última publicação</span><div class="valor"><strong style="font-size:24px">${ultPub ? esc(rel(Date.parse(ultPub.quando))) : '—'}</strong></div><small>${ultPub ? `por ${esc(ultPub.autor)} · ${deltasHtml(ultPub)}` : 'Nada publicado ainda'}</small></div>
+      </section>
+      <section class="duo">
+        <div class="card">
+          <div class="card-h"><h2>Execuções recentes</h2>${execucoes.length ? '<button class="link" data-acao="nav" data-v="execucoes">Ver todas</button>' : ''}</div>
+          ${execucoes.length ? `<ul class="lst">${execucoes.slice(0, 6).map(e => linhaExec(e, true)).join('')}</ul>`
+            : `<div class="vazio">${icon('play')}<b>Nenhuma execução registrada</b><span>O primeiro resultado aparece aqui depois que o GitHub Actions rodar.</span></div>`}
+        </div>
+        <div class="pilha">
+          <div class="card">
+            <div class="card-h"><h2>Saúde por área</h2><span class="muted" style="font-size:13px">7 dias</span></div>
+            <ul class="lst">${saude.map(s => `<li class="area-linha"><span><b>${esc(nomeArea(s.a))}</b><small>${plural(s.n, 'teste', 'testes')} · ${plural(s.runs, 'execução', 'execuções')}</small></span><span class="pct">${s.tx == null ? '—' : s.tx + '%'}</span><span class="barra ${s.tx == null ? 'sem' : ''}"><i style="width:${s.tx ?? 0}%"></i></span></li>`).join('')}</ul>
+          </div>
+          <div class="card">
+            <div class="card-h"><h2>Seu último comando</h2>${S.ultimo ? `<span class="muted" style="font-size:13px">${esc(rel(S.ultimo.t))}</span>` : ''}</div>
+            <div class="card-b">${S.ultimo
+              ? `<div class="term"><span class="cifrao">$</span><code>${esc(S.ultimo.cmd)}</code><button class="ibtn" data-acao="copiar-texto" data-txt="${esc(S.ultimo.cmd)}" aria-label="Copiar de novo">${icon('copiar')}</button></div>`
+              : '<p class="muted" style="margin:0">Os comandos que você copiar ficam aqui para rodar de novo.</p>'}</div>
+          </div>
+        </div>
+      </section>`;
+  };
+
+  function deltasHtml(h) {
+    const partes = [['d-mais', '+', h.adicionados], ['d-til', '~', h.alterados], ['d-menos', '−', h.removidos]].filter(([, , l]) => l.length);
+    return partes.length ? `<span class="deltas">${partes.map(([c, s, l]) => `<span class="${c}">${s}${l.length}</span>`).join('')}</span>` : 'sem mudanças';
+  }
+
+  function linhaExec(e, compacta) {
+    const t = testeDe(e.teste);
+    const titulo = t ? t.titulo : e.teste;
+    const casos = e.casos ? [e.casos.passou && `${e.casos.passou} ok`, e.casos.falhou && `${e.casos.falhou} falha`, e.casos.pulado && `${e.casos.pulado} pulado`].filter(Boolean).join(', ') : '';
+    const selos = `${e.instavel ? ' <span class="badge instavel" title="Passou só na segunda tentativa">instável</span>' : ''}${e.origem === 'ci' ? ' <span class="badge">CI</span>' : ''}`;
+    const link = e.relatorio ? ` · <a href="${esc(e.relatorio)}" target="_blank" rel="noopener">relatório</a>` : '';
+    const meta = `${esc(ambDe(e.ambiente)?.nome ?? e.ambiente)} · ${esc(avDe(e.avatar)?.nome ?? e.avatar)} · ${esc(e.quem)}${casos ? ` · ${casos}` : ''}${link}${selos}`;
+    const nome = t ? `<button class="tnome" data-acao="abrir" data-id="${esc(t.id)}">${esc(titulo)}</button>` : `<b>${esc(titulo)}</b>`;
+    const erro = e.erro ? `<div class="erro">${esc(e.erro)}</div>` : '';
+    if (compacta) {
+      return `<li class="exec">${pillExec(e)}<div style="min-width:0">${nome}</div><span class="quando"><span>${esc(rel(e.t))}</span><span>${dur(e.duracaoMs)}</span></span><div class="meta">${meta}</div>${erro}</li>`;
+    }
+    return `<li class="exec">${pillExec(e)}<div style="min-width:0">${nome}<div class="muted mono arq" style="font-size:12px">${esc(t?.arquivo ?? '')}</div></div>
+      <div class="meta">${meta}</div><span class="num dur">${dur(e.duracaoMs)}</span><span class="num quando" title="${esc(fmtLonga.format(e.t))}">${esc(rel(e.t))}</span>
+      <button class="ibtn rerun" data-acao="copiar-exec" data-id="${esc(e.id)}" aria-label="Copiar comando para rodar de novo" title="Rodar de novo">${icon('refazer')}</button>${erro}</li>`;
+  }
+
+  VIEWS.testes = () => {
+    const casos = testes.reduce((n, t) => n + t.qtdTestes, 0);
+    return `
+      <header class="vh">
+        <div><h1>Catálogo</h1><p>Escolha ambiente e conta, copie o comando e cole no terminal, dentro da pasta do projeto. O comando busca os testes novos antes de rodar.</p></div>
+        <div class="acoes"><button class="btn contorno" data-acao="copiar-visiveis">${icon('copiar')}Copiar todos os visíveis</button></div>
+      </header>
+      <section class="card">
+        <div class="ferr">
+          <div class="ferr-l1">
+            <div class="campo-busca">${icon('busca')}<input id="busca" type="search" placeholder="Buscar por nome, arquivo ou tag" aria-label="Buscar teste" value="${esc(S.busca)}"><kbd>/</kbd></div>
+            <div class="padroes"><span>Padrão</span>
+              <select id="ambPadrao" data-acao="padrao-amb" aria-label="Ambiente padrão">${opcoes(ambientes, S.amb)}</select>
+              <select id="avPadrao" data-acao="padrao-av" aria-label="Conta padrão">${opcoes(avatares, S.av)}</select>
+            </div>
+          </div>
+          <div class="ferr-l2" id="filtros"></div>
+        </div>
+        <div class="tbl-cab" aria-hidden="true"><span><input type="checkbox" id="selTodos" data-acao="sel-todos" aria-label="Selecionar todos os visíveis"></span><span></span><span>Teste</span><span>Último</span><span><span>Ambiente</span><span>Conta</span><span></span></span></div>
+        <div id="lista"></div>
+        <div class="rodape"><span id="contagem"></span><span>${plural(testes.length, 'arquivo', 'arquivos')} · ${plural(casos, 'caso', 'casos')} no total</span></div>
+      </section>`;
+  };
+
+  function visiveis() {
+    const q = S.busca.trim().toLowerCase();
+    return testes.filter(t =>
+      (!S.area || t.area === S.area) &&
+      (!S.soFavs || S.favs.has(t.id)) &&
+      [...S.tags].every(g => t.tags.includes(g)) &&
+      (!q || [t.titulo, t.arquivo, t.id, ...t.tags, ...t.casos.map(c => c.titulo)].some(s => s.toLowerCase().includes(q))))
+      .sort((a, b) => (S.favs.has(b.id) - S.favs.has(a.id)) || a.area.localeCompare(b.area) || a.titulo.localeCompare(b.titulo));
+  }
+
+  function renderFiltros() {
+    const n = a => testes.filter(t => !a || t.area === a).length;
+    $('filtros').innerHTML = `
+      <div class="chips" role="group" aria-label="Área">${[['', 'Todas'], ...areas.map(a => [a, nomeArea(a)])].map(([id, nome]) =>
+        `<button class="chip" data-acao="area" data-area="${esc(id)}" aria-pressed="${S.area === id}">${esc(nome)} <small>${n(id)}</small></button>`).join('')}</div>
+      <div class="chips" role="group" aria-label="Filtros">
+        ${TAGS.map(g => `<button class="chip" data-acao="tag" data-tag="${esc(g)}" aria-pressed="${S.tags.has(g)}">@${esc(g)}</button>`).join('')}
+        <button class="chip" data-acao="so-favs" aria-pressed="${S.soFavs}">${icon('estrela')}Favoritos</button>
+      </div>`;
+  }
+
+  function renderLista() {
+    const lista = visiveis();
+    $('lista').innerHTML = lista.length ? lista.map(t => {
+      const s = selDe(t);
+      const l = S.linha[t.id] || {};
+      const trava = bloqueado(t, s.amb);
+      const ult = porTeste.get(t.id)?.[0];
+      const contaErrada = t.exigeAvatar && s.av !== t.exigeAvatar;
+      return `<div class="linha ${S.sel.has(t.id) ? 'sel' : ''}" data-id="${esc(t.id)}">
+        <input type="checkbox" data-acao="sel" data-id="${esc(t.id)}" ${S.sel.has(t.id) ? 'checked' : ''} aria-label="Selecionar ${esc(t.titulo)}">
+        <button class="estrela ${S.favs.has(t.id) ? 'on' : ''}" data-acao="fav" data-id="${esc(t.id)}" aria-pressed="${S.favs.has(t.id)}" aria-label="Favoritar ${esc(t.titulo)}">${icon('estrela')}</button>
+        <div class="nome">
+          <div class="nome-l1"><button class="tnome" data-acao="abrir" data-id="${esc(t.id)}">${esc(t.titulo)}</button>${tagsHtml(t.tags)}</div>
+          <span class="meta">${esc(t.arquivo)} · ${plural(t.qtdTestes, 'caso', 'casos')} · atualizado ${esc(rel(Date.parse(t.atualizadoEm)))}</span>
+        </div>
+        <div class="ult" title="${ult ? esc(`${ambDe(ult.ambiente)?.nome} · ${rel(ult.t)}`) : ''}">${pillExec(ult)}</div>
+        <div class="ctl">
+          <select class="${l.amb && l.amb !== S.amb ? 'alterado' : ''}" data-acao="linha-amb" data-id="${esc(t.id)}" aria-label="Ambiente de ${esc(t.titulo)}">${opcoes(ambientes, s.amb)}</select>
+          <select class="${l.av && l.av !== S.av ? 'alterado' : ''}" data-acao="linha-av" data-id="${esc(t.id)}" aria-label="Conta de ${esc(t.titulo)}">${opcoes(avatares, s.av)}</select>
+          <button class="btn contorno pq" data-acao="copiar-teste" data-id="${esc(t.id)}" ${trava ? 'disabled' : ''}>${icon('copiar')}Copiar</button>
+        </div>
+        ${trava ? `<div class="trava">${icon('cadeado')}Altera dados: bloqueado em ${esc(ambDe(s.amb).nome)}</div>`
+          : contaErrada ? `<div class="trava dica-conta">${icon('info')}Este teste só roda com a conta ${esc(avDe(t.exigeAvatar)?.nome)}</div>` : ''}
+      </div>`;
+    }).join('') : `<div class="vazio">${icon('busca')}<b>Nenhum teste com esses filtros</b><button class="link" data-acao="limpar-filtros">Limpar filtros</button></div>`;
+    $('contagem').textContent = `${plural(lista.length, 'arquivo visível', 'arquivos visíveis')}${S.sel.size ? ` · ${S.sel.size} selecionado(s)` : ''}`;
+    const todos = $('selTodos');
+    if (todos) {
+      const marcados = lista.filter(t => S.sel.has(t.id)).length;
+      todos.checked = lista.length > 0 && marcados === lista.length;
+      todos.indeterminate = marcados > 0 && marcados < lista.length;
+    }
+    renderSelbar();
+  }
+
+  function renderSelbar() {
+    const bar = $('selbar');
+    if (S.view !== 'testes' || !S.sel.size) { bar.hidden = true; return; }
+    bar.hidden = false;
+    bar.innerHTML = `<b>${plural(S.sel.size, 'selecionado', 'selecionados')}</b>
+      <button class="btn pq" data-acao="copiar-sel">${icon('copiar')}Copiar comando</button>
+      <button class="btn pq fantasma" data-acao="limpar-sel">Limpar</button>`;
+  }
+
+  VIEWS.execucoes = () => {
+    const cont = { todas: execucoes.length, passou: execucoes.filter(e => e.status === 'passou').length, falhou: execucoes.filter(e => e.status === 'falhou').length, pulado: execucoes.filter(e => e.status === 'pulado').length };
+    const lista = S.filtroExec === 'todas' ? execucoes : execucoes.filter(e => e.status === S.filtroExec);
+    return `
+      <header class="vh">
+        <div><h1>Execuções</h1><p>Quem rodou o quê, onde e com qual conta. Use ${icon('refazer', 'ic" style="width:14px;height:14px;vertical-align:-2px')} para copiar o mesmo comando.</p></div>
+        ${execucoes.length ? `<div class="seg" role="group" aria-label="Filtrar por resultado">${[['todas', 'Todas'], ['passou', 'Passaram'], ['falhou', 'Falharam'], ...(cont.pulado ? [['pulado', 'Pulados']] : [])].map(([f, n]) =>
+          `<button data-acao="filtro-exec" data-f="${f}" aria-pressed="${S.filtroExec === f}">${n}<small>${cont[f]}</small></button>`).join('')}</div>` : ''}
+      </header>
+      ${fonteExecucoes === 'exemplo' ? `<div class="nota info">${icon('info')}<span>Execuções de exemplo, só para a demo não começar vazia. Assim que o GitHub Actions rodar, os resultados reais entram no lugar delas.</span></div>`
+        : fonteExecucoes === 'real' ? `<div class="nota info">${icon('info')}<span>Resultados reais do GitHub Actions, rodados todo dia contra o Toolshop. Falhas em <b>Com bugs</b> são esperadas: é a versão com defeitos plantados.</span></div>` : ''}
+      <section class="card exec-tbl">
+        ${execucoes.length ? `<div class="exec-cab"><span>Resultado</span><span>Teste</span><span>Onde e quem</span><span>Duração</span><span>Quando</span><span></span></div>
+          <ul class="lst">${lista.map(e => linhaExec(e, false)).join('')}</ul>`
+        : `<div class="vazio">${icon('play')}<b>Nenhuma execução registrada</b><span>O primeiro resultado aparece aqui depois que o GitHub Actions rodar. Localmente, cada <code>npm run t</code> guarda o seu em <code>meus-testes/.execucoes.json</code>.</span></div>`}
+      </section>`;
+  };
+
+  VIEWS.contas = () => {
+    const modeloEnv = avatares.map(a => `${a.prefixo}_EMAIL=\n${a.prefixo}_SENHA=`).join('\n\n');
+    return `
+      <header class="vh">
+        <div><h1>Contas e ambientes</h1><p>As credenciais ficam só no <code>.env</code>. Os testes nunca têm e-mail ou senha no código, mesmo sendo contas públicas do Toolshop.</p></div>
+        <div class="acoes"><button class="btn" data-acao="copiar-texto" data-txt="${esc(modeloEnv)}" data-msg="Modelo do .env copiado">${icon('copiar')}Copiar modelo do .env</button></div>
+      </header>
+      <h2 class="secao-t">Ambientes</h2>
+      <section class="grade-cards">${ambientes.map(a => {
+        const liberados = testes.filter(t => !bloqueado(t, a.id)).length;
+        return `<article class="card cartao">
+          <h3>${icon('servidor')}${esc(a.nome)}${a.padrao ? '<span class="badge padrao">Padrão</span>' : ''}${a.protegido ? `<span class="badge protegido">${icon('cadeado')}Protegido</span>` : ''}</h3>
+          <p>${a.descricao ? esc(a.descricao) + '. ' : ''}${a.protegido ? 'Testes que alteram dados ficam bloqueados. Use <code>--forcar</code> só se for intencional.' : 'Todos os testes liberados.'}</p>
+          <div class="pe"><code>--ambiente=${esc(a.id)}</code> · ${liberados} de ${testes.length} testes liberados</div>
+        </article>`;
+      }).join('')}</section>
+      <h2 class="secao-t">Contas de teste</h2>
+      <section class="grade-cards">${avatares.map(a => {
+        const exigem = testes.filter(t => t.exigeAvatar === a.id);
+        return `<article class="card cartao">
+          <h3>${esc(a.nome)}<span class="badge">${esc(a.id)}</span></h3>
+          <p>${esc(a.descricao)}</p>
+          <div class="vars">${['EMAIL', 'SENHA'].map(c => `<code>${esc(a.prefixo)}_${c}</code>`).join('')}</div>
+          <div class="pe">${exigem.length ? `Necessária para: ${exigem.map(t => `<button class="link" data-acao="abrir" data-id="${esc(t.id)}">${esc(t.titulo)}</button>`).join(', ')}` : 'Funciona com qualquer teste'}</div>
+        </article>`;
+      }).join('')}</section>`;
+  };
+
+  const PASSOS = () => [
+    ['Clone o projeto', 'Baixa os testes publicados e os scripts do Dispara.', `git clone ${repo}\ncd dispara`],
+    ['Instale as dependências', 'Instala o Playwright e o navegador usado nos testes.', 'npm install\nnpx playwright install chromium'],
+    ['Crie seu .env', 'O modelo já vem com as contas públicas do Toolshop. Num sistema de verdade, você colocaria as suas e o arquivo nunca sairia da sua máquina.', 'cp .env.example .env'],
+    ['Rode o primeiro teste', 'O login é o teste mais rápido para conferir se está tudo certo.', comando(['login'], S.amb, S.av)],
+  ];
+  VIEWS['primeiro-acesso'] = () => {
+    const passos = PASSOS();
+    const feitos = passos.filter((_, i) => S.passos.has(i)).length;
+    return `
+      <header class="vh"><div><h1>Primeiro acesso</h1><p>Quatro passos para rodar testes na sua máquina. Você só faz isso uma vez.</p></div></header>
+      <section class="card progresso">
+        <div style="display:flex;justify-content:space-between;gap:12px"><b>${feitos === 4 ? 'Tudo pronto. Bons testes!' : `${feitos} de 4 concluídos`}</b><span class="muted">${Math.round(feitos / 4 * 100)}%</span></div>
+        <div class="medidor"><i style="width:${feitos / 4 * 100}%"></i></div>
+      </section>
+      <ol class="passos">${passos.map(([t, d, cmd], i) => `
+        <li class="card passo ${S.passos.has(i) ? 'feito' : ''}"><div style="min-width:0">
+          <h3>${esc(t)}</h3><p>${esc(d)}</p>
+          <div class="term"><span class="cifrao">$</span><code>${esc(cmd)}</code><button class="ibtn" data-acao="copiar-texto" data-txt="${esc(cmd)}" aria-label="Copiar">${icon('copiar')}</button></div>
+          <label><input type="checkbox" data-acao="passo" data-n="${i}" ${S.passos.has(i) ? 'checked' : ''}>Já fiz este passo</label>
+        </div></li>`).join('')}</ol>`;
+  };
+
+  VIEWS.publicacoes = () => `
+    <header class="vh"><div><h1>Publicações</h1><p>Cada publicação leva os testes da sua pasta para o catálogo, removendo valores sensíveis no caminho.</p></div></header>
+    <section class="duo">
+      <div class="card">
+        <div class="card-h"><h2>Histórico</h2><span class="muted" style="font-size:13px">${plural(historico.length, 'publicação', 'publicações')}</span></div>
+        ${historico.length ? `<ul class="tempo">${historico.map(h => {
+          const nomes = [...h.adicionados, ...h.alterados, ...h.removidos];
+          const t = Date.parse(h.quando);
+          return `<li><div style="min-width:0;display:grid;gap:3px"><span><b>${esc(h.autor)}</b> publicou ${deltasHtml(h)}</span>
+            <span class="muted" style="font-size:13px">${esc(fmtLonga.format(t))} · ${esc(rel(t))}</span>
+            <span class="nomes">${esc(nomes.join(', '))}</span></div></li>`;
+        }).join('')}</ul>` : `<div class="vazio">${icon('upload')}<b>Nada publicado ainda</b></div>`}
+      </div>
+      <div class="card">
+        <div class="card-h"><h2>Como publicar</h2></div>
+        <div class="card-b" style="display:grid;gap:12px">
+          <p class="muted" style="margin:0">Na pasta do projeto, aponte para a pasta onde você escreve os testes:</p>
+          <div class="term"><span class="cifrao">$</span><code>npm run publicar -- --de ~/meus-rascunhos --autor "Seu nome"</code><button class="ibtn" data-acao="copiar-texto" data-txt='npm run publicar -- --de ~/meus-rascunhos --autor "Seu nome"' aria-label="Copiar">${icon('copiar')}</button></div>
+          <p class="muted" style="margin:0">Confira os avisos e envie para o repositório. O site se atualiza sozinho.</p>
+          <div class="term"><span class="cifrao">$</span><code>git add publicados && git commit -m "Publica testes" && git push</code><button class="ibtn" data-acao="copiar-texto" data-txt='git add publicados && git commit -m "Publica testes" && git push' aria-label="Copiar">${icon('copiar')}</button></div>
+        </div>
+      </div>
+    </section>`;
+
+  VIEWS.revisao = () => {
+    const comAviso = testes.filter(t => t.avisos.length);
+    return `
+      <header class="vh"><div><h1>Revisão de segurança</h1><p>Valores sensíveis que a publicação removeu automaticamente. Corrija na sua pasta para os avisos sumirem na próxima publicação.</p></div></header>
+      ${comAviso.length ? `<div class="nota atencao">${icon('alerta')}<span>${plural(totalAvisos, 'valor removido', 'valores removidos')} em ${plural(comAviso.length, 'arquivo', 'arquivos')}. Nada disso chegou ao repositório: as versões publicadas já estão limpas.</span></div>
+        ${comAviso.map(t => `<section class="card">
+          <div class="card-h"><div style="min-width:0"><button class="tnome" data-acao="abrir" data-id="${esc(t.id)}" data-aba="codigo">${esc(t.titulo)}</button><div class="muted mono" style="font-size:12px;overflow-wrap:anywhere">${esc(t.arquivo)}</div></div><span class="badge protegido">${plural(t.avisos.length, 'aviso', 'avisos')}</span></div>
+          <ul class="aviso-tbl">${t.avisos.map(a => `<li><span class="lin">linha ${a.linha}</span><span class="regra">${esc(a.regra)}</span><span>${esc(a.dica.charAt(0).toUpperCase() + a.dica.slice(1))}</span></li>`).join('')}</ul>
+        </section>`).join('')}`
+      : `<section class="card"><div class="vazio">${icon('escudo')}<b>Nenhum valor sensível na última publicação</b><span>Todos os testes usam as credenciais do .env.</span></div></section>`}`;
+  };
+
+  // ---------- painel do teste ----------
+  function realce(codigo) {
+    const re = /(\/\/[^\n]*|\/\*[\s\S]*?\*\/)|('(?:\\.|[^'\\\n])*'|"(?:\\.|[^"\\\n])*"|`(?:\\.|[^`\\])*`)|\b(import|from|export|const|let|var|await|async|return|if|else|new|function|type|of|for|true|false|null)\b|\b(\d[\d_.,]*)\b|([A-Za-z_$][\w$]*)(?=\s*\()/g;
+    let out = '', ultimo = 0;
+    for (const m of codigo.matchAll(re)) {
+      out += esc(codigo.slice(ultimo, m.index));
+      const cls = m[1] ? 'com' : m[2] ? 'str' : m[3] ? 'kw' : m[4] ? 'num' : 'fn';
+      out += m[0].split('\n').map(p => `<span class="tk-${cls}">${esc(p)}</span>`).join('\n');
+      ultimo = m.index + m[0].length;
+    }
+    out += esc(codigo.slice(ultimo));
+    return out.replace(/\n$/, '').split('\n').map(l => `<span class="ln">${l || ' '}</span>`).join('');
+  }
+
+  function abrirDrawer(id, aba = 'rodar') {
+    if (!testeDe(id)) return;
+    S.drawer = { id, aba, modo: '' };
+    renderDrawer();
+    $('drawer').classList.add('on'); $('drawer').setAttribute('aria-hidden', 'false');
+    $('scrim').classList.add('on');
+    setTimeout(() => $('drawer').querySelector('[data-acao="fechar-drawer"]')?.focus(), 50);
+  }
+  function fecharDrawer() {
+    if (!S.drawer) return;
+    S.drawer = null;
+    $('drawer').classList.remove('on'); $('drawer').setAttribute('aria-hidden', 'true');
+    if (!$('side').classList.contains('on')) $('scrim').classList.remove('on');
+  }
+
+  function renderDrawer() {
+    const d = S.drawer; if (!d) return;
+    const t = testeDe(d.id), s = selDe(t), runs = porTeste.get(t.id) || [];
+    const trava = bloqueado(t, s.amb);
+    const cmd = comando([t.id], s.amb, s.av, d.modo);
+    const MODOS = [['', 'Normal'], ['headed', 'Ver navegador'], ['ui', 'Modo UI'], ['debug', 'Depurar']];
+    const validas = runs.filter(contaNoResultado), ok = validas.filter(r => r.status === 'passou').length;
+    let corpo;
+    if (d.aba === 'codigo') {
+      corpo = `<div class="bloco"><h3>${esc(t.arquivo)}</h3><pre class="cod" aria-label="Código do teste">${realce(t.codigo)}</pre></div>`;
+    } else if (d.aba === 'historico') {
+      corpo = runs.length ? `<div class="bloco"><h3>${plural(runs.length, 'execução', 'execuções')}${validas.length ? ` · ${Math.round(ok / validas.length * 100)}% passaram` : ''}</h3>
+        <ul class="lst card" style="box-shadow:none">${runs.map(e => linhaExec(e, true)).join('')}</ul></div>`
+        : `<div class="vazio">${icon('relogio')}<b>Este teste ainda não rodou</b></div>`;
+    } else {
+      corpo = `
+        <div class="bloco"><h3>${plural(t.casos.length, 'caso', 'casos')}</h3>
+          <ul class="casos">${t.casos.map(c => `<li>${icon('check')}<div><span>${esc(c.titulo)}</span>${tagsHtml(c.tags)}</div></li>`).join('')}</ul></div>
+        <div class="bloco"><h3>Onde rodar</h3>
+          <div class="form2">
+            <label>Ambiente<select data-acao="linha-amb" data-id="${esc(t.id)}">${opcoes(ambientes, s.amb)}</select></label>
+            <label>Conta de teste<select data-acao="linha-av" data-id="${esc(t.id)}">${opcoes(avatares, s.av)}</select></label>
+          </div>
+          <div class="seg" role="group" aria-label="Modo">${MODOS.map(([m, n]) => `<button data-acao="modo" data-m="${m}" aria-pressed="${d.modo === m}">${n}</button>`).join('')}</div>
+          ${t.exigeAvatar && s.av !== t.exigeAvatar ? `<div class="nota atencao">${icon('info')}<span>Este teste é pulado se a conta não for <b>${esc(avDe(t.exigeAvatar)?.nome)}</b>.</span></div>` : ''}
+          ${trava ? `<div class="nota perigo">${icon('cadeado')}<span>Este teste altera dados e ${esc(ambDe(s.amb).nome)} é protegido. Escolha outro ambiente.</span></div>` : ''}
+        </div>
+        <div class="bloco"><h3>Comando</h3>
+          <div class="term"><span class="cifrao">$</span><code>${esc(cmd)}</code></div>
+          <button class="btn primario" data-acao="copiar-drawer" ${trava ? 'disabled' : ''}>${icon('copiar')}Copiar comando</button>
+          <p class="muted" style="margin:0;font-size:13px">Cole no terminal dentro da pasta do projeto. O comando atualiza seus testes antes de rodar e não sobrescreve o que você alterou.</p>
+        </div>`;
+    }
+    $('drawer').innerHTML = `
+      <div class="dw-cab">
+        <div class="dw-topo"><div style="min-width:0"><small>${esc(nomeArea(t.area))}</small><h2>${esc(t.titulo)}</h2></div>
+          <button class="ibtn" data-acao="fechar-drawer" aria-label="Fechar">${icon('x')}</button></div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">${tagsHtml(t.tags)}<span class="meta">${esc(t.arquivo)} · atualizado ${esc(rel(Date.parse(t.atualizadoEm)))}</span></div>
+        <div class="abas" role="tablist">${[['rodar', 'Rodar'], ['codigo', 'Código'], ['historico', `Histórico (${runs.length})`]].map(([a, n]) =>
+          `<button role="tab" data-acao="aba" data-aba="${a}" aria-selected="${d.aba === a}">${n}</button>`).join('')}</div>
+      </div>
+      <div class="dw-corpo">${corpo}</div>`;
+  }
+
+  // ---------- busca rápida ----------
+  const pal = { i: 0, itens: [] };
+  function abrirPaleta() { $('paleta').hidden = false; $('palInput').value = ''; pal.i = 0; renderPaleta(); $('palInput').focus(); }
+  function fecharPaleta() { $('paleta').hidden = true; }
+  function renderPaleta() {
+    const q = $('palInput').value.trim().toLowerCase();
+    const itens = [
+      ...testes.map(t => ({ teste: true, id: t.id, nome: t.titulo, extra: t.arquivo, tipo: nomeArea(t.area), ic: 'codigo', busca: `${t.titulo} ${t.arquivo} ${t.tags.join(' ')}` })),
+      ...navItens().map(n => ({ id: n.v, nome: n.nome, tipo: 'Página', ic: n.ic, busca: n.nome })),
+    ];
+    pal.itens = itens.filter(x => !q || x.busca.toLowerCase().includes(q)).slice(0, 10);
+    if (pal.i >= pal.itens.length) pal.i = 0;
+    $('palLista').innerHTML = pal.itens.length ? pal.itens.map((x, i) =>
+      `<button class="pitem" role="option" data-acao="pal-ir" data-i="${i}" aria-selected="${i === pal.i}">${icon(x.ic)}<span class="pnome"><span>${esc(x.nome)}</span>${x.extra ? `<small class="mono">${esc(x.extra)}</small>` : ''}</span><span class="ptipo">${esc(x.tipo)}</span></button>`).join('')
+      : '<p class="pvazio">Nada encontrado</p>';
+  }
+  function irPaleta(i) { const x = pal.itens[i]; if (!x) return; fecharPaleta(); if (x.teste) abrirDrawer(x.id); else navegar(x.id); }
+
+  // ---------- menu mobile ----------
+  function abrirMenu() { $('side').classList.add('on'); $('scrim').classList.add('on'); }
+  function fecharMenu() { $('side').classList.remove('on'); if (!S.drawer) $('scrim').classList.remove('on'); }
+
+  // ---------- render ----------
+  function renderView() {
+    $('view').innerHTML = VIEWS[S.view]();
+    if (S.view === 'testes') { renderFiltros(); renderLista(); }
+  }
+  function render() { renderNav(); renderView(); renderSelbar(); }
+
+  // ---------- ações ----------
+  const ACOES = {
+    nav: el => navegar(el.dataset.v),
+    menu: abrirMenu,
+    paleta: () => { fecharMenu(); abrirPaleta(); },
+    'fechar-tudo': () => { fecharDrawer(); fecharMenu(); },
+    'fundo-paleta': (el, e) => { if (e.target === el) fecharPaleta(); },
+    'fundo-modal': (el, e) => { if (e.target === el) el.hidden = true; },
+    'fechar-modal': () => { $('modalCopia').hidden = true; },
+    'pal-ir': el => irPaleta(Number(el.dataset.i)),
+    papel: el => { S.papel = el.dataset.p; gravar('papel', S.papel); if (!permitido(S.view)) S.view = 'inicio'; render(); avisar(S.papel === 'admin' ? 'Vendo como admin' : 'Vendo como membro'); },
+    abrir: el => abrirDrawer(el.dataset.id, el.dataset.aba),
+    'fechar-drawer': fecharDrawer,
+    aba: el => { S.drawer.aba = el.dataset.aba; renderDrawer(); },
+    modo: el => { S.drawer.modo = el.dataset.m; renderDrawer(); },
+    'copiar-drawer': () => { const t = testeDe(S.drawer.id), s = selDe(t); copiar(comando([t.id], s.amb, s.av, S.drawer.modo)); },
+    'copiar-teste': el => { const t = testeDe(el.dataset.id), s = selDe(t); copiar(comando([t.id], s.amb, s.av)); },
+    'copiar-exec': el => { const e = execucoes.find(x => x.id === el.dataset.id); copiar(comando([e.teste], e.ambiente, e.avatar)); },
+    'copiar-texto': el => copiar(el.dataset.txt, el.dataset.msg || 'Copiado'),
+    'copiar-smoke': () => {
+      const smoke = testes.filter(t => t.tags.includes('smoke') && !bloqueado(t, S.amb));
+      copiar(comando(smoke.map(t => t.id), S.amb, S.av), `Smoke copiado: ${plural(smoke.length, 'arquivo', 'arquivos')}`);
+    },
+    'copiar-visiveis': () => copiarLote(visiveis()),
+    'copiar-sel': () => copiarLote(testes.filter(t => S.sel.has(t.id))),
+    'limpar-sel': () => { S.sel.clear(); renderLista(); },
+    fav: el => { const id = el.dataset.id; S.favs.has(id) ? S.favs.delete(id) : S.favs.add(id); gravar('favs', [...S.favs]); renderLista(); },
+    area: el => { S.area = el.dataset.area; renderFiltros(); renderLista(); },
+    tag: el => { const g = el.dataset.tag; S.tags.has(g) ? S.tags.delete(g) : S.tags.add(g); renderFiltros(); renderLista(); },
+    'so-favs': () => { S.soFavs = !S.soFavs; renderFiltros(); renderLista(); },
+    'limpar-filtros': () => { S.area = ''; S.tags.clear(); S.soFavs = false; S.busca = ''; renderView(); },
+    'filtro-exec': el => { S.filtroExec = el.dataset.f; renderView(); },
+  };
+  const MUDANCAS = {
+    sel: el => { el.checked ? S.sel.add(el.dataset.id) : S.sel.delete(el.dataset.id); renderLista(); },
+    'sel-todos': el => { visiveis().forEach(t => el.checked ? S.sel.add(t.id) : S.sel.delete(t.id)); renderLista(); },
+    'linha-amb': el => { setLinha(el.dataset.id, 'amb', el.value); atualizarTeste(); },
+    'linha-av': el => { setLinha(el.dataset.id, 'av', el.value); atualizarTeste(); },
+    'padrao-amb': el => { S.amb = el.value; gravar('amb', S.amb); limparEscolhas('amb'); renderLista(); avisar(`Padrão: ${ambDe(S.amb).nome}`); },
+    'padrao-av': el => { S.av = el.value; gravar('av', S.av); limparEscolhas('av'); renderLista(); avisar(`Padrão: conta ${avDe(S.av).nome}`); },
+    passo: el => { const n = Number(el.dataset.n); el.checked ? S.passos.add(n) : S.passos.delete(n); gravar('passos', [...S.passos]); renderNav(); renderView(); },
+  };
+  function limparEscolhas(campo) {
+    for (const id of Object.keys(S.linha)) { delete S.linha[id][campo]; if (!Object.keys(S.linha[id]).length) delete S.linha[id]; }
+    gravar('linha', S.linha);
+  }
+  function atualizarTeste() { if (S.drawer) renderDrawer(); if (S.view === 'testes') renderLista(); }
+  function copiarLote(lista) {
+    const ok = lista.filter(t => !bloqueado(t, S.amb));
+    if (!ok.length) return avisar(`Todos alteram dados e ${ambDe(S.amb).nome} é protegido`);
+    const fora = lista.length - ok.length;
+    copiar(comando(ok.map(t => t.id), S.amb, S.av),
+      fora ? `${plural(ok.length, 'teste copiado', 'testes copiados')}. ${fora} ficou de fora por alterar dados` : `${plural(ok.length, 'teste copiado', 'testes copiados')} com o ambiente e a conta padrão`);
+  }
+
+  document.addEventListener('click', e => {
+    const el = e.target.closest('[data-acao]');
+    if (!el || el.tagName === 'SELECT' || el.type === 'checkbox') return;
+    ACOES[el.dataset.acao]?.(el, e);
+  });
+  document.addEventListener('change', e => { const el = e.target.closest('[data-acao]'); if (el) MUDANCAS[el.dataset.acao]?.(el, e); });
+  document.addEventListener('input', e => { if (e.target.id === 'busca') { S.busca = e.target.value; renderLista(); } if (e.target.id === 'palInput') { pal.i = 0; renderPaleta(); } });
+  document.addEventListener('keydown', e => {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); $('paleta').hidden ? abrirPaleta() : fecharPaleta(); return; }
+    if (!$('paleta').hidden) {
+      if (e.key === 'Escape') fecharPaleta();
+      else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); const n = pal.itens.length; if (n) { pal.i = (pal.i + (e.key === 'ArrowDown' ? 1 : n - 1)) % n; renderPaleta(); } }
+      else if (e.key === 'Enter') { e.preventDefault(); irPaleta(pal.i); }
+      return;
+    }
+    if (e.key === 'Escape') { if (!$('modalCopia').hidden) $('modalCopia').hidden = true; else { fecharDrawer(); fecharMenu(); } return; }
+    const digitando = /INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName);
+    if (e.key === '/' && !digitando) { e.preventDefault(); if (S.view !== 'testes') navegar('testes'); $('busca')?.focus(); }
+  });
+
+  // ---------- início ----------
+  $('demo').hidden = !demo;
+  $('espaco').textContent = 'Toolshop · testes';
+  const inicial = location.hash.slice(1);
+  if (VIEWS[inicial] && permitido(inicial)) S.view = inicial;
+  window.addEventListener('hashchange', () => { const v = location.hash.slice(1); if (VIEWS[v] && v !== S.view) navegar(v); });
+  render();
+})();
+</script>

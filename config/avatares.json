@@ -1,0 +1,6 @@
+[
+  { "id": "cliente", "nome": "Cliente", "descricao": "Jane Doe, cliente com pedidos e favoritos", "prefixo": "CLIENTE", "padrao": true },
+  { "id": "cliente-2", "nome": "Cliente 2", "descricao": "Jack Howe, cliente sem histórico relevante", "prefixo": "CLIENTE_2" },
+  { "id": "cliente-3", "nome": "Cliente 3", "descricao": "Bob Smith, cliente com senha diferente das demais", "prefixo": "CLIENTE_3" },
+  { "id": "admin", "nome": "Admin", "descricao": "John Doe, acesso ao painel administrativo", "prefixo": "ADMIN" }
+]

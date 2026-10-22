@@ -1,0 +1,1002 @@
+{
+  "fonte": "https://github.com/testsmith-io/practice-software-testing.git",
+  "sprint": "sprint5",
+  "commit": "ae7caecb811dd8952c09d997e69be7cb946ecd44",
+  "geradoEm": "2026-10-22T17:12:15.216Z",
+  "fixos": {
+    "account_name": [
+      "checkout/payment/payment.component.html"
+    ],
+    "account_number": [
+      "checkout/payment/payment.component.html"
+    ],
+    "add-spec": [
+      "admin/products-add-edit/products-add-edit.component.html"
+    ],
+    "add-to-cart": [
+      "products/detail/detail.component.html"
+    ],
+    "add-to-compare": [
+      "products/detail/detail.component.html"
+    ],
+    "add-to-favorites": [
+      "products/detail/detail.component.html"
+    ],
+    "attachment": [
+      "contact/contact.component.html"
+    ],
+    "attachment-error": [
+      "contact/contact.component.html"
+    ],
+    "back": [
+      "account/messages/message-detail/message-detail.component.html",
+      "admin/brands-add-edit/brands-add-edit.component.html",
+      "admin/categories-add-edit/categories-add-edit.component.html",
+      "admin/message-detail/message-detail.component.html",
+      "admin/orders-add-edit/orders-add-edit.component.html",
+      "admin/products-add-edit/products-add-edit.component.html",
+      "admin/settings/settings.component.html",
+      "admin/users-add-edit/users-add-edit.component.html"
+    ],
+    "bank_name": [
+      "checkout/payment/payment.component.html"
+    ],
+    "brand-add": [
+      "admin/brands-list/brands-list.component.html"
+    ],
+    "brand-error": [
+      "admin/brands-add-edit/brands-add-edit.component.html"
+    ],
+    "brand-form": [
+      "admin/brands-add-edit/brands-add-edit.component.html"
+    ],
+    "brand-id": [
+      "admin/products-add-edit/products-add-edit.component.html"
+    ],
+    "brand-saved": [
+      "admin/brands-add-edit/brands-add-edit.component.html"
+    ],
+    "brand-search-form": [
+      "admin/brands-list/brands-list.component.html"
+    ],
+    "brand-search-query": [
+      "admin/brands-list/brands-list.component.html"
+    ],
+    "brand-search-reset": [
+      "admin/brands-list/brands-list.component.html"
+    ],
+    "brand-search-submit": [
+      "admin/brands-list/brands-list.component.html"
+    ],
+    "brand-submit": [
+      "admin/brands-add-edit/brands-add-edit.component.html"
+    ],
+    "card_holder_name": [
+      "checkout/payment/payment.component.html"
+    ],
+    "cart-discount": [
+      "checkout/cart/cart.component.html"
+    ],
+    "cart-eco-discount": [
+      "checkout/cart/cart.component.html"
+    ],
+    "cart-quantity": [
+      "header/header.component.html"
+    ],
+    "cart-subtotal": [
+      "checkout/cart/cart.component.html"
+    ],
+    "cart-total": [
+      "checkout/cart/cart.component.html"
+    ],
+    "category-add": [
+      "admin/categories-list/categories-list.component.html"
+    ],
+    "category-empty": [
+      "products/category/category.component.html"
+    ],
+    "category-id": [
+      "admin/products-add-edit/products-add-edit.component.html"
+    ],
+    "category-search-form": [
+      "admin/categories-list/categories-list.component.html"
+    ],
+    "category-search-query": [
+      "admin/categories-list/categories-list.component.html"
+    ],
+    "category-search-reset": [
+      "admin/categories-list/categories-list.component.html"
+    ],
+    "category-search-submit": [
+      "admin/categories-list/categories-list.component.html"
+    ],
+    "category-submit": [
+      "admin/categories-add-edit/categories-add-edit.component.html"
+    ],
+    "change-password-submit": [
+      "account/profile/profile.component.html"
+    ],
+    "chat-close": [
+      "chat-widget/chat-widget.component.html"
+    ],
+    "chat-file-input": [
+      "chat-widget/chat-widget.component.html"
+    ],
+    "chat-input": [
+      "chat-widget/chat-widget.component.html"
+    ],
+    "chat-product": [
+      "chat-widget/chat-widget.component.html"
+    ],
+    "chat-send": [
+      "chat-widget/chat-widget.component.html"
+    ],
+    "chat-toggle": [
+      "chat-widget/chat-widget.component.html"
+    ],
+    "chat-window": [
+      "chat-widget/chat-widget.component.html"
+    ],
+    "city": [
+      "account/invoices/details/details.component.html",
+      "account/profile/profile.component.html",
+      "admin/orders-add-edit/orders-add-edit.component.html",
+      "admin/users-add-edit/users-add-edit.component.html",
+      "auth/register/register.component.html",
+      "checkout/address/address.component.html"
+    ],
+    "city-error": [
+      "auth/register/register.component.html"
+    ],
+    "clear-comparison": [
+      "products/category/category.component.html",
+      "products/comparison/comparison.component.html",
+      "products/detail/detail.component.html",
+      "products/overview/overview.component.html"
+    ],
+    "clear-storage": [
+      "admin/settings/settings.component.html"
+    ],
+    "co2-rating": [
+      "admin/products-add-edit/products-add-edit.component.html"
+    ],
+    "co2-rating-badge": [
+      "products/category/category.component.html",
+      "products/detail/detail.component.html",
+      "products/overview/overview.component.html"
+    ],
+    "co2-scale-toggle": [
+      "admin/settings/settings.component.html"
+    ],
+    "compare-brand": [
+      "products/comparison/comparison.component.html"
+    ],
+    "compare-btn": [
+      "products/category/category.component.html",
+      "products/overview/overview.component.html"
+    ],
+    "compare-category": [
+      "products/comparison/comparison.component.html"
+    ],
+    "compare-co2": [
+      "products/comparison/comparison.component.html"
+    ],
+    "compare-description": [
+      "products/comparison/comparison.component.html"
+    ],
+    "compare-eco": [
+      "products/comparison/comparison.component.html"
+    ],
+    "compare-link": [
+      "products/category/category.component.html",
+      "products/detail/detail.component.html",
+      "products/overview/overview.component.html"
+    ],
+    "compare-price": [
+      "products/comparison/comparison.component.html"
+    ],
+    "compare-spec": [
+      "products/comparison/comparison.component.html"
+    ],
+    "compare-stock": [
+      "products/comparison/comparison.component.html"
+    ],
+    "comparison-bar": [
+      "products/category/category.component.html",
+      "products/detail/detail.component.html",
+      "products/overview/overview.component.html"
+    ],
+    "comparison-empty": [
+      "products/comparison/comparison.component.html"
+    ],
+    "comparison-table": [
+      "products/comparison/comparison.component.html"
+    ],
+    "comparison-title": [
+      "products/comparison/comparison.component.html"
+    ],
+    "contact-submit": [
+      "contact/contact.component.html"
+    ],
+    "continue-shopping": [
+      "checkout/cart/cart.component.html"
+    ],
+    "country": [
+      "account/invoices/details/details.component.html",
+      "account/profile/profile.component.html",
+      "admin/orders-add-edit/orders-add-edit.component.html",
+      "admin/users-add-edit/users-add-edit.component.html",
+      "auth/register/register.component.html",
+      "checkout/address/address.component.html"
+    ],
+    "country-error": [
+      "auth/register/register.component.html"
+    ],
+    "course-promo": [
+      "checkout/payment/payment.component.html",
+      "products/overview/overview.component.html"
+    ],
+    "course-promo-link": [
+      "checkout/payment/payment.component.html",
+      "products/overview/overview.component.html"
+    ],
+    "credit_card_number": [
+      "checkout/payment/payment.component.html"
+    ],
+    "current-password": [
+      "account/profile/profile.component.html"
+    ],
+    "cvv": [
+      "checkout/payment/payment.component.html"
+    ],
+    "decrease-quantity": [
+      "products/detail/detail.component.html"
+    ],
+    "delete": [
+      "account/favorites/favorites.component.html"
+    ],
+    "delete-spec": [
+      "admin/products-add-edit/products-add-edit.component.html"
+    ],
+    "description": [
+      "admin/products-add-edit/products-add-edit.component.html"
+    ],
+    "dob": [
+      "admin/users-add-edit/users-add-edit.component.html",
+      "auth/register/register.component.html"
+    ],
+    "dob-error": [
+      "auth/register/register.component.html"
+    ],
+    "download-invoice": [
+      "account/invoices/details/details.component.html"
+    ],
+    "eco-badge": [
+      "products/category/category.component.html",
+      "products/detail/detail.component.html",
+      "products/overview/overview.component.html"
+    ],
+    "eco-badge-toggle": [
+      "admin/settings/settings.component.html"
+    ],
+    "eco-discount": [
+      "account/invoices/details/details.component.html"
+    ],
+    "eco-friendly-filter": [
+      "products/category/category.component.html",
+      "products/overview/overview.component.html"
+    ],
+    "email": [
+      "account/profile/profile.component.html",
+      "admin/users-add-edit/users-add-edit.component.html",
+      "auth/forgot-password/forgot-password.component.html",
+      "auth/login/login.component.html",
+      "auth/register/register.component.html",
+      "checkout/login/login.component.html",
+      "contact/contact.component.html"
+    ],
+    "email-error": [
+      "auth/forgot-password/forgot-password.component.html",
+      "auth/login/login.component.html",
+      "auth/register/register.component.html",
+      "checkout/login/login.component.html",
+      "contact/contact.component.html"
+    ],
+    "enabled": [
+      "admin/users-add-edit/users-add-edit.component.html"
+    ],
+    "expiration_date": [
+      "checkout/payment/payment.component.html"
+    ],
+    "failed_login_attempts": [
+      "admin/users-add-edit/users-add-edit.component.html"
+    ],
+    "filters": [
+      "products/category/category.component.html",
+      "products/overview/overview.component.html"
+    ],
+    "finish": [
+      "checkout/payment/payment.component.html"
+    ],
+    "first-name": [
+      "account/profile/profile.component.html",
+      "admin/users-add-edit/users-add-edit.component.html",
+      "auth/register/register.component.html",
+      "contact/contact.component.html"
+    ],
+    "first-name-error": [
+      "auth/register/register.component.html",
+      "contact/contact.component.html"
+    ],
+    "footer-explore": [
+      "footer/footer.component.html"
+    ],
+    "footer-learn-courses": [
+      "footer/footer.component.html"
+    ],
+    "footer-learn-github": [
+      "footer/footer.component.html"
+    ],
+    "footer-learn-spector": [
+      "footer/footer.component.html"
+    ],
+    "forgot-password-form": [
+      "auth/forgot-password/forgot-password.component.html"
+    ],
+    "forgot-password-link": [
+      "auth/login/login.component.html",
+      "checkout/login/login.component.html"
+    ],
+    "forgot-password-submit": [
+      "auth/forgot-password/forgot-password.component.html"
+    ],
+    "geolocation": [
+      "admin/settings/settings.component.html"
+    ],
+    "gift_card_number": [
+      "checkout/payment/payment.component.html"
+    ],
+    "guest-email": [
+      "checkout/login/login.component.html"
+    ],
+    "guest-email-error": [
+      "checkout/login/login.component.html"
+    ],
+    "guest-first-name": [
+      "checkout/login/login.component.html"
+    ],
+    "guest-first-name-error": [
+      "checkout/login/login.component.html"
+    ],
+    "guest-last-name": [
+      "checkout/login/login.component.html"
+    ],
+    "guest-last-name-error": [
+      "checkout/login/login.component.html"
+    ],
+    "guest-submit": [
+      "checkout/login/login.component.html"
+    ],
+    "house_number": [
+      "auth/register/register.component.html",
+      "checkout/address/address.component.html"
+    ],
+    "house_number-error": [
+      "auth/register/register.component.html"
+    ],
+    "id": [
+      "admin/brands-add-edit/brands-add-edit.component.html",
+      "admin/categories-add-edit/categories-add-edit.component.html",
+      "admin/products-add-edit/products-add-edit.component.html",
+      "admin/users-add-edit/users-add-edit.component.html"
+    ],
+    "increase-quantity": [
+      "products/detail/detail.component.html"
+    ],
+    "invoice-date": [
+      "account/invoices/details/details.component.html",
+      "admin/orders-add-edit/orders-add-edit.component.html"
+    ],
+    "invoice-number": [
+      "account/invoices/details/details.component.html",
+      "admin/orders-add-edit/orders-add-edit.component.html"
+    ],
+    "invoice-total": [
+      "admin/orders-add-edit/orders-add-edit.component.html"
+    ],
+    "lang-de": [
+      "header/header.component.html"
+    ],
+    "lang-el": [
+      "header/header.component.html"
+    ],
+    "lang-en": [
+      "header/header.component.html"
+    ],
+    "lang-es": [
+      "header/header.component.html"
+    ],
+    "lang-fr": [
+      "header/header.component.html"
+    ],
+    "lang-nl": [
+      "header/header.component.html"
+    ],
+    "lang-tr": [
+      "header/header.component.html"
+    ],
+    "language-select": [
+      "header/header.component.html"
+    ],
+    "last-name": [
+      "account/profile/profile.component.html",
+      "admin/users-add-edit/users-add-edit.component.html",
+      "auth/register/register.component.html",
+      "contact/contact.component.html"
+    ],
+    "last-name-error": [
+      "auth/register/register.component.html",
+      "contact/contact.component.html"
+    ],
+    "line-price": [
+      "checkout/cart/cart.component.html"
+    ],
+    "live-activity-badge": [
+      "live-activity-widget/live-activity-widget.component.html"
+    ],
+    "live-activity-clear": [
+      "live-activity-widget/live-activity-widget.component.html"
+    ],
+    "live-activity-close": [
+      "live-activity-widget/live-activity-widget.component.html"
+    ],
+    "live-activity-count": [
+      "live-activity-widget/live-activity-widget.component.html"
+    ],
+    "live-activity-empty": [
+      "live-activity-widget/live-activity-widget.component.html"
+    ],
+    "live-activity-item": [
+      "live-activity-widget/live-activity-widget.component.html"
+    ],
+    "live-activity-revenue": [
+      "live-activity-widget/live-activity-widget.component.html"
+    ],
+    "live-activity-soldout": [
+      "live-activity-widget/live-activity-widget.component.html"
+    ],
+    "live-activity-status": [
+      "live-activity-widget/live-activity-widget.component.html"
+    ],
+    "live-activity-toggle": [
+      "live-activity-widget/live-activity-widget.component.html"
+    ],
+    "live-activity-window": [
+      "live-activity-widget/live-activity-widget.component.html"
+    ],
+    "location-offer": [
+      "admin/products-add-edit/products-add-edit.component.html"
+    ],
+    "login-error": [
+      "auth/login/login.component.html",
+      "checkout/login/login.component.html"
+    ],
+    "login-form": [
+      "auth/login/login.component.html"
+    ],
+    "login-submit": [
+      "auth/login/login.component.html",
+      "checkout/login/login.component.html"
+    ],
+    "message": [
+      "account/messages/message-detail/message-detail.component.html",
+      "admin/message-detail/message-detail.component.html",
+      "contact/contact.component.html"
+    ],
+    "message-error": [
+      "contact/contact.component.html"
+    ],
+    "monthly_installments": [
+      "checkout/payment/payment.component.html"
+    ],
+    "name": [
+      "admin/brands-add-edit/brands-add-edit.component.html",
+      "admin/categories-add-edit/categories-add-edit.component.html",
+      "admin/products-add-edit/products-add-edit.component.html"
+    ],
+    "name-error": [
+      "admin/brands-add-edit/brands-add-edit.component.html"
+    ],
+    "nav-admin-brands": [
+      "header/header.component.html"
+    ],
+    "nav-admin-categories": [
+      "header/header.component.html"
+    ],
+    "nav-admin-dashboard": [
+      "header/header.component.html"
+    ],
+    "nav-admin-messages": [
+      "header/header.component.html"
+    ],
+    "nav-admin-orders": [
+      "header/header.component.html"
+    ],
+    "nav-admin-products": [
+      "header/header.component.html"
+    ],
+    "nav-admin-settings": [
+      "header/header.component.html"
+    ],
+    "nav-admin-statistics": [
+      "header/header.component.html"
+    ],
+    "nav-admin-users": [
+      "header/header.component.html"
+    ],
+    "nav-average-month-sales": [
+      "header/header.component.html"
+    ],
+    "nav-average-week-sales": [
+      "header/header.component.html"
+    ],
+    "nav-cart": [
+      "header/header.component.html"
+    ],
+    "nav-categories": [
+      "header/header.component.html"
+    ],
+    "nav-contact": [
+      "header/header.component.html"
+    ],
+    "nav-favorites": [
+      "account/overview/overview.component.html"
+    ],
+    "nav-hand-tools": [
+      "header/header.component.html"
+    ],
+    "nav-home": [
+      "header/header.component.html"
+    ],
+    "nav-invoices": [
+      "account/overview/overview.component.html"
+    ],
+    "nav-menu": [
+      "header/header.component.html"
+    ],
+    "nav-messages": [
+      "account/overview/overview.component.html"
+    ],
+    "nav-my-account": [
+      "header/header.component.html"
+    ],
+    "nav-my-favorites": [
+      "header/header.component.html"
+    ],
+    "nav-my-invoices": [
+      "header/header.component.html"
+    ],
+    "nav-my-messages": [
+      "header/header.component.html"
+    ],
+    "nav-my-profile": [
+      "header/header.component.html"
+    ],
+    "nav-other": [
+      "header/header.component.html"
+    ],
+    "nav-power-tools": [
+      "header/header.component.html"
+    ],
+    "nav-profile": [
+      "account/overview/overview.component.html"
+    ],
+    "nav-rentals": [
+      "header/header.component.html"
+    ],
+    "nav-sign-in": [
+      "header/header.component.html"
+    ],
+    "nav-sign-out": [
+      "header/header.component.html"
+    ],
+    "nav-special-tools": [
+      "header/header.component.html"
+    ],
+    "new-password": [
+      "account/profile/profile.component.html"
+    ],
+    "new-password-confirm": [
+      "account/profile/profile.component.html"
+    ],
+    "no-results": [
+      "products/overview/overview.component.html"
+    ],
+    "notification-bar": [
+      "app.component.html"
+    ],
+    "offer-price": [
+      "account/invoices/details/details.component.html",
+      "admin/orders-add-edit/orders-add-edit.component.html",
+      "checkout/cart/cart.component.html",
+      "products/detail/detail.component.html"
+    ],
+    "order-search-form": [
+      "admin/orders-list/orders-list.component.html"
+    ],
+    "order-search-query": [
+      "admin/orders-list/orders-list.component.html"
+    ],
+    "order-search-reset": [
+      "admin/orders-list/orders-list.component.html"
+    ],
+    "order-search-submit": [
+      "admin/orders-list/orders-list.component.html"
+    ],
+    "order-status": [
+      "admin/orders-add-edit/orders-add-edit.component.html"
+    ],
+    "out-of-stock": [
+      "products/category/category.component.html",
+      "products/detail/detail.component.html",
+      "products/overview/overview.component.html"
+    ],
+    "page-title": [
+      "account/favorites/favorites.component.html",
+      "account/invoices/invoices.component.html",
+      "account/messages/messages.component.html",
+      "account/overview/overview.component.html",
+      "account/profile/profile.component.html",
+      "admin/brands-add-edit/brands-add-edit.component.html",
+      "admin/brands-list/brands-list.component.html",
+      "admin/categories-add-edit/categories-add-edit.component.html",
+      "admin/categories-list/categories-list.component.html",
+      "admin/dashboard/dashboard.component.html",
+      "admin/messages-list/messages-list.component.html",
+      "admin/orders-list/orders-list.component.html",
+      "admin/products-add-edit/products-add-edit.component.html",
+      "admin/products-list/products-list.component.html",
+      "admin/reports/average-sales-month/average-sales-month.component.html",
+      "admin/reports/average-sales-week/average-sales-week.component.html",
+      "admin/reports/statistics/statistics.component.html",
+      "admin/settings/settings.component.html",
+      "admin/users-add-edit/users-add-edit.component.html",
+      "admin/users-list/users-list.component.html",
+      "products/category/category.component.html",
+      "products/rentals/overview/overview.component.html"
+    ],
+    "pagination-next": [
+      "pagination/pagination.component.html"
+    ],
+    "pagination-prev": [
+      "pagination/pagination.component.html"
+    ],
+    "parent-id": [
+      "admin/categories-add-edit/categories-add-edit.component.html"
+    ],
+    "password": [
+      "admin/users-add-edit/users-add-edit.component.html",
+      "auth/login/login.component.html",
+      "auth/register/register.component.html",
+      "checkout/login/login.component.html"
+    ],
+    "password-error": [
+      "auth/login/login.component.html",
+      "auth/register/register.component.html",
+      "checkout/login/login.component.html"
+    ],
+    "payment-endpoint": [
+      "admin/settings/settings.component.html"
+    ],
+    "payment-error-message": [
+      "checkout/payment/payment.component.html"
+    ],
+    "payment-method": [
+      "account/invoices/details/details.component.html",
+      "admin/orders-add-edit/orders-add-edit.component.html",
+      "checkout/payment/payment.component.html"
+    ],
+    "payment-success-message": [
+      "checkout/payment/payment.component.html"
+    ],
+    "phone": [
+      "account/profile/profile.component.html",
+      "admin/users-add-edit/users-add-edit.component.html",
+      "auth/register/register.component.html"
+    ],
+    "phone-error": [
+      "auth/register/register.component.html"
+    ],
+    "postal_code": [
+      "account/invoices/details/details.component.html",
+      "account/profile/profile.component.html",
+      "admin/orders-add-edit/orders-add-edit.component.html",
+      "admin/users-add-edit/users-add-edit.component.html",
+      "auth/register/register.component.html",
+      "checkout/address/address.component.html"
+    ],
+    "postal_code-error": [
+      "auth/register/register.component.html"
+    ],
+    "postcode-lookup-error": [
+      "checkout/address/address.component.html"
+    ],
+    "postcode-lookup-hint": [
+      "auth/register/register.component.html",
+      "checkout/address/address.component.html"
+    ],
+    "postcode-lookup-loading": [
+      "auth/register/register.component.html",
+      "checkout/address/address.component.html"
+    ],
+    "postcode-lookup-url": [
+      "admin/settings/settings.component.html"
+    ],
+    "price": [
+      "admin/products-add-edit/products-add-edit.component.html"
+    ],
+    "proceed-1": [
+      "checkout/cart/cart.component.html"
+    ],
+    "proceed-2": [
+      "checkout/login/login.component.html"
+    ],
+    "proceed-2-guest": [
+      "checkout/login/login.component.html"
+    ],
+    "proceed-3": [
+      "checkout/address/address.component.html"
+    ],
+    "product-add": [
+      "admin/products-list/products-list.component.html"
+    ],
+    "product-description": [
+      "account/favorites/favorites.component.html",
+      "products/detail/detail.component.html"
+    ],
+    "product-discount-price": [
+      "products/category/category.component.html",
+      "products/overview/overview.component.html"
+    ],
+    "product-image-id": [
+      "admin/products-add-edit/products-add-edit.component.html"
+    ],
+    "product-name": [
+      "account/favorites/favorites.component.html",
+      "products/category/category.component.html",
+      "products/comparison/comparison.component.html",
+      "products/detail/detail.component.html",
+      "products/overview/overview.component.html"
+    ],
+    "product-price": [
+      "checkout/cart/cart.component.html",
+      "products/category/category.component.html",
+      "products/overview/overview.component.html"
+    ],
+    "product-quantity": [
+      "checkout/cart/cart.component.html"
+    ],
+    "product-search-form": [
+      "admin/products-list/products-list.component.html"
+    ],
+    "product-search-query": [
+      "admin/products-list/products-list.component.html"
+    ],
+    "product-search-reset": [
+      "admin/products-list/products-list.component.html"
+    ],
+    "product-search-submit": [
+      "admin/products-list/products-list.component.html"
+    ],
+    "product-specs": [
+      "products/detail/detail.component.html"
+    ],
+    "product-submit": [
+      "admin/products-add-edit/products-add-edit.component.html"
+    ],
+    "product-title": [
+      "checkout/cart/cart.component.html"
+    ],
+    "quantity": [
+      "products/detail/detail.component.html"
+    ],
+    "register-error": [
+      "auth/register/register.component.html"
+    ],
+    "register-form": [
+      "auth/register/register.component.html"
+    ],
+    "register-link": [
+      "auth/login/login.component.html",
+      "checkout/login/login.component.html"
+    ],
+    "register-submit": [
+      "auth/register/register.component.html"
+    ],
+    "remove-product": [
+      "products/comparison/comparison.component.html"
+    ],
+    "rental": [
+      "admin/products-add-edit/products-add-edit.component.html"
+    ],
+    "reply-submit": [
+      "account/messages/message-detail/message-detail.component.html",
+      "admin/message-detail/message-detail.component.html"
+    ],
+    "search-caption": [
+      "products/overview/overview.component.html"
+    ],
+    "search-query": [
+      "products/overview/overview.component.html"
+    ],
+    "search-reset": [
+      "products/overview/overview.component.html"
+    ],
+    "search-result-count": [
+      "products/overview/overview.component.html"
+    ],
+    "search-submit": [
+      "products/overview/overview.component.html"
+    ],
+    "search-term": [
+      "products/overview/overview.component.html"
+    ],
+    "settings-submit": [
+      "admin/settings/settings.component.html"
+    ],
+    "show-differences": [
+      "products/comparison/comparison.component.html"
+    ],
+    "slug": [
+      "admin/brands-add-edit/brands-add-edit.component.html",
+      "admin/categories-add-edit/categories-add-edit.component.html"
+    ],
+    "slug-error": [
+      "admin/brands-add-edit/brands-add-edit.component.html"
+    ],
+    "sort": [
+      "products/category/category.component.html",
+      "products/overview/overview.component.html"
+    ],
+    "spec-name": [
+      "admin/products-add-edit/products-add-edit.component.html",
+      "products/detail/detail.component.html"
+    ],
+    "spec-row": [
+      "products/detail/detail.component.html"
+    ],
+    "spec-unit": [
+      "admin/products-add-edit/products-add-edit.component.html",
+      "products/detail/detail.component.html"
+    ],
+    "spec-value": [
+      "admin/products-add-edit/products-add-edit.component.html",
+      "products/detail/detail.component.html"
+    ],
+    "spec-value-text": [
+      "products/detail/detail.component.html"
+    ],
+    "specs-table": [
+      "admin/products-add-edit/products-add-edit.component.html"
+    ],
+    "specs-title": [
+      "products/detail/detail.component.html"
+    ],
+    "state": [
+      "account/invoices/details/details.component.html",
+      "account/profile/profile.component.html",
+      "admin/orders-add-edit/orders-add-edit.component.html",
+      "admin/users-add-edit/users-add-edit.component.html",
+      "auth/register/register.component.html",
+      "checkout/address/address.component.html"
+    ],
+    "state-error": [
+      "auth/register/register.component.html"
+    ],
+    "status": [
+      "admin/message-detail/message-detail.component.html"
+    ],
+    "status-message": [
+      "admin/orders-add-edit/orders-add-edit.component.html"
+    ],
+    "stock": [
+      "admin/products-add-edit/products-add-edit.component.html"
+    ],
+    "street": [
+      "account/invoices/details/details.component.html",
+      "account/profile/profile.component.html",
+      "admin/orders-add-edit/orders-add-edit.component.html",
+      "admin/users-add-edit/users-add-edit.component.html",
+      "auth/register/register.component.html",
+      "checkout/address/address.component.html"
+    ],
+    "street-error": [
+      "auth/register/register.component.html"
+    ],
+    "subject": [
+      "contact/contact.component.html"
+    ],
+    "subject-error": [
+      "contact/contact.component.html"
+    ],
+    "total": [
+      "account/invoices/details/details.component.html",
+      "admin/orders-add-edit/orders-add-edit.component.html"
+    ],
+    "totp-code": [
+      "account/profile/profile.component.html",
+      "auth/login/login.component.html",
+      "checkout/login/login.component.html"
+    ],
+    "totp-error": [
+      "account/profile/profile.component.html"
+    ],
+    "totp-secret": [
+      "account/profile/profile.component.html"
+    ],
+    "totp-success": [
+      "account/profile/profile.component.html"
+    ],
+    "unit-price": [
+      "products/detail/detail.component.html"
+    ],
+    "update-profile-submit": [
+      "account/profile/profile.component.html"
+    ],
+    "update-status-submit": [
+      "admin/orders-add-edit/orders-add-edit.component.html"
+    ],
+    "user-add": [
+      "admin/users-list/users-list.component.html"
+    ],
+    "user-search-form": [
+      "admin/users-list/users-list.component.html"
+    ],
+    "user-search-query": [
+      "admin/users-list/users-list.component.html"
+    ],
+    "user-search-reset": [
+      "admin/users-list/users-list.component.html"
+    ],
+    "user-search-submit": [
+      "admin/users-list/users-list.component.html"
+    ],
+    "user-submit": [
+      "admin/users-add-edit/users-add-edit.component.html"
+    ],
+    "validation_code": [
+      "checkout/payment/payment.component.html"
+    ],
+    "verify-totp": [
+      "account/profile/profile.component.html",
+      "auth/login/login.component.html",
+      "checkout/login/login.component.html"
+    ],
+    "year": [
+      "admin/reports/average-sales-month/average-sales-month.component.html",
+      "admin/reports/average-sales-week/average-sales-week.component.html"
+    ]
+  },
+  "dinamicos": [
+    "brand-",
+    "category-",
+    "category-delete-",
+    "category-edit-",
+    "favorite-",
+    "message-details-",
+    "order-edit-",
+    "product-",
+    "product-delete-",
+    "product-edit-",
+    "user-delete-",
+    "user-edit-"
+  ],
+  "estados": [
+    "filter_completed",
+    "filter_started",
+    "search_completed",
+    "search_started",
+    "sorting_completed",
+    "sorting_started"
+  ]
+}
