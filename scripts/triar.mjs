@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Triagem das falhas de uma execução: anota cada execução que falhou com um diagnóstico.
-// Uso: npm run triar -- --execucoes parcial/estavel.json [--relatorio-json test-results/cliente.json]
+// Uso: npm run triar -- --execucoes parcial/estavel.json [--relatorio-json relatorio-json/cliente.json]
 //                        [--historico resultados/execucoes.json] [--avatar cliente] [--max 10] [--regras] [--modelo ...]
 // Com ANTHROPIC_API_KEY, usa o Claude; sem a chave (ou com --regras), usa as regras locais.
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';

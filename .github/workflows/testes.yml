@@ -70,7 +70,7 @@ jobs:
         id: cliente
         env:
           RELATORIO_HTML: relatorios/${{ matrix.ambiente }}/cliente
-          RELATORIO_JSON: test-results/cliente.json
+          RELATORIO_JSON: relatorio-json/cliente.json
         run: npm run t -- --todos --exceto=pedidos --ambiente=${{ matrix.ambiente }} --avatar=cliente --sem-sync
 
       - name: Roda os testes de admin com a conta Admin
@@ -78,16 +78,16 @@ jobs:
         if: ${{ !cancelled() }}
         env:
           RELATORIO_HTML: relatorios/${{ matrix.ambiente }}/admin
-          RELATORIO_JSON: test-results/admin.json
+          RELATORIO_JSON: relatorio-json/admin.json
         run: npm run t -- pedidos login --ambiente=${{ matrix.ambiente }} --avatar=admin --sem-sync
 
       - name: Registra os resultados
         if: ${{ !cancelled() }}
         run: |
-          npm run coletar -- --relatorio-json test-results/cliente.json --historico parcial/${{ matrix.ambiente }}.json \
+          npm run coletar -- --relatorio-json relatorio-json/cliente.json --historico parcial/${{ matrix.ambiente }}.json \
             --ambiente ${{ matrix.ambiente }} --avatar cliente --origem ci --quem "${{ github.actor }}" \
             --url-relatorio "$PAGES_URL/relatorios/${{ matrix.ambiente }}/cliente/"
-          npm run coletar -- --relatorio-json test-results/admin.json --historico parcial/${{ matrix.ambiente }}.json \
+          npm run coletar -- --relatorio-json relatorio-json/admin.json --historico parcial/${{ matrix.ambiente }}.json \
             --ambiente ${{ matrix.ambiente }} --avatar admin --origem ci --quem "${{ github.actor }}" \
             --url-relatorio "$PAGES_URL/relatorios/${{ matrix.ambiente }}/admin/"
 
@@ -97,8 +97,8 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
-          npm run -s triar -- --execucoes parcial/${{ matrix.ambiente }}.json --relatorio-json test-results/cliente.json --avatar cliente
-          npm run -s triar -- --execucoes parcial/${{ matrix.ambiente }}.json --relatorio-json test-results/admin.json --avatar admin
+          npm run -s triar -- --execucoes parcial/${{ matrix.ambiente }}.json --relatorio-json relatorio-json/cliente.json --avatar cliente
+          npm run -s triar -- --execucoes parcial/${{ matrix.ambiente }}.json --relatorio-json relatorio-json/admin.json --avatar admin
 
       - name: Resumo na página da execução
         if: ${{ !cancelled() }}

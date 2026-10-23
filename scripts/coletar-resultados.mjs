@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-// Lê test-results/resultado.json e acrescenta as execuções ao histórico.
-// Uso: npm run coletar -- [--relatorio-json test-results/resultado.json] [--historico resultados/execucoes.json]
+// Lê relatorio-json/resultado.json e acrescenta as execuções ao histórico.
+// Uso: npm run coletar -- [--relatorio-json relatorio-json/resultado.json] [--historico resultados/execucoes.json]
 //                         [--ambiente estavel] [--avatar cliente] [--quem "Ana"] [--origem ci] [--url-relatorio https://...]
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
@@ -9,7 +9,7 @@ import { RAIZ, argumentos, executadoDireto, lerJson } from './lib/util.mjs';
 import { coletar, juntar } from './lib/coletar.mjs';
 
 export function salvarResultados(opcoes = {}) {
-  const origemJson = resolve(RAIZ, opcoes.relatorioJson ?? 'test-results/resultado.json');
+  const origemJson = resolve(RAIZ, opcoes.relatorioJson ?? 'relatorio-json/resultado.json');
   if (!existsSync(origemJson)) throw new Error(`Relatório não encontrado: ${origemJson}`);
   const destino = resolve(RAIZ, opcoes.historico ?? 'resultados/execucoes.json');
   const novas = coletar(JSON.parse(readFileSync(origemJson, 'utf8')), {
