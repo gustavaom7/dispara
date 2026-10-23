@@ -19,6 +19,7 @@ test('cadastra cliente novo e entra com ele @destrutivo', async ({ page, login }
   await page.getByTestId('register-submit').click();
 
   await expect(page).toHaveURL(/\/auth\/login/);
+  await expect(login.email).toBeVisible();
   await login.entrarCom({ email: pessoa.email, senha: pessoa.senha });
   await expect(login.titulo).toHaveText('My account');
 });

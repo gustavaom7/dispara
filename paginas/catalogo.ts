@@ -1,4 +1,5 @@
 import { expect, type Page } from '@playwright/test';
+import { pularSeVerificacaoAntiBot, telaDeVerificacao } from './verificacao-anti-bot';
 
 export const preco = (texto: string | null) => Number((texto ?? '').replace(/[^\d.]/g, ''));
 
@@ -13,12 +14,17 @@ export class Catalogo {
 
   async abrir() {
     await this.page.goto('/');
+    await expect(this.nomes.first().or(telaDeVerificacao(this.page))).toBeVisible();
+    await pularSeVerificacaoAntiBot(this.page);
   }
 
   /** No celular, busca, filtros e ordenação ficam num painel recolhido atrás do botão "Filters". */
   async expandirFiltros() {
     // No celular o botão de filtros pode vir sem texto (tradução vazia no Toolshop): achamos pelo data-test
     const botao = this.page.getByTestId('filters').and(this.page.getByRole('button'));
+    const busca = this.page.getByTestId('search-query');
+    // Espera a tela montar: no desktop a busca já aparece, no celular aparece o botão
+    await expect(busca.or(botao)).toBeVisible();
     if (await botao.isVisible() && (await botao.getAttribute('aria-expanded')) !== 'true') await botao.click();
   }
 

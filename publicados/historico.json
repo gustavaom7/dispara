@@ -1,5 +1,15 @@
 [
   {
+    "quando": "2026-10-23T11:46:18.558Z",
+    "autor": "Gustavo",
+    "adicionados": [],
+    "alterados": [
+      "compra-como-convidado",
+      "cadastro"
+    ],
+    "removidos": []
+  },
+  {
     "quando": "2026-10-23T11:31:14.502Z",
     "autor": "Gustavo",
     "adicionados": [],
