@@ -24,7 +24,7 @@ export function falhasDoRelatorio(relatorio, { lerArquivo = caminho => (existsSy
           titulo: spec.title,
           projeto: t.projectName ?? '',
           mensagem: limitar(ultima.errors?.map(e => e.message ?? '').join('\n\n') || ultima.error?.message || '', 30),
-          contexto: textoContexto ? limitar(textoContexto, 60) : null,
+          contexto: textoContexto ? limitar(textoContexto, 140) : null,
         });
       }
     }
