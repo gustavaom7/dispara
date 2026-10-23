@@ -22,7 +22,7 @@ Os testes rodam de verdade contra o [Toolshop](https://practicesoftwaretesting.c
 | Segredos fora do código e limpeza automática na publicação | `scripts/lib/sanitizar.mjs` |
 | CI com matriz de ambientes, nova tentativa, relatório publicado e execução diária | `.github/workflows/testes.yml` |
 | Testes dos próprios scripts (47 testes com `node:test`, incluindo gerador e triagem) | `scripts/lib/**/*.test.mjs` |
-| Ferramenta interna com UI (catálogo, execuções, revisão de segurança) | `site/template.html` |
+| Ferramenta interna com UI e design system próprio (catálogo, execuções, revisão de segurança) | `site/template.html`, `docs/design-system.md` |
 
 ## Como funciona
 
