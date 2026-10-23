@@ -3,6 +3,9 @@ name: Testes
 on:
   push:
     branches: [main]
+  # Roda tudo antes do merge; o job do site só publica a partir do main
+  pull_request:
+    branches: [main]
   schedule:
     # Todo dia às 06:17 de Brasília: mostra a tendência e pega mudanças no Toolshop
     - cron: '17 9 * * *'
