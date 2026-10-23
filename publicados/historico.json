@@ -1,6 +1,43 @@
 [
   {
-    "quando": "2026-10-22T18:24:40.142Z",
+    "quando": "2026-10-23T11:55:45.370Z",
+    "autor": "Gustavo",
+    "adicionados": [],
+    "alterados": [
+      "cadastro"
+    ],
+    "removidos": []
+  },
+  {
+    "quando": "2026-10-23T11:46:18.558Z",
+    "autor": "Gustavo",
+    "adicionados": [],
+    "alterados": [
+      "compra-como-convidado",
+      "cadastro"
+    ],
+    "removidos": []
+  },
+  {
+    "quando": "2026-10-23T11:31:14.502Z",
+    "autor": "Gustavo",
+    "adicionados": [],
+    "alterados": [
+      "compra-como-convidado"
+    ],
+    "removidos": []
+  },
+  {
+    "quando": "2026-10-23T11:09:41.373Z",
+    "autor": "Gustavo",
+    "adicionados": [],
+    "alterados": [
+      "paginas-principais"
+    ],
+    "removidos": []
+  },
+  {
+    "quando": "2026-10-22T23:54:52.681Z",
     "autor": "Gustavo",
     "adicionados": [
       "paginas-principais",

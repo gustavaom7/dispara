@@ -60,3 +60,10 @@ test('resumo do CI lista falhas primeiro e mostra o link do relatório', async (
   assert.match(md, /\[relatório do Playwright\]\(https:\/\/exemplo\/relatorio\/\)/);
   assert.match(linhas.find(l => l.startsWith('| ❌')), /api\/produtos\.spec\.ts.*instável.*status da API/);
 });
+
+test('resumo do CI mostra o diagnóstico da triagem', async () => {
+  const { resumoMarkdown } = await import('../resumo-ci.mjs');
+  const [e] = coletar(relatorio, { ambiente: 'estavel' }).filter(x => x.status === 'falhou');
+  e.triagem = { categoria: 'ambiente', confianca: 'alta', modo: 'regras', proximoPasso: 'Rode de novo.' };
+  assert.match(resumoMarkdown([e]), /Problema de ambiente \(alta\): Rode de novo\./);
+});

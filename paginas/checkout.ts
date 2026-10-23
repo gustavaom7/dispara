@@ -11,7 +11,6 @@ export class Checkout {
   constructor(private readonly page: Page) {}
 
   get confirmacao() { return this.page.locator('#order-confirmation'); }
-  get numeroDaFatura() { return this.page.locator('#invoice-number'); }
 
   async continuarComoConvidado(pessoa: { email: string; nome: string; sobrenome: string }) {
     await this.page.getByRole('tab', { name: 'Continue as Guest' }).click();

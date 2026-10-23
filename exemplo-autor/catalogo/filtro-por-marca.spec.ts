@@ -1,21 +1,11 @@
-import { test, expect } from '../../fixtures';
+import { test, expect, produtosDaMarca } from '../../fixtures';
 
-type Marca = { id: string; name: string };
-type Pagina = { data: { name: string }[]; last_page: number };
-
+// Gerado pela IA a partir de historias/filtro-por-marca.md e revisado na aprovação:
+// a busca paginada na API foi para a fixture produtosDaMarca, para o teste ficar só com o comportamento.
 test.describe('Filtro por marca', () => {
   test('mostra só produtos da ForgeFlex Tools', async ({ api, catalogo }) => {
     // A API é a fonte da verdade: lista todos os produtos da marca, página por página.
-    const resposta = await (await api.get('/brands')).json();
-    const marcas: Marca[] = Array.isArray(resposta) ? resposta : resposta.data;
-    const forge = marcas.find(m => m.name === 'ForgeFlex Tools');
-    expect(forge, 'marca ForgeFlex Tools na API').toBeTruthy();
-    const daMarca: string[] = [];
-    for (let pagina = 1; ; pagina++) {
-      const corpo: Pagina = await (await api.get(`/products?by_brand=${forge!.id}&page=${pagina}`)).json();
-      daMarca.push(...corpo.data.map(p => p.name));
-      if (pagina >= corpo.last_page) break;
-    }
+    const daMarca = await produtosDaMarca(api, 'ForgeFlex Tools');
 
     await catalogo.abrir();
     await catalogo.filtrarPorMarca('ForgeFlex Tools');
