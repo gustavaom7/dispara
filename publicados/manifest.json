@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-10-22T23:54:52.681Z",
+  "geradoEm": "2026-10-23T11:09:41.372Z",
   "testes": [
     {
       "id": "paginas-principais",
@@ -31,8 +31,8 @@
       ],
       "qtdTestes": 3,
       "exigeAvatar": null,
-      "hash": "f5180c57b9e91e2b",
-      "atualizadoEm": "2026-10-22T23:54:52.675Z",
+      "hash": "0c6c4f3260263623",
+      "atualizadoEm": "2026-10-23T11:09:41.367Z",
       "avisos": []
     },
     {

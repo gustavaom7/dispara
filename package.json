@@ -16,6 +16,7 @@
     "gerar": "node scripts/gerar-testes.mjs",
     "aprovar": "node scripts/aprovar.mjs",
     "resumo": "node scripts/resumo-ci.mjs",
+    "comentario": "node scripts/comentar-pr.mjs",
     "triar": "node scripts/triar.mjs",
     "lint": "eslint .",
     "checar:rascunhos": "node scripts/checar-rascunhos.mjs"

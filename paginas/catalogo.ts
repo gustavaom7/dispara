@@ -47,7 +47,7 @@ export class Catalogo {
   }
 
   async listaDeNomes() {
-    return this.nomes.allTextContents();
+    return (await this.nomes.allTextContents()).map(n => n.trim());
   }
 
   async listaDePrecos() {

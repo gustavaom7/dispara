@@ -91,3 +91,9 @@ test('falhasDetalhadas: pega a mensagem completa da primeira falha de cada arqui
   assert.match(f.mensagem, /Expected: 200\nReceived: 404/);
   assert.doesNotMatch(f.mensagem, /\u001b/);
 });
+
+test('regras: conta bloqueada no Toolshop (423) é problema de ambiente', () => {
+  const d = regras(falha({ erro: 'Expected: 200 · Received: 423' }));
+  assert.deepEqual([d.categoria, d.confianca], ['ambiente', 'alta']);
+  assert.match(d.resumo, /bloqueada/);
+});

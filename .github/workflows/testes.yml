@@ -53,6 +53,9 @@ jobs:
         ambiente: [estavel, com-bugs]
     # Em "com-bugs" as falhas são esperadas: não derrubam o pipeline
     continue-on-error: ${{ matrix.ambiente == 'com-bugs' }}
+    permissions:
+      contents: read
+      pull-requests: write
     env:
       AMBIENTE: ${{ matrix.ambiente }}
     steps:
@@ -71,6 +74,7 @@ jobs:
         env:
           RELATORIO_HTML: relatorios/${{ matrix.ambiente }}/cliente
           RELATORIO_JSON: relatorio-json/cliente.json
+          RESULTADOS_DIR: test-results/cliente
         run: npm run t -- --todos --exceto=pedidos --ambiente=${{ matrix.ambiente }} --avatar=cliente --sem-sync
 
       - name: Roda os testes de admin com a conta Admin
@@ -79,6 +83,7 @@ jobs:
         env:
           RELATORIO_HTML: relatorios/${{ matrix.ambiente }}/admin
           RELATORIO_JSON: relatorio-json/admin.json
+          RESULTADOS_DIR: test-results/admin
         run: npm run t -- pedidos login --ambiente=${{ matrix.ambiente }} --avatar=admin --sem-sync
 
       - name: Registra os resultados
@@ -103,6 +108,22 @@ jobs:
       - name: Resumo na página da execução
         if: ${{ !cancelled() }}
         run: npm run -s resumo -- parcial/${{ matrix.ambiente }}.json --relatorio "$PAGES_URL/relatorios/${{ matrix.ambiente }}/cliente/" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Comenta o resultado no PR
+        if: ${{ !cancelled() && github.event_name == 'pull_request' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          npm run -s comentario -- parcial/${{ matrix.ambiente }}.json relatorio-json/cliente.json relatorio-json/admin.json \
+            --ambiente ${{ matrix.ambiente }} > comentario.md
+          marca="<!-- dispara:${{ matrix.ambiente }} -->"
+          id=$(gh api "repos/${{ github.repository }}/issues/$PR/comments" --paginate --jq ".[] | select(.body | startswith(\"$marca\")) | .id" | tail -1)
+          if [ -n "$id" ]; then
+            gh api -X PATCH "repos/${{ github.repository }}/issues/comments/$id" -F body=@comentario.md > /dev/null
+          else
+            gh api -X POST "repos/${{ github.repository }}/issues/$PR/comments" -F body=@comentario.md > /dev/null
+          fi
 
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}

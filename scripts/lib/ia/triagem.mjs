@@ -39,6 +39,7 @@ export function validarDiagnostico(d) {
 
 const REDE = /ENOTFOUND|ECONNRESET|ECONNREFUSED|ETIMEDOUT|EAI_AGAIN|net::ERR_|socket hang up|\b50[234]\b|Service Unavailable|Bad Gateway/i;
 const TIMEOUT = /Timeout \d+ms|timed out|exceeded/i;
+const CONTA_BLOQUEADA = /\b423\b|Account locked|bloqueada no Toolshop/i;
 const CONFIGURACAO = /Preencha \w+_EMAIL|\.env\b|Ambiente "[^"]+" não existe|Avatar "[^"]+" não existe/;
 
 /** Fatos objetivos sobre a falha. Vão para o Claude e alimentam as regras. */
@@ -58,6 +59,7 @@ export function sinais({ falha, historico = [], mapa }) {
     seletoresInexistentes: inexistentes,
     erroDeRede: REDE.test(erro),
     configuracaoFaltando: CONFIGURACAO.test(erro),
+    contaBloqueada: CONTA_BLOQUEADA.test(erro),
     timeout: TIMEOUT.test(erro),
     falhasNaMesmaExecucao: falhasNoAmbiente,
   };
@@ -69,6 +71,10 @@ export function classificarPorRegras(s) {
   if (s.configuracaoFaltando) {
     return d('ambiente', 'alta', 'O teste nem começou: falta configuração na máquina que rodou (credenciais no .env, ambiente ou conta).',
       ['Mensagem de configuração ausente vinda das fixtures'], 'Copie o .env.example para .env (ou configure os secrets no CI) e rode de novo.');
+  }
+  if (s.contaBloqueada) {
+    return d('ambiente', 'alta', 'A conta de teste está bloqueada no Toolshop por excesso de tentativas de login: não é defeito do teste nem do produto.',
+      ['Resposta 423 (Account locked) do login'], 'Use outra conta (--avatar=cliente-2) ou espere o reset diário do Toolshop.');
   }
   if (s.erroDeRede) {
     return d('ambiente', 'alta', 'O teste não chegou a falhar por regra de negócio: a rede ou o servidor não respondeu.',

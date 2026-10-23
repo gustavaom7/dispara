@@ -10,6 +10,8 @@ const CI = Boolean(process.env.CI);
 
 export default defineConfig({
   testDir: process.env.DISPARA_PASTA ?? 'meus-testes',
+  // No CI cada conta usa uma pasta: a segunda execução não apaga o contexto das falhas da primeira
+  outputDir: process.env.RESULTADOS_DIR ?? 'test-results',
   timeout: 60_000,
   expect: { timeout: 10_000 },
   fullyParallel: true,
