@@ -1,4 +1,5 @@
 import { expect, type Page } from '@playwright/test';
+import { pularSeVerificacaoAntiBot, telaDeVerificacao } from './verificacao-anti-bot';
 
 export class PaginaLogin {
   constructor(private readonly page: Page) {}
@@ -16,8 +17,12 @@ export class PaginaLogin {
     return ({ admin: 'Sales over the years' } as Record<string, string>)[avatar] ?? 'My account';
   }
 
+  /** Entra pelo link do menu, como uma pessoa faria (o ambiente com bugs não abre /auth/login direto). */
   async abrir() {
-    await this.page.goto('/auth/login');
+    await this.page.goto('/');
+    await this.page.getByTestId('nav-sign-in').click();
+    await expect(this.email.or(telaDeVerificacao(this.page))).toBeVisible();
+    await pularSeVerificacaoAntiBot(this.page);
   }
 
   async entrarCom(credenciais: { email: string; senha: string }) {
@@ -25,6 +30,8 @@ export class PaginaLogin {
     await this.email.fill(credenciais.email);
     await this.senha.fill(credenciais.senha);
     await this.enviar.click();
+    await expect(this.page.getByTestId('nav-menu').or(telaDeVerificacao(this.page))).toBeAttached();
+    await pularSeVerificacaoAntiBot(this.page);
     await expect(this.page.getByTestId('nav-menu')).toBeAttached();
   }
 }

@@ -15,6 +15,7 @@ test('compra como convidado até o número da fatura @destrutivo', async ({ cata
   await test.step('endereço', () => checkout.preencherEndereco());
   await test.step('pagamento na entrega', () => checkout.pagarNaEntrega());
 
+  // O número da fatura vem dentro do texto de confirmação, sem elemento próprio
   await expect(checkout.confirmacao).toContainText('Thanks for your order');
-  await expect(checkout.numeroDaFatura).toHaveText(/^INV-\d+/);
+  await expect(checkout.confirmacao).toContainText(/INV-\d+/);
 });

@@ -17,7 +17,8 @@ export class Catalogo {
 
   /** No celular, busca, filtros e ordenação ficam num painel recolhido atrás do botão "Filters". */
   async expandirFiltros() {
-    const botao = this.page.getByRole('button', { name: 'Filters' });
+    // No celular o botão de filtros pode vir sem texto (tradução vazia no Toolshop): achamos pelo data-test
+    const botao = this.page.getByTestId('filters').and(this.page.getByRole('button'));
     if (await botao.isVisible() && (await botao.getAttribute('aria-expanded')) !== 'true') await botao.click();
   }
 

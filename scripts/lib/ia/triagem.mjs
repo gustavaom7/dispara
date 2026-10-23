@@ -40,6 +40,7 @@ export function validarDiagnostico(d) {
 const REDE = /ENOTFOUND|ECONNRESET|ECONNREFUSED|ETIMEDOUT|EAI_AGAIN|net::ERR_|socket hang up|\b50[234]\b|Service Unavailable|Bad Gateway/i;
 const TIMEOUT = /Timeout \d+ms|timed out|exceeded/i;
 const CONTA_BLOQUEADA = /\b423\b|Account locked|bloqueada no Toolshop/i;
+const ANTI_BOT = /security verification|verificação anti-bot|Cloudflare/i;
 const CONFIGURACAO = /Preencha \w+_EMAIL|\.env\b|Ambiente "[^"]+" não existe|Avatar "[^"]+" não existe/;
 
 /** Fatos objetivos sobre a falha. Vão para o Claude e alimentam as regras. */
@@ -60,6 +61,7 @@ export function sinais({ falha, historico = [], mapa }) {
     erroDeRede: REDE.test(erro),
     configuracaoFaltando: CONFIGURACAO.test(erro),
     contaBloqueada: CONTA_BLOQUEADA.test(erro),
+    verificacaoAntiBot: ANTI_BOT.test(erro),
     timeout: TIMEOUT.test(erro),
     falhasNaMesmaExecucao: falhasNoAmbiente,
   };
@@ -75,6 +77,10 @@ export function classificarPorRegras(s) {
   if (s.contaBloqueada) {
     return d('ambiente', 'alta', 'A conta de teste está bloqueada no Toolshop por excesso de tentativas de login: não é defeito do teste nem do produto.',
       ['Resposta 423 (Account locked) do login'], 'Use outra conta (--avatar=cliente-2) ou espere o reset diário do Toolshop.');
+  }
+  if (s.verificacaoAntiBot) {
+    return d('ambiente', 'alta', 'O Toolshop mostrou a verificação anti-bot do Cloudflare para a máquina que rodou: o teste nem chegou na tela.',
+      ['Página "Performing security verification" no lugar da aplicação'], 'Rode de novo mais tarde ou na sua máquina; não é defeito do teste nem do produto.');
   }
   if (s.erroDeRede) {
     return d('ambiente', 'alta', 'O teste não chegou a falhar por regra de negócio: a rede ou o servidor não respondeu.',

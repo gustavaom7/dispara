@@ -97,3 +97,8 @@ test('regras: conta bloqueada no Toolshop (423) é problema de ambiente', () => 
   assert.deepEqual([d.categoria, d.confianca], ['ambiente', 'alta']);
   assert.match(d.resumo, /bloqueada/);
 });
+
+test('regras: verificação anti-bot do Cloudflare é problema de ambiente', () => {
+  const d = regras(falha({ erro: 'O Toolshop pediu verificação anti-bot (Cloudflare) para esta máquina.' }));
+  assert.deepEqual([d.categoria, d.confianca], ['ambiente', 'alta']);
+});
