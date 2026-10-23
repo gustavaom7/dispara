@@ -18,6 +18,12 @@ export class PaginaLogin {
     return ({ admin: 'Sales over the years' } as Record<string, string>)[avatar] ?? 'My account';
   }
 
+  /** Espera o formulário de login (ou pula o teste se o Cloudflare pedir verificação no lugar dele). */
+  async esperarFormulario() {
+    await expect(this.email.or(telaDeVerificacao(this.page))).toBeVisible();
+    await pularSeVerificacaoAntiBot(this.page);
+  }
+
   /** Entra pelo link do menu, como uma pessoa faria (o ambiente com bugs não abre /auth/login direto). */
   async abrir() {
     // Depois do cadastro o Toolshop já leva para o login: não precisa navegar de novo
@@ -27,8 +33,7 @@ export class PaginaLogin {
     await pularSeVerificacaoAntiBot(this.page);
     await new Menu(this.page).expandir();
     await this.page.getByTestId('nav-sign-in').click();
-    await expect(this.email.or(telaDeVerificacao(this.page))).toBeVisible();
-    await pularSeVerificacaoAntiBot(this.page);
+    await this.esperarFormulario();
   }
 
   async entrarCom(credenciais: { email: string; senha: string }) {

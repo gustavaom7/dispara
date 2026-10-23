@@ -12,7 +12,7 @@ export class Menu {
   async expandir() {
     const botao = this.page.getByRole('button', { name: 'Toggle navigation' });
     // Espera o cabeçalho existir antes de decidir: isVisible() não espera e respondia "não" cedo demais no celular
-    await expect(botao.or(this.page.getByTestId('nav-home'))).toBeVisible();
+    await expect(botao.or(this.page.getByTestId('nav-home')).filter({ visible: true }).first()).toBeVisible();
     if (await botao.isVisible() && (await botao.getAttribute('aria-expanded')) !== 'true') await botao.click();
   }
 

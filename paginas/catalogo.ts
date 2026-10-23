@@ -24,7 +24,7 @@ export class Catalogo {
     const botao = this.page.getByTestId('filters').and(this.page.getByRole('button'));
     const busca = this.page.getByTestId('search-query');
     // Espera a tela montar: no desktop a busca já aparece, no celular aparece o botão
-    await expect(busca.or(botao)).toBeVisible();
+    await expect(busca.or(botao).filter({ visible: true }).first()).toBeVisible();
     if (await botao.isVisible() && (await botao.getAttribute('aria-expanded')) !== 'true') await botao.click();
   }
 
