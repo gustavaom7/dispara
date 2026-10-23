@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-10-23T11:31:14.501Z",
+  "geradoEm": "2026-10-23T11:46:18.557Z",
   "testes": [
     {
       "id": "paginas-principais",
@@ -302,8 +302,8 @@
       ],
       "qtdTestes": 1,
       "exigeAvatar": null,
-      "hash": "32ac15a29c1111b9",
-      "atualizadoEm": "2026-10-23T11:31:14.501Z",
+      "hash": "b7a459ec72e22e43",
+      "atualizadoEm": "2026-10-23T11:46:18.556Z",
       "avisos": []
     },
     {
@@ -324,8 +324,8 @@
       ],
       "qtdTestes": 1,
       "exigeAvatar": null,
-      "hash": "39ac4a0716bc32be",
-      "atualizadoEm": "2026-10-22T23:54:52.681Z",
+      "hash": "9b5416985d927fea",
+      "atualizadoEm": "2026-10-23T11:46:18.557Z",
       "avisos": []
     },
     {

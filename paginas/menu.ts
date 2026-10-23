@@ -11,6 +11,8 @@ export class Menu {
   /** Abre o menu recolhido quando o botão dele está visível (telas pequenas). */
   async expandir() {
     const botao = this.page.getByRole('button', { name: 'Toggle navigation' });
+    // Espera o cabeçalho existir antes de decidir: isVisible() não espera e respondia "não" cedo demais no celular
+    await expect(botao.or(this.page.getByTestId('nav-home'))).toBeVisible();
     if (await botao.isVisible() && (await botao.getAttribute('aria-expanded')) !== 'true') await botao.click();
   }
 

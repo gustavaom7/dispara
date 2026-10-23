@@ -1,4 +1,5 @@
 import { expect, type Page } from '@playwright/test';
+import { Menu } from './menu';
 import { pularSeVerificacaoAntiBot, telaDeVerificacao } from './verificacao-anti-bot';
 
 export class PaginaLogin {
@@ -19,7 +20,12 @@ export class PaginaLogin {
 
   /** Entra pelo link do menu, como uma pessoa faria (o ambiente com bugs não abre /auth/login direto). */
   async abrir() {
+    // Depois do cadastro o Toolshop já leva para o login: não precisa navegar de novo
+    if (await this.email.isVisible()) return;
     await this.page.goto('/');
+    await expect(this.page.getByTestId('nav-sign-in').or(telaDeVerificacao(this.page))).toBeAttached();
+    await pularSeVerificacaoAntiBot(this.page);
+    await new Menu(this.page).expandir();
     await this.page.getByTestId('nav-sign-in').click();
     await expect(this.email.or(telaDeVerificacao(this.page))).toBeVisible();
     await pularSeVerificacaoAntiBot(this.page);
