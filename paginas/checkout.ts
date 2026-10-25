@@ -1,4 +1,4 @@
-import { expect, type Page } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 
 export type Endereco = { pais: string; cep: string; numero: string; rua: string; cidade: string; estado: string };
 
@@ -36,6 +36,14 @@ export class Checkout {
     await this.page.getByTestId('payment-method').selectOption('cash-on-delivery');
     await this.page.getByTestId('finish').click();
     await expect(this.page.getByTestId('payment-success-message')).not.toBeEmpty();
+
+    // O Toolshop engole erro na criação da fatura e a tela fica parada no pagamento.
+    // Olhar a resposta da API deixa a falha dizer o que aconteceu.
+    const fatura = this.page.waitForResponse(r => r.request().method() === 'POST' && new URL(r.url()).pathname.endsWith('/invoices'));
     await this.page.getByTestId('finish').click();
+    const resposta = await fatura;
+    test.skip(resposta.headers()['cf-mitigated'] === 'challenge',
+      'O Toolshop pediu verificação anti-bot (Cloudflare) na criação da fatura. Rode de novo mais tarde ou na sua máquina.');
+    expect(resposta.ok(), `Criação da fatura respondeu ${resposta.status()}: ${(await resposta.text()).slice(0, 300)}`).toBeTruthy();
   }
 }
