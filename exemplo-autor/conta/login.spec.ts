@@ -1,11 +1,11 @@
 import { test, expect, pessoaNova } from '../../fixtures';
+import { PaginaLogin } from '../../paginas';
 
 test.describe('Login', () => {
   test('entra com credenciais válidas @smoke', async ({ login, menu, conta }) => {
     await login.entrarCom(conta);
     await expect(menu.entrar).toBeHidden();
-    const titulo = conta.avatar.id === 'admin' ? 'Sales over the years' : 'My account';
-    await expect(login.titulo).toHaveText(titulo);
+    await expect(login.titulo).toHaveText(PaginaLogin.tituloAposEntrar(conta.avatar.id));
   });
 
   test('recusa e-mail que não existe', async ({ page, login }) => {

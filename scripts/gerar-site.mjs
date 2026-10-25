@@ -8,6 +8,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { RAIZ, argumentos, lerJson } from './lib/util.mjs';
 import { listarRascunhos } from './lib/ia/saida.mjs';
+import { classificarPorRegras, sinais } from './lib/ia/triagem.mjs';
 
 const a = argumentos();
 const manifesto = lerJson(join(RAIZ, 'publicados', 'manifest.json'), null);
@@ -29,7 +30,7 @@ const testes = manifesto.testes.map(({ hash, ...t }) => ({
 
 const caminhoExecucoes = resolve(RAIZ, a.execucoes ?? 'resultados/execucoes.json');
 const reais = existsSync(caminhoExecucoes) ? JSON.parse(readFileSync(caminhoExecucoes, 'utf8')) : [];
-const execucoes = reais.length ? reais : a.demo ? execucoesDemo(testes) : [];
+const execucoes = reais.length ? reais : a.demo ? comTriagem(execucoesDemo(testes)) : [];
 const fonteExecucoes = reais.length ? 'real' : execucoes.length ? 'exemplo' : 'nenhuma';
 
 const dados = {
@@ -55,6 +56,17 @@ mkdirSync(saida, { recursive: true });
 writeFileSync(join(saida, 'index.html'), pagina);
 writeFileSync(join(saida, 'fragmento.html'), fragmento);
 console.log(`Site gerado em site/dist/ com ${testes.length} teste(s) e ${execucoes.length} execução(ões) ${{ real: 'reais', exemplo: 'de exemplo', nenhuma: '' }[fonteExecucoes]}.`.replace(/ \.$/, '.'));
+
+/** Nos exemplos, as falhas também ganham diagnóstico (pelas regras), para a tela mostrar como fica. */
+function comTriagem(lista) {
+  const mapa = lerJson(join(RAIZ, 'ref', 'toolshop-seletores.json'), null);
+  const historico = lista.map(e => ({ ...e, quando: new Date(Date.now() - e.atras).toISOString() }));
+  return lista.map((e, i) => {
+    if (e.status !== 'falhou') return e;
+    const d = classificarPorRegras(sinais({ falha: historico[i], historico, mapa }));
+    return { ...e, triagem: { categoria: d.categoria, confianca: d.confianca, resumo: d.resumo, evidencias: d.evidencias, proximoPasso: d.proximoPasso, modo: 'regras', modelo: null } };
+  });
+}
 
 /**
  * Execuções fictícias para a demo, usadas só quando ainda não há resultados reais.

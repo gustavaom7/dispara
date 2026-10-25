@@ -169,6 +169,13 @@ select.alterado { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(-
 .exec .tnome { font-weight: 600 }
 .exec .meta { grid-column: 2; font-size: 12.5px; color: var(--muted) }
 .exec .quando { grid-row: 1 / span 2; grid-column: 3; text-align: right; font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; display: grid; gap: 2px; justify-items: end }
+.diag { grid-column: 2 / -1; font-size: 13px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface-2); padding: 6px 10px }
+.diag summary { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; cursor: pointer; list-style: none }
+.diag summary::-webkit-details-marker { display: none }
+.diag summary .ic { width: 15px; height: 15px; color: var(--accent) }
+.diag summary .pill::before { display: none }
+.diag p { margin: 8px 0 0 } .diag ul { margin: 6px 0 0; padding-left: 18px; color: var(--muted) }
+.exec-tbl .exec .diag { grid-column: 2 / -1 }
 .exec .erro { grid-column: 2 / -1; font: 12px/1.45 var(--f-mono); color: var(--danger); overflow-wrap: anywhere }
 .area-linha { display: grid; grid-template-columns: minmax(0, 1fr) 46px; gap: 6px 12px; align-items: center; padding: 10px 16px }
 .area-linha b { font-weight: 500 }
@@ -786,6 +793,19 @@ const DADOS = "__DADOS__";
     return partes.length ? `<span class="deltas">${partes.map(([c, s, l]) => `<span class="${c}">${s}${l.length}</span>`).join('')}</span>` : 'sem mudanças';
   }
 
+  const CATEGORIA = {
+    'bug-no-produto': ['Bug no produto', 'falha'],
+    'teste-desatualizado': ['Teste desatualizado', 'corrigido'],
+    instabilidade: ['Instabilidade', 'corrigido'],
+    ambiente: ['Problema de ambiente', 'nada'],
+  };
+  function diagnosticoHtml(e) {
+    const t = e.triagem; if (!t) return '';
+    const [nome, tom] = CATEGORIA[t.categoria] ?? [t.categoria, 'nada'];
+    return `<details class="diag"><summary>${icon('ia')}<span class="pill ${tom}">${esc(nome)}</span><span class="muted">confiança ${esc(t.confianca)} · ${t.modo === 'ia' ? esc(t.modelo ?? 'Claude') : 'regras locais'}</span></summary>
+      <p>${esc(t.resumo)}</p>${t.evidencias?.length ? `<ul>${t.evidencias.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}<p><b>Próximo passo:</b> ${esc(t.proximoPasso)}</p></details>`;
+  }
+
   function linhaExec(e, compacta) {
     const t = testeDe(e.teste);
     const titulo = t ? t.titulo : e.teste;
@@ -794,7 +814,7 @@ const DADOS = "__DADOS__";
     const link = e.relatorio ? ` · <a href="${esc(e.relatorio)}" target="_blank" rel="noopener">relatório</a>` : '';
     const meta = `${esc(ambDe(e.ambiente)?.nome ?? e.ambiente)} · ${esc(avDe(e.avatar)?.nome ?? e.avatar)} · ${esc(e.quem)}${casos ? ` · ${casos}` : ''}${link}${selos}`;
     const nome = t ? `<button class="tnome" data-acao="abrir" data-id="${esc(t.id)}">${esc(titulo)}</button>` : `<b>${esc(titulo)}</b>`;
-    const erro = e.erro ? `<div class="erro">${esc(e.erro)}</div>` : '';
+    const erro = (e.erro ? `<div class="erro">${esc(e.erro)}</div>` : '') + diagnosticoHtml(e);
     if (compacta) {
       return `<li class="exec">${pillExec(e)}<div style="min-width:0">${nome}</div><span class="quando"><span>${esc(rel(e.t))}</span><span>${dur(e.duracaoMs)}</span></span><div class="meta">${meta}</div>${erro}</li>`;
     }

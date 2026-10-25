@@ -28,13 +28,19 @@ type Fixtures = {
 export const test = base.extend<Fixtures>({
   ambiente: async ({}, use) => { await use(ambienteAtual()); },
 
-  conta: async ({}, use) => {
+  conta: async ({ ambiente }, use, info) => {
     const avatar = avatarAtual();
     const email = process.env[`${avatar.prefixo}_EMAIL`];
     const senha = process.env[`${avatar.prefixo}_SENHA`];
     if (!email || !senha) {
       throw new Error(`Preencha ${avatar.prefixo}_EMAIL e ${avatar.prefixo}_SENHA no seu .env para usar a conta "${avatar.nome}" (veja .env.example).`);
     }
+    // As contas do Toolshop são públicas: qualquer pessoa pode bloqueá-las errando a senha várias vezes.
+    // Conta bloqueada não é falha do teste nem do produto, então o teste é pulado com o motivo à vista.
+    const verificacao = await playwrightRequest.newContext({ baseURL: ambiente.apiURL });
+    const status = (await verificacao.post('/users/login', { data: { email, password: senha } })).status();
+    await verificacao.dispose();
+    info.skip(status === 423, `Conta "${avatar.nome}" bloqueada no Toolshop público (423, Account locked). Use outro --avatar ou espere o reset do Toolshop.`);
     await use({ avatar, email, senha });
   },
 
@@ -84,6 +90,21 @@ export async function cadastrarPorApi(api: APIRequestContext) {
   });
   expect(resposta.ok(), `cadastro pela API: ${resposta.status()} ${await resposta.text()}`).toBeTruthy();
   return { ...pessoa, email: pessoa.email, senha: pessoa.senha };
+}
+
+/** Nomes de todos os produtos de uma marca, segundo a API (percorre todas as páginas). */
+export async function produtosDaMarca(api: APIRequestContext, marca: string) {
+  const corpo = await (await api.get('/brands')).json();
+  const marcas: { id: string; name: string }[] = Array.isArray(corpo) ? corpo : corpo.data;
+  const encontrada = marcas.find(m => m.name === marca);
+  if (!encontrada) throw new Error(`Marca "${marca}" não existe na API`);
+  const nomes: string[] = [];
+  for (let pagina = 1, ultima = 1; pagina <= ultima; pagina++) {
+    const resposta: { data: { name: string }[]; last_page: number } = await (await api.get(`/products?by_brand=${encontrada.id}&page=${pagina}`)).json();
+    nomes.push(...resposta.data.map(p => p.name));
+    ultima = resposta.last_page;
+  }
+  return nomes;
 }
 
 export { preco } from './paginas';

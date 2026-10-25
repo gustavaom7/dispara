@@ -3,7 +3,7 @@ import { idDe } from './util.mjs';
 
 const ANSI = /\u001b\[[0-9;]*m/g;
 
-function* specsDe(suite, arquivo = suite.file) {
+export function* specsDe(suite, arquivo = suite.file) {
   for (const spec of suite.specs ?? []) yield { arquivo: spec.file ?? arquivo, spec };
   for (const filha of suite.suites ?? []) yield* specsDe(filha, filha.file ?? arquivo);
 }
@@ -73,6 +73,24 @@ export function coletar(relatorio, contexto = {}) {
     });
   }
   return execucoes.sort((a, b) => a.teste.localeCompare(b.teste) || (a.dispositivo ?? '').localeCompare(b.dispositivo ?? ''));
+}
+
+/** Primeira falha de cada arquivo/projeto, com a mensagem completa (sem cores), para a triagem. */
+export function falhasDetalhadas(relatorio) {
+  const saida = new Map();
+  for (const suite of relatorio.suites ?? []) {
+    for (const { arquivo, spec } of specsDe(suite)) {
+      for (const t of spec.tests ?? []) {
+        if (t.status !== 'unexpected') continue;
+        const chave = `${arquivo.split('\\').join('/')}::${t.projectName === 'celular' ? 'celular' : ''}`;
+        if (saida.has(chave)) continue;
+        const ultimo = t.results?.at(-1);
+        const mensagem = (ultimo?.error?.message ?? ultimo?.errors?.[0]?.message ?? '').replace(ANSI, '');
+        saida.set(chave, { caso: spec.title, mensagem });
+      }
+    }
+  }
+  return saida;
 }
 
 /** Junta execuções novas ao histórico, mais recentes primeiro, sem duplicar ids. */
