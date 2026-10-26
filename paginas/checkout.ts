@@ -38,8 +38,8 @@ export class Checkout {
     await expect(this.page.getByTestId('payment-success-message')).not.toBeEmpty();
 
     // O Toolshop engole erro na criação da fatura e a tela fica parada no pagamento.
-    // Olhar a resposta da API deixa a falha dizer o que aconteceu.
-    const fatura = this.page.waitForResponse(r => r.request().method() === 'POST' && new URL(r.url()).pathname.endsWith('/invoices'));
+    // Olhar a resposta da API deixa a falha dizer o que aconteceu (convidado usa /invoices/guest).
+    const fatura = this.page.waitForResponse(r => r.request().method() === 'POST' && /\/invoices(\/guest)?$/.test(new URL(r.url()).pathname));
     await this.page.getByTestId('finish').click();
     const resposta = await fatura;
     test.skip(resposta.headers()['cf-mitigated'] === 'challenge',
