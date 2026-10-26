@@ -1,5 +1,19 @@
 # Changelog
 
+## Design system · 23/10/2026 (branch `design-system`)
+
+- Novo visual "bancada de ensaio": papel claro, marca-texto amarelo como assinatura, glifos de status com forma própria, etiquetas de amostra nos rascunhos de IA e linhas de trace nos passos e no histórico. Guia em `docs/design-system.md`.
+- Página inicial com uma régua de medição da taxa de sucesso no lugar dos quatro cartões.
+- Fontes (Familjen Grotesk, Public Sans, Martian Mono) embutidas no HTML gerado, sem depender de CDN.
+- Tema escuro revisado, contraste AA nos textos de apoio.
+
+## Primeiro CI real · 23/10/2026 (branch `rodada-3`)
+
+- A conta pública `cliente` estava bloqueada no Toolshop (423). Agora o teste é pulado com o motivo, e a triagem chama de problema de ambiente.
+- O teste de acessibilidade achou um defeito real no Toolshop estável: o botão de mostrar senha não tem nome acessível. Ficou registrado como defeito conhecido.
+- Filtro por marca comparava nomes com espaços sobrando.
+- O CI comenta no PR o resumo de cada ambiente, com a mensagem completa e a página no momento de cada falha.
+
 ## Rodada 3 · 22/10/2026 (branch `rodada-3`)
 
 - **Triagem de falhas com IA** (`npm run triar`): classifica cada falha em bug no produto, teste desatualizado, instabilidade ou problema de ambiente, com evidências e próximo passo. Usa o Claude com tool use quando há `ANTHROPIC_API_KEY`; sem a chave, regras locais. Roda no CI depois de cada ambiente.

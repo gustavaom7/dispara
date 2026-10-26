@@ -46,9 +46,26 @@ const dados = {
   repo: a.repo ?? 'https://github.com/SEU-USUARIO/dispara.git',
 };
 
+/** Fontes do design system embutidas como data URI: o site não depende de CDN de fontes (nem o artifact da demo). */
+function fontesEmbutidas() {
+  const fontes = [
+    ['Familjen Grotesk', 'familjen-grotesk', [600, 700]],
+    ['Public Sans', 'public-sans', [400, 500, 600]],
+    ['Martian Mono', 'martian-mono', [400, 500]],
+  ];
+  return fontes.flatMap(([familia, pacote, pesos]) => pesos.map(peso => {
+    const arquivo = join(RAIZ, 'node_modules', '@fontsource', pacote, 'files', `${pacote}-latin-${peso}-normal.woff2`);
+    if (!existsSync(arquivo)) return '';
+    const b64 = readFileSync(arquivo).toString('base64');
+    return `@font-face{font-family:"${familia}";font-style:normal;font-weight:${peso};font-display:swap;src:url(data:font/woff2;base64,${b64}) format("woff2")}`;
+  })).join('\n');
+}
+
 // As URLs dos ambientes ficam fora do site de propósito: o site pode ser público.
 const json = JSON.stringify(dados).replace(/</g, '\\u003c').replace(/[\u2028\u2029]/g, c => `\\u${c.charCodeAt(0).toString(16)}`);
-const fragmento = readFileSync(join(RAIZ, 'site', 'template.html'), 'utf8').replace('"__DADOS__"', () => json);
+const fragmento = readFileSync(join(RAIZ, 'site', 'template.html'), 'utf8')
+  .replace('/*__FONTES__*/', () => fontesEmbutidas())
+  .replace('"__DADOS__"', () => json);
 const pagina = `<!doctype html>\n<html lang="pt-BR">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n</head>\n<body>\n${fragmento}\n</body>\n</html>\n`;
 
 const saida = join(RAIZ, 'site', 'dist');
